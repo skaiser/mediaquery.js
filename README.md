@@ -109,6 +109,7 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 
 
 ## Resources
+
 [1]: http://tripleodeon.com/2011/12/first-understand-your-screen/
 [2]: http://adactio.com/journal/5429/
 [3]: http://www.springload.co.nz/love-the-web/responsive-javascript
