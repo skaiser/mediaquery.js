@@ -1,14 +1,14 @@
 js-media-query
 ==============
 
-# Introduction
+## Introduction
 
-## What is this?
+### What is this?
 
 This is a JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
 
 
-## Why use this?
+### Why use this?
 
 * If you like the power of CSS media queries, but have ever had trouble ensuring your "responsive JS" is in sync with your "responsive CSS"
 * If you've ever wanted to have your "responsive design" only be "responsive" to the user's browser/screen size at page load, but not necessarily _after_ page load (i.e., browser resize)
@@ -17,7 +17,7 @@ This is a JS library independent solution for making sure your JS and CSS are in
 * If you want a more reliable way to query what size the CSS media query thinks the screen is at vesus the [unreliable way that some browsers report the size using JS][1] 
 
 
-# Installation
+## Installation
 
 Insert the following into the `<head>` on your page:
 
@@ -26,7 +26,7 @@ Insert the following into the `<head>` on your page:
 Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. 
 
 
-# Usage
+## Usage
 
 Insert the following into the `<head>` on your page:
 
@@ -75,7 +75,7 @@ can use:
     jsmq.update();
 
 
-# API
+## API
 
     jsmq.VERSION;       // Returns version info
     jsmq.init();        // Makes things happen
@@ -83,7 +83,7 @@ can use:
     jsmq.getState();    // Basically does a JS Media Query (like a CSS media query)    
 
 
-# Philosophy
+## Philosophy
 
 There is something that has never felt quite right to me about using _only_ CSS media queries to do "responsive design" - **using CSS media queries, the CSS rules are immediately applied to adjust the layout when the browser is resized, but the JavaScript doesn't know about it**. This has always bothered me. One reason this bothers me is that I'm not really sure how many users (i.e., not developers or designers testing their "responsive" page) actually resize their browser after page load (You can't currently resize windows in mobile devices (arguably the main reason we need to be "responsive")), but if we allow it to adjust, it needs to work!! And then if they do resize, do they _definitely_ want the layout to adjust? Sometimes, I find it can just be annoying since your mind has to then reprocess the new layout (what has moved? what is now completely gone?, etc.). Your mind becomes kind of like a browser engine doing a "reflow", right? Another reason is: what if you need to also apply different JS behaviors or add/remove markup? The JS needs to be in sync with the CSS media query and [not all browsers report width values the same][1]. We need "Responsive JavaScript."
 
@@ -98,7 +98,7 @@ I found that Modernizr.MQ's implementation (which is basically the same as [matc
 I also found matchMedia.js to crash IE8, at least when using it in a particular CMS envrionment I was using. I wasn't really able to reproduce this anywhere else, but I couldn't use it there because of this.
 
 
-# TODO
+## TODO
 
 - TODO - Add ability to pass in config object
 - TODO - Add tests
@@ -108,7 +108,7 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 - TODO - Add ability to do the below/match queries
 
 
-# Resources
+## Resources
 [1]: http://tripleodeon.com/2011/12/first-understand-your-screen/
 [2]: http://adactio.com/journal/5429/
 [3]: http://www.springload.co.nz/love-the-web/responsive-javascript
@@ -116,10 +116,10 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 [5]: https://github.com/JoshBarr/js-media-queries
 
 
-# Known Bugs
+## Known Bugs
 
 
-# Attribution/Credits
+## Attribution/Credits
 Jeremy Keith, James Pearce, Paul Irish, Nicholas Zakas and Springload for their inspiring and pioneering ideas and work.
 
 
