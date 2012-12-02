@@ -110,11 +110,18 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 
 ## Resources
 
+[First, Understand Your Screen][1] by James Pearce
+[Conditional CSS][2] by Jeremy Keith
+[onMediaQuery jQuery plugin][3]
+[MatchMedia.js][4]
+[onMediaQuery jQuery plugin Github][5]
+
 [1]: http://tripleodeon.com/2011/12/first-understand-your-screen/
 [2]: http://adactio.com/journal/5429/
 [3]: http://www.springload.co.nz/love-the-web/responsive-javascript
 [4]: https://github.com/paulirish/matchMedia.js/
 [5]: https://github.com/JoshBarr/js-media-queries
+
 
 
 ## Known Bugs
