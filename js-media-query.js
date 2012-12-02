@@ -41,7 +41,7 @@
     }
     
     
-    var _jsmq = (function () {
+    _jsmq = (function () {
         
         
         // Add hidden elements to page include styles for hiding elems naturally
@@ -61,7 +61,7 @@
         cfg.elemNames = {
             'viewport': 'mediaWidth',       // Viewport/browsesr width
             'device': 'mediaDeviceWidth'    // Width of actual device
-        }
+        };
         
         cfg.useDeviceWidth = false;
         
@@ -71,7 +71,7 @@
             return document.getElementById(id);
         }
 
-        function _getMediaWidth () {
+        function _getMediaWidth() {
             var cs = window.getComputedStyle;
             return cs   ? parseInt(cs(_get(cfg.elemNames['viewport'])).getPropertyValue('width'), 10)
                         : false;
@@ -95,6 +95,12 @@
             head.appendChild(_createElem('device'));
         }
         
+        // Get current state
+        function getState(useDeviceWidth) {
+            var fn = useDeviceWidth ? _getMediaDeviceWidth : _getMediaWidth;
+            return cfg.sizes[fn()];
+        }
+        
         function _setCssClass() {
             var currClass = getState();
             docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
@@ -104,12 +110,6 @@
         // Does a fresh check of current state
         function update() {
             _setCssClass();
-        }
-        
-        // Get current state
-        function getState(useDeviceWidth) {
-            var fn = useDeviceWidth ? _getMediaDeviceWidth : _getMediaWidth;
-            return cfg.sizes[fn()];
         }
         
         function init(config) {
