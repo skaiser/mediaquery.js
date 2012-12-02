@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Demo page for js-media-query</title>
+    <link type="text/css" rel="stylesheet" href="styles.css" />
+    <script type="application/x-javascript" src="js-media-query.js"></script>
+</head>
+<body>
+    <h1>Demo page for js-media-query</h1>
+    <div>
+        <p>Resize the browser and refresh the page or call jsmq.update() to test different media queries.</p>
+        <p>Current value: <b><u><span id="result"></span></u></b></p>
+    </div>
+    <script>
+        (function () {
+            var el = document.getElementById('result');
+            el.innerHTML = document.documentElement.className;
+        })();
+    </script>
+</body>
+</html>

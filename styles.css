@@ -1,0 +1,66 @@
+/**!
+ *  CSS Media Query examples for using with js-media-query
+ *
+ */
+
+/************ DEBUG **************/
+
+.large {
+    color: black;
+}
+.medium {
+    color: dodgerblue;
+}
+.small {
+    color: salmon;
+}
+.smaller {
+    color: green;
+}
+/************ END DEBUG **********/
+
+
+
+/************ PLUGIN *************/
+
+#mediaWidth,
+#mediaDeviceWidth {
+    height: 0;
+    display: none;
+    position: absolute;
+    left: -999999em;
+    z-index: -10;
+    width: 64px;
+}
+
+
+
+@media only screen and (max-width: 63em) {          /* ~= 1008px  */
+    #mediaWidth {
+        width: 63px;
+    }
+}
+
+@media only screen and (max-device-width: 45em) {   /* ~= 720px */
+    #mediaDeviceWidth {
+        width: 45px;
+    }
+}
+
+@media only screen and (max-width: 45em) {
+    #mediaWidth {
+        width: 45px;
+    }
+}
+
+@media only screen and (max-device-width: 30em) {   /* ~= 480px */
+    #mediaDeviceWidth {
+        width: 30px;
+    }
+}
+
+@media only screen and (max-width: 30em) {          /* ~= 480px */
+    #mediaWidth {
+        width: 30px;
+    }
+}
