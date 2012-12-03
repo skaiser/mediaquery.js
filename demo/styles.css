@@ -1,0 +1,21 @@
+/**!
+ *  CSS Media Query examples for using with js-media-query
+ *
+ */
+
+/************ DEBUG **************/
+
+.large {
+    color: black;
+}
+.medium {
+    color: dodgerblue;
+}
+.small {
+    color: salmon;
+}
+.smaller {
+    color: green;
+}
+/************ END DEBUG **********/
+

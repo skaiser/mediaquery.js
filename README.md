@@ -77,10 +77,14 @@ can use:
 
 ## API
 
-    jsmq.VERSION;       // Returns version info
-    jsmq.init();        // Makes things happen
-    jsmq.update();      // Refreshes the current CSS class, useful after a resize
-    jsmq.getState();    // Basically does a JS Media Query (like a CSS media query)    
+    jsmq.VERSION;                   // Returns version info
+    jsmq.init();                    // Makes things happen
+    jsmq.update();                  // Refreshes the current CSS class, useful after a resize
+    jsmq.get();                     // Basically does a JS Media Query (like a CSS media query)
+    jsmq.isAt('large');             // Does the current media query match this VIEWPORT width?
+    jsmq.isAtDevice('small');       // Does the current media query match this DEVICE width?
+    jsmq.isBelow('medium');         // Is the current media query BELOW this VIEWPORT width?
+    jsmq.isBelowDevice('small');    // Is the current media query BELOW this DEVICE width?
 
 
 ## Philosophy
@@ -100,12 +104,13 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 
 ## TODO
 
-- TODO - Add ability to pass in config object
-- TODO - Add tests
 - TODO - Provide better examples on how to use this in CSS in place of @media
-- TODO - (Make configurable) Automagically append/include styles.css into the page using the JS so user doesn't have to. This includes setting default "hidden" styles on #mediaWidth, etc
-- TODO - Add ability to configure the element type being appended to page
-- TODO - Add ability to do the below/match queries
+- TODO - Add tests
+- TODO - Add "if" condition for calling init so tests can delay calling it
+- TODO - document need to call init from a test
+- TODO - Document why using <script> as the element - can append to <head>, doesn't have a height or width by default, etc
+- TODO - Test whether using <script> actually works in all browsers with media queries
+- TODO - document why you would do device width check in getWidth methods
 
 
 ## Resources
