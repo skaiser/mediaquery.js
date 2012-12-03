@@ -43,10 +43,6 @@
     
     _jsmq = (function () {
         
-        
-        // Add hidden elements to page include styles for hiding elems naturally
-        // Check their width
-        // Add CSS class
         var VERSION = '0.0.1',
             prevClass = '',
             cfg = {},
