@@ -1,4 +1,4 @@
-/**!
+/*!
  *  js-media-query
  *  https://github.com/skaiser/js-media-query
  
