@@ -102,14 +102,6 @@ I found that Modernizr.MQ's implementation (which is basically the same as [matc
 I also found matchMedia.js to crash IE8, at least when using it in a particular CMS envrionment I was using. I wasn't really able to reproduce this anywhere else, but I couldn't use it there because of this.
 
 
-## TODO
-
-- TODO - Provide better examples on how to use this in CSS in place of @media
-- TODO - Add tests
-- TODO - Add "if" condition for calling init so tests can delay calling it
-- TODO - document need to call init from a test
-
-
 ## Resources
 
 [First, Understand Your Screen][1] by James Pearce
