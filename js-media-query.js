@@ -26,7 +26,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.1',
+        var VERSION = '0.1.2',
             prevClass = '',
             cfg = {};
             
@@ -71,20 +71,25 @@
         
         
         /**
-         *  Returns a new object that reverses the key/value pairs of another object
+         *  Returns a new object that reverses the key/value pairs of another object.
+         *  It is important to note that this allows us to cast the new value to
+         *  a Number object so we can use the typeof operator in other methods
+         *  to check whether we are doing a query by name or number value.
          *
          *  @method     _reverseKeyValue
-         *  @param      {Object}    o   Object to have key/values reversed
-         *  @returns    {Object}        A new object with key/values reversed
+         *  @param      {Object}    o           Object to have key/values reversed
+         *  @param      {Boolean}   castNum     Whether to cast value to a Number
+         *  @returns    {Object}                A new object with key/values reversed
          *  @private
          */
-        function _reverseKeyValue(o) {
+        function _reverseKeyValue(o, castNum) {
             var newObj = {},
                 k;
+            
             for (k in o) {
             
                 if (o.hasOwnProperty(k)) {
-                    newObj[o[k]] = k;        
+                    newObj[o[k]] = castNum ? Number(k) : k;        
                 }
             }
             return newObj;
@@ -96,7 +101,7 @@
          *  can do queries for the size using the CSS class name instead of the
          *  numeric value.
          */
-        cfg.sizesByName = _reverseKeyValue(cfg.sizes);
+        cfg.sizesByName = _reverseKeyValue(cfg.sizes, true);
         
         
         /**
@@ -156,14 +161,13 @@
          *
          *  @method     _isMatchMediaWidth
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @param      [Boolean]           useInt  Optional. Whether to use the CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
          *  @protected  (See API for public name)
          */
-        function _isMatchMediaWidth(value, useInt) {
-            // Allow to use either the numeric value or the CSS class name value
-            return value ? parseInt((useInt ? value : cfg.sizesByName[value]), 10) === _getMediaWidth() : false;
+        function _isMatchMediaWidth(value) {
+            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            return value ? parseInt(value, 10) === _getMediaWidth() : false;
         }
         
         
@@ -175,13 +179,13 @@
          *
          *  @method     _isMatchMediaDeviceWidth
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @param      [Boolean]           useInt  Optional. Whether to use the CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
          *  @protected  (See API for public name)
          */
-        function _isMatchMediaDeviceWidth(value, useInt) {
-            return value ? parseInt((useInt ? value : cfg.sizesByName[value]), 10) === _getMediaDeviceWidth() : false;
+        function _isMatchMediaDeviceWidth(value) {
+            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            return value ? parseInt(value, 10) === _getMediaDeviceWidth() : false;
         }
         
         
@@ -193,13 +197,13 @@
          *
          *  @method     _isBelowMediaWidth
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @param      [Boolean]           useInt  Optional. Whether to use the CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
          *  @protected  (See API for public name)
          */
-        function _isBelowMediaWidth(value, useInt) {
-            return value ? _getMediaWidth() < parseInt((useInt ? value : cfg.sizesByName[value]), 10) : false;
+        function _isBelowMediaWidth(value) {
+            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            return value ? _getMediaWidth() < parseInt(value, 10) : false;
         }
         
         
@@ -211,13 +215,13 @@
          *
          *  @method     _isBelowMediaDeviceWidth
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @param      [Boolean]           useInt  Optional. Whether to use the CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
          *  @protected  (See API for public name)
          */
-        function _isBelowMediaDeviceWidth(value, useInt) {
-            return value ? _getMediaDeviceWidth() < parseInt((useInt ? value : cfg.sizesByName[value]), 10) : false;
+        function _isBelowMediaDeviceWidth(value) {
+            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            return value ? _getMediaDeviceWidth() < parseInt(value, 10) : false;
         }
         
         
