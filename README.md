@@ -85,7 +85,7 @@ can use:
     jsmq.isAt('large');             // Does the current media query match this VIEWPORT width?
     jsmq.isAtDevice('small');       // Does the current media query match this DEVICE width?
     jsmq.isBelow('medium');         // Is the current media query BELOW this VIEWPORT width?
-    jsmq.isBelowDevice('small');    // Is the current media query BELOW this DEVICE width?
+    jsmq.isBelowDevice(45);         // Is the current media query BELOW this DEVICE width?
 
 
 ## Philosophy
