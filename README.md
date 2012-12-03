@@ -108,9 +108,6 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 - TODO - Add tests
 - TODO - Add "if" condition for calling init so tests can delay calling it
 - TODO - document need to call init from a test
-- TODO - Document why using <script> as the element can append to <head>, doesn't have a height or width by default, etc
-- TODO - Test whether using <script> actually works in all browsers with media queries
-- TODO - document why you would do device width check in getWidth methods
 
 
 ## Resources
