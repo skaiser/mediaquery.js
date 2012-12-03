@@ -5,7 +5,7 @@ js-media-query
 
 ### What is this?
 
-This is a JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
+This is a small (less than 1KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
 
 
 ### Why use this?
