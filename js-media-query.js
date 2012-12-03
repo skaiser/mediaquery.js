@@ -26,10 +26,9 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.0.1',
+        var VERSION = '0.1.1',
             prevClass = '',
-            cfg = {},
-            cfgSizesByName = {};
+            cfg = {};
             
         
         /**
@@ -97,7 +96,19 @@
          *  can do queries for the size using the CSS class name instead of the
          *  numeric value.
          */
-        cfgSizesByName = _reverseKeyValue(cfg.sizes);
+        cfg.sizesByName = _reverseKeyValue(cfg.sizes);
+        
+        
+        /**
+         *  Returns local configuration object
+         *
+         *  @method     getConfig
+         *  @returns    Local configuration object
+         *  @public
+         */
+        function getConfig() {
+            return cfg;
+        }
         
         
         /**
@@ -152,7 +163,7 @@
          */
         function _isMatchMediaWidth(value, useInt) {
             // Allow to use either the numeric value or the CSS class name value
-            return value ? parseInt((useInt ? value : cfgSizesByName[value]), 10) === _getMediaWidth() : false;
+            return value ? parseInt((useInt ? value : cfg.sizesByName[value]), 10) === _getMediaWidth() : false;
         }
         
         
@@ -170,7 +181,7 @@
          *  @protected  (See API for public name)
          */
         function _isMatchMediaDeviceWidth(value, useInt) {
-            return value ? parseInt((useInt ? value : cfgSizesByName[value]), 10) === _getMediaDeviceWidth() : false;
+            return value ? parseInt((useInt ? value : cfg.sizesByName[value]), 10) === _getMediaDeviceWidth() : false;
         }
         
         
@@ -188,7 +199,7 @@
          *  @protected  (See API for public name)
          */
         function _isBelowMediaWidth(value, useInt) {
-            return value ? _getMediaWidth() < parseInt((useInt ? value : cfgSizesByName[value]), 10) : false;
+            return value ? _getMediaWidth() < parseInt((useInt ? value : cfg.sizesByName[value]), 10) : false;
         }
         
         
@@ -206,7 +217,7 @@
          *  @protected  (See API for public name)
          */
         function _isBelowMediaDeviceWidth(value, useInt) {
-            return value ? _getMediaDeviceWidth() < parseInt((useInt ? value : cfgSizesByName[value]), 10) : false;
+            return value ? _getMediaDeviceWidth() < parseInt((useInt ? value : cfg.sizesByName[value]), 10) : false;
         }
         
         
@@ -397,6 +408,7 @@
             update          : update,
             get             : get,
             init            : init,
+            getConfig       : getConfig,
             isAt            : _isMatchMediaWidth,
             isAtDevice      : _isMatchMediaDeviceWidth,
             isBelow         : _isBelowMediaWidth,

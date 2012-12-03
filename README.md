@@ -81,6 +81,7 @@ can use:
     jsmq.init();                    // Makes things happen
     jsmq.update();                  // Refreshes the current CSS class, useful after a resize
     jsmq.get();                     // Basically does a JS Media Query (like a CSS media query)
+    jsmq.getConfig();               // Returns the local configuration object
     jsmq.isAt('large');             // Does the current media query match this VIEWPORT width?
     jsmq.isAtDevice('small');       // Does the current media query match this DEVICE width?
     jsmq.isBelow('medium');         // Is the current media query BELOW this VIEWPORT width?
