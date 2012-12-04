@@ -37,17 +37,18 @@
          *  See: http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/
          */
         cfg.sizes = {
-            '61': 'large',                      // 61em > 960px
-            '60': 'medium',                     // 60em ~= 960px
-            '45': 'small',                      // 45em ~= 720px
-            '30': 'smaller'                     // 30em ~= 480px
+            '61': 'large',                          // 61em > 960px
+            '60': 'medium',                         // 60em ~= 960px
+            '45': 'small',                          // 45em ~= 720px
+            '30': 'smaller'                         // 30em ~= 480px
         };
         
         
         // HTML id values of the elements that will be added to the page and queried
         cfg.elemNames = {
-            'viewport': 'jsmqMediaWidth',       // Viewport/browsesr width
-            'device': 'jsmqMediaDeviceWidth'    // Width of actual device
+            'viewport'  : 'jsmqMediaWidth',         // Viewport/browsesr width
+            'device'    : 'jsmqMediaDeviceWidth',   // Width of actual device
+            'css'       : 'jsmqStyles'              // id for inline styles for unit tests    
         };
         
         
@@ -235,6 +236,8 @@
         function _createCssElem(styles) {
             var el = document.createElement('style');
             el.type = 'text/css';
+            // Set and id so we can use it for unit tests
+            el.setAttribute('id', cfg.elemNames['css']);
             
             if (el.styleSheet) {
                 el.styleSheet.cssText = styles;
@@ -424,7 +427,13 @@
     
     // Export
     window.jsmq = _jsmq;
+    window.jsmq_config = window.jsmq_config || {
+        delayInit: false    
+    };
     
-    window.jsmq.init();
+    
+    if (!window.jsmq_config.delayInit) {
+        window.jsmq.init();   
+    }
     
 })(this, this.document);
