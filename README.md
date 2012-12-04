@@ -1,4 +1,4 @@
-js-media-query
+mediaquery.js
 ==============
 
 ## Introduction
@@ -21,7 +21,7 @@ This is a small (less than 1KB) JS library independent solution for making sure 
 
 Insert the following into the `<head>` on your page:
 
-    <script src="js-media-query.js"></script>
+    <script src="mediaquery.min.js"></script>
     
 Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. 
 
@@ -30,7 +30,7 @@ Ideally, since we are setting CSS classes to adjust the layout, this needs to ru
 
 Insert the following into the `<head>` on your page:
 
-    <script src="js-media-query.js"></script>
+    <script src="mediaquery.min.js"></script>
 
 Prepend your CSS rules that are inside `@media` rules with standard CSS class selectors representing the names of your "breakpoints". For example:
 

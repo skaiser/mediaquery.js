@@ -1,6 +1,6 @@
 /*!
- *  js-media-query
- *  https://github.com/skaiser/js-media-query
+ *  mediaquery.js
+ *  https://github.com/skaiser/mediaquery.js
  
  *  License: MIT License (MIT)
  *  Copyright (c) 2012 Stephen Kaiser
