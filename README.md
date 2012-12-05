@@ -78,6 +78,7 @@ can use:
 ## API
 
     jsmq.VERSION;                   // Returns version info
+    jsmq.PREFIX;                    // Prefix to use on CSS classes and appended page elements
     jsmq.init();                    // Makes things happen
     jsmq.update();                  // Refreshes the current CSS class, useful after a resize
     jsmq.get();                     // Basically does a JS Media Query (like a CSS media query)

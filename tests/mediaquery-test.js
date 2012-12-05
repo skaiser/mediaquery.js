@@ -61,17 +61,17 @@ describe("init()", function () {
     });
     
     it("has added media element", function () {
-        var el = document.getElementById('jsmqMediaWidth');
+        var el = document.getElementById(jsmq.PREFIX + 'media-width');
         expect(el).not.toBeNull();
     });
     
     it("has added device element", function () {
-        var el = document.getElementById('jsmqMediaDeviceWidth');
+        var el = document.getElementById(jsmq.PREFIX + 'media-device-width');
         expect(el).not.toBeNull();
     });
     
     it("has added inline style element", function () {
-        var el = document.getElementById('jsmqStyles');
+        var el = document.getElementById(jsmq.PREFIX + 'styles');
         expect(el).not.toBeNull();
     });
     

@@ -1,8 +1,6 @@
 /*!
- *  mediaquery.js
  *  https://github.com/skaiser/mediaquery.js
- 
- *  License: MIT License (MIT)
+ *  MIT License (MIT)
  *  Copyright (c) 2012 Stephen Kaiser
  */
 
@@ -26,7 +24,8 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.3',
+        var VERSION = '0.1.4',
+            PREFIX = 'jsmq-',
             prevClass = '',
             cfg = {};
             
@@ -37,18 +36,18 @@
          *  See: http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/
          */
         cfg.sizes = {
-            '61': 'large',                          // 61em > 960px
-            '60': 'medium',                         // 60em ~= 960px
-            '45': 'small',                          // 45em ~= 720px
-            '30': 'smaller'                         // 30em ~= 480px
+            '61': PREFIX + 'large',                      // 61em > 960px
+            '60': PREFIX + 'medium',                     // 60em ~= 960px
+            '45': PREFIX + 'small',                      // 45em ~= 720px
+            '30': PREFIX + 'smaller'                     // 30em ~= 480px
         };
         
         
         // HTML id values of the elements that will be added to the page and queried
         cfg.elemNames = {
-            'viewport'  : 'jsmqMediaWidth',         // Viewport/browsesr width
-            'device'    : 'jsmqMediaDeviceWidth',   // Width of actual device
-            'css'       : 'jsmqStyles'              // id for inline styles for unit tests    
+            'viewport'  : PREFIX + 'media-width',        // Viewport/browsesr width
+            'device'    : PREFIX + 'media-device-width', // Width of actual device
+            'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
         };
         
         
@@ -412,6 +411,7 @@
          */
         return {
             VERSION         : VERSION,
+            PREFIX          : PREFIX,
             update          : update,
             get             : get,
             init            : init,
