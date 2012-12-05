@@ -1,3 +1,6 @@
+// String of classnames for doing regex against
+var classNames = 'jsmq-large jsmq-medium jsmq-small jsmq-smaller';
+
 describe("Public methods are defined", function () {
     
     it("jsmq", function () {
@@ -87,16 +90,25 @@ describe("get()", function () {
         expect(jsmq.get()).toBeTruthy();
     });
     
-});
-
-
-/*
-describe("update()", function () {
-    
-    it("updates classname", function () {
-        // TODO: update needs to return something so we can change it and test
-        expect(jsmq.update()).toBeTruthy();
+    it("returns a valid value", function () {
+        var names = classNames.split(" ");
+        expect(names).toContain(jsmq.get());
     });
     
 });
-*/
+
+
+
+describe("update()", function () {
+    
+    it("returns jsmq object", function () {
+        var result = jsmq.update(); 
+        expect(result.VERSION).toBeDefined();
+    });
+    
+    it("is chainable with get", function () {
+        var names = classNames.split(" ");
+        expect(names).toContain(jsmq.update().get());
+    });
+    
+});

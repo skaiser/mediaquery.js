@@ -61,11 +61,11 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
         color: black;
     }
     
-    .largeScreen .someStyle {
+    .jsmq-large .someStyle {
         color: blue;
     }
     
-    .mediumScreen .someStyle {
+    .jsmq-medium .someStyle {
         color: red;
     }
 
@@ -74,6 +74,10 @@ can use:
     
     jsmq.update();
 
+You can also do something like this on a window resize to check what CSS state we are in:
+
+    jsmq.update().get();            // "jsmq-large", etc.
+    
 
 ## API
 

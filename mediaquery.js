@@ -377,13 +377,15 @@
         
         
         /**
-         *  Does a fresh check of the current state and updates the CSS class name accordingly
+         *  Chainable. Does a fresh check of the current state and updates the CSS class name accordingly
          *
          *  @method     update
+         *  @returns    {Object}    The jsmq object
          *  @public
          */
         function update() {
             _setCssClass();
+            return this;
         }
         
         
@@ -399,6 +401,7 @@
             }
             _addHiddenElems();
             update();
+            return this;
         }
         
         
