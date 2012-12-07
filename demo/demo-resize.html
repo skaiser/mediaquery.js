@@ -20,26 +20,15 @@
     <script type="application/x-javascript" src="../mediaquery.js"></script>
 </head>
 <body>
-    <h1>Demo page for mediaquery.js</h1>
+    <h1>Demo page for mediaquery.js - real-time updates</h1>
     <div>
         <p>The page has a listener on window.resize that checks to see whether we need to use a new "media query". This more accurately simulates what CSS media queries do, but is totally controlled using JS.</p>
-        <p>Resize the browser window to see the page change styles</p>
-        <p>Current value: <b><u><span id="result"></span></u></b></p>
+        <p>Resize the browser window to see the page change styles.</p>
     </div>
     <script>
         (function () {
-
-            var throttle = (function () {
-                var timer;
-                return function (callback, interval) {
-                    if (timer) {
-                        clearTimeout(timer);
-                    }
-                    timer = setTimeout(callback, interval);
-                };
-            })()
             
-            
+            // Cross-browser event listener - you're JS library will handle this for you.
             var on = function (ev, el, fn) {
                 if (el.addEventListener) {
                     el.addEventListener(ev, fn, false);
@@ -49,16 +38,8 @@
                 }
             };
             
-            
-            var updateScreen = function () {
-                jsmq.update();
-                var el = document.getElementById('result');
-                el.innerHTML = document.documentElement.className;
-            };
-            
-            on('resize', window, function () {
-                throttle(updateScreen, 100);    
-            });
+            // This is all you have to do!
+            on('resize', window, jsmq.update);
             
         })();
     </script>

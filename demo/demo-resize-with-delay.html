@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Demo page for window.resize listeners</title>
+    <style type="text/css">    
+    .jsmq-large {
+        color: black;
+    }
+    .jsmq-medium {
+        color: dodgerblue;
+    }
+    .jsmq-small {
+        color: salmon;
+    }
+    .jsmq-smaller {
+        color: green;
+    }
+    </style>
+    <script type="application/x-javascript" src="../mediaquery.js"></script>
+</head>
+<body>
+    <h1>Demo page for mediaquery.js</h1>
+    <div>
+        <p>The page has a delayed listener on window.resize that checks to see whether we need to use a new "media query". This is a more performant way of doing the resize since we limit the frequency by not executing every time 'resize' fires (which is a lot).</p>
+        <p>Resize the browser window to see the page change styles with a 50ms delay.</p>
+        <p>Current value: <b><u><span id="result"></span></u></b></p>
+    </div>
+    <script>
+        (function () {
+
+            var throttle = (function () {
+                var timer;
+                return function (callback, interval) {
+                    if (timer) {
+                        clearTimeout(timer);
+                    }
+                    timer = setTimeout(callback, interval);
+                };
+            })()
+            
+            
+            var on = function (ev, el, fn) {
+                if (el.addEventListener) {
+                    el.addEventListener(ev, fn, false);
+                } else if (el.attachEvent) {
+                    var r = el.attachEvent("on"+ ev, fn);
+                    return r;   
+                }
+            };
+            
+            
+            var updateScreen = function () {
+                jsmq.update();
+                var el = document.getElementById('result');
+                el.innerHTML = document.documentElement.className;
+            };
+            
+            on('resize', window, function () {
+                throttle(updateScreen, 50);    
+            });
+            
+        })();
+    </script>
+</body>
+</html>
