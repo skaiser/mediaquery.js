@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.6',
+        var VERSION = '0.1.7',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             prevClass = '',
@@ -153,7 +153,7 @@
                     if (UNITS === 'em') {
                         el = _getId(cfg.elemNames[elemName]);
                         el.style.height = '1em';
-                        fontSize = el.currentStyle.height || 16;
+                        fontSize = parseInt(el.currentStyle.height, 10) || 16;
                         // Original
                         el.style.height = 0;
                         return width / fontSize;
