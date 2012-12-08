@@ -83,8 +83,10 @@ You can also do something like this on a window resize to check what CSS state w
 
     jsmq.VERSION;                   // Returns version info
     jsmq.PREFIX;                    // Prefix to use on CSS classes and appended page elements
+    jsmq.DEFAULT_EVENT;             // The default custom event name that gets fired on updates
     jsmq.init();                    // Makes things happen
     jsmq.update();                  // Refreshes the current CSS class, useful after a resize
+    jsmq.fire();                    // Fire custom event
     jsmq.get();                     // Basically does a JS Media Query (like a CSS media query)
     jsmq.getConfig();               // Returns the local configuration object
     jsmq.isAt('large');             // Does the current media query match this VIEWPORT width?

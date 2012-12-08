@@ -24,9 +24,10 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.7',
+        var VERSION = '0.1.8',
             PREFIX = 'jsmq-',
             UNITS = 'em',
+            DEFAULT_EVENT = "jsmq:update",
             prevClass = '',
             cfg = {};
             
@@ -367,6 +368,28 @@
         
         
         /**
+         *  Fires custom event. Default is to fire 'jsmq:update' on document.body
+         *
+         *  @method     fire
+         *  @param      [String]    name    Optional. Name of custom event to fire
+         *  @param      [Object]    elem    Optional. Native HTML DOM element to fire on
+         *  @public
+         */
+        function fire(name, elem) {
+            var ev;
+            
+            name = name || DEFAULT_EVENT;
+            elem = elem || _getId(cfg.elemNames['viewport']);
+            
+            if (document.createEvent) {
+                ev = document.createEvent('Event');
+                ev.initEvent(name, true, true);
+                elem.dispatchEvent(ev);
+            }
+        }
+        
+        
+        /**
          *  Gets the current 'media query' state of the breakpoint we are at right now.
          *
          *  @method     get
@@ -396,11 +419,22 @@
          *  Chainable. Does a fresh check of the current state and updates the CSS class name accordingly
          *
          *  @method     update
+         *  @param      [String]    name        Optional. Name of custom event to fire after update
+         *  @param      [Object]    elem        Optional. Native HTML DOM element to fire on
+         *  @param      [Function]  callback    Optional. Callback after updating. Can be passed as a single argument.
          *  @returns    {Object}    The jsmq object
          *  @public
          */
-        function update() {
+        function update(name, elem, callback) {
+            var args = [].slice.call(arguments),
+                callbackFn = args.pop();
+                
             _setCssClass();
+            fire(name, elem);
+            
+            if (typeof callbackFn === 'function') {
+                callbackFn.apply();
+            }
             return this;
         }
         
@@ -431,7 +465,9 @@
         return {
             VERSION         : VERSION,
             PREFIX          : PREFIX,
+            DEFAULT_EVENT   : DEFAULT_EVENT,
             update          : update,
+            fire            : fire,
             get             : get,
             init            : init,
             getConfig       : getConfig,

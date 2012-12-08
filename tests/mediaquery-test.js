@@ -1,6 +1,25 @@
 // String of classnames for doing regex against
 var classNames = 'jsmq-large jsmq-medium jsmq-small jsmq-smaller';
 
+var on = function (ev, el, fn) {
+    if (el.addEventListener) {
+        el.addEventListener(ev, fn, false);
+    } else if (el.attachEvent) {
+        var r = el.attachEvent("on"+ ev, fn);
+        return r;   
+    }
+};
+
+var off = function (ev, el, fn) {
+    if (el.removeEventListener) {
+        el.removeEventListener(ev, fn, false);
+    } else if (el.detachEvent) {
+        var r = el.detachEvent("on"+ ev, fn);
+        return r;   
+    }  
+};
+
+
 describe("Public methods are defined", function () {
     
     it("jsmq", function () {
@@ -21,6 +40,10 @@ describe("Public methods are defined", function () {
     
     it("jsmq.update", function () {
         expect(jsmq.update).toBeDefined();
+    });
+    
+    it("jsmq.fire", function () {
+        expect(jsmq.fire).toBeDefined();
     });
     
     it("jsmq.get", function () {
@@ -121,4 +144,107 @@ describe("update()", function () {
         expect(names).toContain(jsmq.update().get());
     });
     
+});
+
+
+describe("fire()", function () {
+    var name = jsmq.DEFAULT_EVENT,
+        el = document,
+        result,
+        fn = function (e) {
+            result = e.type;
+        };
+        
+    afterEach(function () {
+        off(name, el, fn);
+        name = jsmq.DEFAULT_EVENT;
+        el = document;
+        result = undefined;
+    });
+    
+    it("is fired after update()", function () {
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update();
+        });
+        
+        runs(function () {
+            expect(result).toBeDefined();
+        });
+    });
+    
+    it("fires default event after update()", function () {
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update();
+        });
+        runs(function () {
+            expect(result).toEqual(name);
+        });
+    });
+    
+    it("fires event on default element after update()", function () {
+        var el = document.getElementById('jsmq-media-width');
+            
+        runs(function () {
+            on(name, el, function (e) {  result = e.type;  });
+            jsmq.update();
+        });
+        runs(function () {
+            expect(result).toEqual(name);
+        });
+    });
+    
+    it("fires custom event after update()", function () {
+        var name = 'jsmq:custom';
+            
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update(name);
+        });
+        runs(function () {
+            expect(result).toEqual(name);
+        });
+    });
+    
+    it("fires custom event on custom element after update()", function () {
+        var name = 'jsmq:custom',
+            el = document.getElementById('results');
+            
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update(name, el);
+        });
+        runs(function () {
+            expect(result).toEqual(name);
+        });
+    });
+    
+    it("calls callback after update()", function () {
+        var result = 'not called',
+            expected = 'called',
+            callback = function () { result = expected; };
+            
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update(name, el, callback);
+        });
+        runs(function () {
+            expect(result).toEqual(expected);
+        });
+    });
+    
+    it("accepts callback as a single argument to update()", function () {
+        var result = 'not called',
+            expected = 'called',
+            callback = function () { result = expected; };
+            
+        runs(function () {
+            on(name, el, fn);
+            jsmq.update(callback);
+        });
+        runs(function () {
+            expect(result).toEqual(expected);
+        });
+    });
 });
