@@ -24,8 +24,9 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.4',
+        var VERSION = '0.1.5',
             PREFIX = 'jsmq-',
+            UNITS = 'em',
             prevClass = '',
             cfg = {};
             
@@ -54,6 +55,9 @@
         // Set to 'true' to skip auto-appending of CSS and add your stylesheet
         cfg.useCustomStyles = false;
         
+        
+        // Support IE < 9. Are you sure you want to do that to yourself?
+        cfg.supportOldIE = true;
         
         
         
@@ -123,34 +127,48 @@
          *  media query @media rule.
          *
          *  @method     _getMediaWidth
-         *  @returns    {Boolean}
+         *  @param      {Boolean}       useDeviceWidth  RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
+         *  @returns    {Number}
          *  @private
          */
-        function _getMediaWidth() {
-            var cs = window.getComputedStyle;
-            return cs   ? parseInt(cs(_getId(cfg.elemNames['viewport'])).getPropertyValue('width'), 10)
-                        : false;
+        function _getMediaWidth(useDeviceWidth) {
+            
+            if (window.getComputedStyle) {
+                _getMediaWidth = function (useDeviceWidth) {
+                    var cs = window.getComputedStyle,
+                        elemName = useDeviceWidth ? 'device' : 'viewport';
+                    return parseInt(cs(_getId(cfg.elemNames[elemName])).getPropertyValue('width'), 10);
+                };
+            }
+            // Old IE
+            else if (cfg.supportOldIE && window.currentStyle) {
+                _getMediaWidth = function (useDeviceWidth) {
+                    var el,
+                        fontSize,
+                        elemName = useDeviceWidth ? 'device' : 'viewport',
+                        width = useDeviceWidth ? screen.width : window.clientWidth;
+                    
+                    // We need to divide the pixel width by the font size if using ems.
+                    // TODO: Uh...actually test this in an IE browser once I get another VM...
+                    if (UNITS === 'em') {
+                        el = _getId(cfg.elemNames[elemName]);
+                        el.style.height = '1em';
+                        fontSize = el.currentStyle.height || 16;
+                        // Original
+                        el.style.height = 0;
+                        return width / fontSize;
+                    }
+                    return width;
+                };
+            } else {
+                _getMediaWidth = function () {
+                    return 0;
+                };
+            }
+            
         }
-        
-        
-        /**
-         *  Returns the computed style of the special elements that were added to
-         *  the page. The value will be changed by CSS media queries and this
-         *  method will return the current value, effectively emulating a CSS
-         *  media query @media rule.
-         *
-         *  NOTE: THIS METHOD RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH.
-         *
-         *  @method     _getMediaDeviceWidth
-         *  @returns    {Boolean}
-         *  @private
-         */
-        function _getMediaDeviceWidth() {
-            var cs = window.getComputedStyle;
-            return cs   ? parseInt(cs(_getId(cfg.elemNames['device'])).getPropertyValue('width'), 10)
-                        : false;
-        }
-
+        // Overwrite self once we do object detection
+        _getMediaWidth();
         
         
         /**
@@ -185,7 +203,7 @@
          */
         function _isMatchMediaDeviceWidth(value) {
             value = typeof value === 'number' ? value : cfg.sizesByName[value];
-            return value ? parseInt(value, 10) === _getMediaDeviceWidth() : false;
+            return value ? parseInt(value, 10) === _getMediaWidth(true) : false;
         }
         
         
@@ -221,7 +239,7 @@
          */
         function _isBelowMediaDeviceWidth(value) {
             value = typeof value === 'number' ? value : cfg.sizesByName[value];
-            return value ? _getMediaDeviceWidth() < parseInt(value, 10) : false;
+            return value ? _getMediaWidth(true) < parseInt(value, 10) : false;
         }
         
         
@@ -358,8 +376,7 @@
          *  @public
          */
         function get(useDeviceWidth) {
-            var fn = useDeviceWidth ? _getMediaDeviceWidth : _getMediaWidth;
-            return cfg.sizes[fn()];
+            return cfg.sizes[_getMediaWidth(useDeviceWidth)];
         }
         
         

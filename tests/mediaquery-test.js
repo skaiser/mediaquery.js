@@ -90,9 +90,19 @@ describe("get()", function () {
         expect(jsmq.get()).toBeTruthy();
     });
     
+    it("querying device width returns a value", function () {
+        // TODO: It would be nice if we could set the browser size and test the results
+        expect(jsmq.get(true)).toBeTruthy();
+    });
+    
     it("returns a valid value", function () {
         var names = classNames.split(" ");
         expect(names).toContain(jsmq.get());
+    });
+    
+    it("querying device width returns a valid value", function () {
+        var names = classNames.split(" ");
+        expect(names).toContain(jsmq.get(true));
     });
     
 });
