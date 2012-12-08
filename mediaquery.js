@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.5',
+        var VERSION = '0.1.6',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             prevClass = '',
@@ -299,17 +299,16 @@
          *
          *  @method     _writeMediaQuery
          *  @param      {String|Number}     val     Integer value representing the breakpoint width
-         *  @param      [String]            unit    Optional. CSS unit value (e.g., 'em' or 'px')
          *  @returns    {String}                    String of CSS rules
          *  @private
          */
-        function _writeMediaQuery(val, unit) {
-            return  '@media only screen and (max-width: ' + val + (unit || 'em') + ') {' +
+        function _writeMediaQuery(val) {
+            return  '@media only screen and (max-width: ' + val + UNITS + ') {' +
                         '#' + cfg.elemNames.viewport + ' {' +
                             'width: ' + val + 'px;' +
                         '}' +
                     '}\n' +
-                    '@media only screen and (max-device-width: ' + val + (unit || 'em') + ') {' +
+                    '@media only screen and (max-device-width: ' + val + UNITS + ') {' +
                         '#' + cfg.elemNames.device + ' {' +
                             'width: ' + val + 'px;' +
                         '}' +
