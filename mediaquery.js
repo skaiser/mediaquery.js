@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.9',
+        var VERSION = '0.1.91',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             DEFAULT_EVENT = "jsmq:update",
@@ -132,15 +132,15 @@
          *  method will return the current value, effectively emulating a CSS
          *  media query @media rule.
          *
-         *  @method     _getMediaWidth
+         *  @method     _getWidth
          *  @param      {Boolean}       useDeviceWidth  RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
          *  @returns    {Number}
          *  @private
          */
-        function _getMediaWidth(useDeviceWidth) {
+        function _getWidth(useDeviceWidth) {
             
             if (window.getComputedStyle) {
-                _getMediaWidth = function (useDeviceWidth) {
+                _getWidth = function (useDeviceWidth) {
                     var cs = window.getComputedStyle,
                         elemName = useDeviceWidth ? 'device' : 'viewport';
                     return parseInt(cs(_getId(cfg.elemNames[elemName])).getPropertyValue('width'), 10);
@@ -148,7 +148,7 @@
             }
             // Old IE
             else if (cfg.supportOldIE && window.currentStyle) {
-                _getMediaWidth = function (useDeviceWidth) {
+                _getWidth = function (useDeviceWidth) {
                     var el,
                         fontSize,
                         elemName = useDeviceWidth ? 'device' : 'viewport',
@@ -167,14 +167,14 @@
                     return width;
                 };
             } else {
-                _getMediaWidth = function () {
+                _getWidth = function () {
                     return 0;
                 };
             }
             
         }
         // Overwrite self once we do object detection
-        _getMediaWidth();
+        _getWidth();
         
         
         /**
@@ -183,15 +183,15 @@
          *      jsmq.isAt('small');
          *      jsmq.isAt(45, true);
          *
-         *  @method     _isMatchMediaWidth
+         *  @method     isAt
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
-         *  @protected  (See API for public name)
+         *  @public
          */
-        function _isMatchMediaWidth(value) {
+        function isAt(value) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? parseInt(value, 10) === _getMediaWidth() : false;
+            return value ? parseInt(value, 10) === _getWidth() : false;
         }
         
         
@@ -201,15 +201,15 @@
          *      jsmq.isAtDevice('small');
          *      jsmq.isAtDevice(45, true);
          *
-         *  @method     _isMatchMediaDeviceWidth
+         *  @method     isAtDevice
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
-         *  @protected  (See API for public name)
+         *  @public
          */
-        function _isMatchMediaDeviceWidth(value) {
+        function isAtDevice(value) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? parseInt(value, 10) === _getMediaWidth(true) : false;
+            return value ? parseInt(value, 10) === _getWidth(true) : false;
         }
         
         
@@ -219,15 +219,15 @@
          *      jsmq.isBelow('large');
          *      jsmq.isBelow(61, true);
          *
-         *  @method     _isBelowMediaWidth
+         *  @method     isBelow
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
-         *  @protected  (See API for public name)
+         *  @public
          */
-        function _isBelowMediaWidth(value) {
+        function isBelow(value) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? _getMediaWidth() < parseInt(value, 10) : false;
+            return value ? _getWidth() < parseInt(value, 10) : false;
         }
         
         
@@ -237,15 +237,15 @@
          *      jsmq.isBelowDevice('large');
          *      jsmq.isBelowDevice(61, true);
          *
-         *  @method     _isBelowMediaDeviceWidth
+         *  @method     isBelowDevice
          *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
          *  @returns    {Boolean}
          *  @static
-         *  @protected  (See API for public name)
+         *  @public
          */
-        function _isBelowMediaDeviceWidth(value) {
+        function isBelowDevice(value) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? _getMediaWidth(true) < parseInt(value, 10) : false;
+            return value ? _getWidth(true) < parseInt(value, 10) : false;
         }
         
         
@@ -403,7 +403,7 @@
          *  @public
          */
         function get(useDeviceWidth) {
-            return cfg.sizes[_getMediaWidth(useDeviceWidth)];
+            return cfg.sizes[_getWidth(useDeviceWidth)];
         }
         
         
@@ -463,9 +463,7 @@
         
         /**
          *  Public methods.
-         *
-         *  Names on the left are the public method name that you would use.
-         *  For example: jsmq.isAt() instead of jsmq._isMatchMediaWidth()
+         *  
          */
         return {
             VERSION         : VERSION,
@@ -476,10 +474,10 @@
             get             : get,
             init            : init,
             getConfig       : getConfig,
-            isAt            : _isMatchMediaWidth,
-            isAtDevice      : _isMatchMediaDeviceWidth,
-            isBelow         : _isBelowMediaWidth,
-            isBelowDevice   : _isBelowMediaDeviceWidth
+            isAt            : isAt,
+            isAtDevice      : isAtDevice,
+            isBelow         : isBelow,
+            isBelowDevice   : isBelowDevice
         };
         
     })();
