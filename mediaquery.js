@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.8',
+        var VERSION = '0.1.9',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             DEFAULT_EVENT = "jsmq:update",
@@ -60,6 +60,9 @@
         // Support IE < 9. Are you sure you want to do that to yourself?
         cfg.supportOldIE = true;
         
+        
+        // Mapping of sizes by name - gets set later. Keeping reading :)
+        cfg.names = {};
         
         
         /**
@@ -106,18 +109,20 @@
          *  can do queries for the size using the CSS class name instead of the
          *  numeric value.
          */
-        cfg.sizesByName = _reverseKeyValue(cfg.sizes, true);
+        cfg.names = _reverseKeyValue(cfg.sizes, true);
         
         
         /**
          *  Returns local configuration object
          *
          *  @method     getConfig
-         *  @returns    Local configuration object
+         *  @param      [String]    prop    Optional. Specfici configuration propery name to query.
+         *  @returns    {Object}            Local configuration object
          *  @public
          */
-        function getConfig() {
-            return cfg;
+        function getConfig(prop) {
+            // Some properties can be 'false' so need to check against 'undefined'
+            return cfg[prop] !== undefined ? cfg[prop] : cfg;
         }
         
         
@@ -185,7 +190,7 @@
          *  @protected  (See API for public name)
          */
         function _isMatchMediaWidth(value) {
-            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            value = typeof value === 'number' ? value : cfg.names[value];
             return value ? parseInt(value, 10) === _getMediaWidth() : false;
         }
         
@@ -203,7 +208,7 @@
          *  @protected  (See API for public name)
          */
         function _isMatchMediaDeviceWidth(value) {
-            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            value = typeof value === 'number' ? value : cfg.names[value];
             return value ? parseInt(value, 10) === _getMediaWidth(true) : false;
         }
         
@@ -221,7 +226,7 @@
          *  @protected  (See API for public name)
          */
         function _isBelowMediaWidth(value) {
-            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            value = typeof value === 'number' ? value : cfg.names[value];
             return value ? _getMediaWidth() < parseInt(value, 10) : false;
         }
         
@@ -239,7 +244,7 @@
          *  @protected  (See API for public name)
          */
         function _isBelowMediaDeviceWidth(value) {
-            value = typeof value === 'number' ? value : cfg.sizesByName[value];
+            value = typeof value === 'number' ? value : cfg.names[value];
             return value ? _getMediaWidth(true) < parseInt(value, 10) : false;
         }
         

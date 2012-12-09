@@ -248,3 +248,19 @@ describe("fire()", function () {
         });
     });
 });
+
+
+describe("getConfig()", function () {
+    
+    it("returns configuration object", function () {
+        expect(typeof jsmq.getConfig()).toEqual('object');
+    });
+    
+    it("returns specific properties from configuration object", function () {
+        // Return a property not an object because by default it returns
+        // an object if no properties match.
+        var result = jsmq.getConfig('useCustomStyles');
+        expect(typeof result).toEqual('boolean');
+    });
+    
+});
