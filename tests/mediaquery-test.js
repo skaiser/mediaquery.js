@@ -136,7 +136,9 @@ describe("get()", function () {
 
 
 describe("update()", function () {
-    
+    var name = jsmq.DEFAULT_EVENT,
+        el = document;
+        
     it("returns jsmq object", function () {
         var result = jsmq.update(); 
         expect(result.VERSION).toBeDefined();
@@ -145,6 +147,24 @@ describe("update()", function () {
     it("is chainable with get", function () {
         var names = classNames.split(" ");
         expect(names).toContain(jsmq.update().get());
+    });
+    
+    it("calls callback after update()", function () {
+        var result = 'not called',
+            expected = 'called',
+            callback = function () { result = expected; };
+            
+        jsmq.update(name, el, callback);
+        expect(result).toEqual(expected);
+    });
+    
+    it("accepts callback as a single argument to update()", function () {
+        var result = 'not called',
+            expected = 'called',
+            callback = function () { result = expected; };
+            
+        jsmq.update(callback);
+        expect(result).toEqual(expected);
     });
     
 });
@@ -165,91 +185,46 @@ describe("fire()", function () {
         result = undefined;
     });
     
-    it("is fired after update()", function () {
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update();
-        });
-        
-        runs(function () {
-            expect(result).toBeDefined();
-        });
+    it("fires event", function () {
+        on(name, el, fn);
+        jsmq.fire();
+        expect(result).toBeDefined();
     });
     
-    it("fires default event after update()", function () {
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update();
-        });
-        runs(function () {
-            expect(result).toEqual(name);
-        });
+    it("fires default event", function () {
+        on(name, el, fn);
+        jsmq.fire();
+        expect(result).toEqual(name);
     });
     
-    it("fires event on default element after update()", function () {
+    // TODO: This may or may not be default element. Expose the elem so can test
+    it("fires default event on default element", function () {
         var el = document.getElementById('jsmq-media-width');
-            
-        runs(function () {
-            on(name, el, function (e) {  result = e.type;  });
-            jsmq.update();
+        
+        on(jsmq.DEFAULT_EVENT, el, function (e) {
+            result = e.type;
         });
-        runs(function () {
-            expect(result).toEqual(name);
-        });
+        jsmq.fire(jsmq.DEFAULT_EVENT, el);
+        expect(result).toEqual(name);
     });
     
-    it("fires custom event after update()", function () {
+    it("fires custom event", function () {
         var name = 'jsmq:custom';
-            
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update(name);
-        });
-        runs(function () {
-            expect(result).toEqual(name);
-        });
+        
+        on(name, el, fn);
+        jsmq.fire(name);
+        expect(result).toEqual(name);
     });
     
     it("fires custom event on custom element after update()", function () {
         var name = 'jsmq:custom',
             el = document.getElementById('results');
             
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update(name, el);
-        });
-        runs(function () {
-            expect(result).toEqual(name);
-        });
+        on(name, el, fn);
+        jsmq.fire(name, el);
+        expect(result).toEqual(name);
     });
     
-    it("calls callback after update()", function () {
-        var result = 'not called',
-            expected = 'called',
-            callback = function () { result = expected; };
-            
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update(name, el, callback);
-        });
-        runs(function () {
-            expect(result).toEqual(expected);
-        });
-    });
-    
-    it("accepts callback as a single argument to update()", function () {
-        var result = 'not called',
-            expected = 'called',
-            callback = function () { result = expected; };
-            
-        runs(function () {
-            on(name, el, fn);
-            jsmq.update(callback);
-        });
-        runs(function () {
-            expect(result).toEqual(expected);
-        });
-    });
 });
 
 

@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.2.1',
+        var VERSION = '0.2.2',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             DEFAULT_EVENT = "jsmq:update",
@@ -385,9 +385,12 @@
          */
         function _setCssClass() {
             var currClass = get();
-            docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
-            prevClass = currClass;
-            // TODO: add check whether class actually changed to determine when to fire event. otherwise, don't
+            
+            if (prevClass !== currClass) {
+                docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
+                prevClass = currClass;
+                return true;    
+            }
         }
         
         
@@ -398,19 +401,26 @@
          *  @param      [String]    name        Optional. Name of custom event to fire after update
          *  @param      [Object]    elem        Optional. Native HTML DOM element to fire on
          *  @param      [Function]  callback    Optional. Callback after updating. Can be passed as a single argument.
+         *  @chainable
          *  @returns    {Object}    The jsmq object
          *  @public
          */
         function update(name, elem, callback) {
             var args = [].slice.call(arguments),
-                callbackFn = args.pop();
-                
-            _setCssClass();
-            fire(name, elem);
+                callbackFn = args.pop(),
+                changed;
             
+            changed = _setCssClass();
+            
+            if (changed) {
+                fire(name, elem);
+            }
+            
+            // TODO: Is it more intuitive to ALWAYS call this or only if changed?
             if (typeof callbackFn === 'function') {
                 callbackFn.apply();
             }
+            
             return this;
         }
         
@@ -419,6 +429,7 @@
          *  Runs things.
          *
          *  @method     init
+         *  @chainable
          *  @public
          */
         function init() {
