@@ -47,7 +47,7 @@
         
         // HTML id values of the elements that will be added to the page and queried
         cfg.elemNames = {
-            'viewport'  : PREFIX + 'media-width',        // Viewport/browsesr width
+            'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
             'device'    : PREFIX + 'media-device-width', // Width of actual device
             'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
         };
