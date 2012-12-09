@@ -120,7 +120,7 @@
          *  Returns local configuration object
          *
          *  @method     getConfig
-         *  @param      [String]    prop    Optional. Specfici configuration propery name to query.
+         *  @param      [String]    prop    Optional. Specfic configuration propery name to query.
          *  @returns    {Object}            Local configuration object
          *  @public
          */
@@ -220,7 +220,7 @@
         
         
         /**
-         *  Creates and appends a CSS <style> element in <head> with our media query rules.
+         *  Creates and appends a CSS style element in head with our media query rules.
          *
          *  @method     _createCssElem
          *  @param      {String}        styles  String of CSS rules to be added to page
@@ -242,7 +242,7 @@
         
         
         /**
-         *  Creates and appends an HTML element (default <script>) in <head>
+         *  Creates and appends an HTML element (default script) in head
          *  that represent our "hidden" elements that will be used to query against.
          *
          *  @method     _createElem
@@ -271,7 +271,7 @@
         
         
         /**
-         *  Creates string of CSS to use in the inline <style> tag
+         *  Creates string of CSS to use in the inline style tag
          *
          *  @method     _writeMediaQuery
          *  @param      {String|Number}     val     Integer value representing the breakpoint width
@@ -378,7 +378,7 @@
         
         
         /**
-         *  Adds the CSS class name (from cfg.sizes) to the <html> tag
+         *  Adds the CSS class name (from cfg.sizes) to the html tag
          *
          *  @method     _setCssClass
          *  @private
@@ -387,6 +387,7 @@
             var currClass = get();
             docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
             prevClass = currClass;
+            // TODO: add check whether class actually changed to determine when to fire event. otherwise, don't
         }
         
         
