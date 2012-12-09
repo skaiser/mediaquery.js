@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.1.91',
+        var VERSION = '0.2.0',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             DEFAULT_EVENT = "jsmq:update",
@@ -53,8 +53,12 @@
         };
         
         
-        // Set to 'true' to skip auto-appending of CSS and add your stylesheet
-        cfg.useCustomStyles = false;
+        // Set to 'true' to skip auto-appending of CSS and add your stylesheet. Could minimize reflows.
+        cfg.useMyOwnStyles = false;
+        
+        
+        // Set to 'true' is you want to use elements that you've already added. Could minimize reflows.
+        cfg.useMyOwnElements = false;
         
         
         // Support IE < 9. Are you sure you want to do that to yourself?
@@ -451,10 +455,12 @@
          *  @public
          */
         function init() {
-            if (!cfg.useCustomStyles) {
+            if (!cfg.useMyOwnStyles) {
                 _addInlineCss();
             }
-            _addHiddenElems();
+            if (!cfg.useMyOwnElements) { 
+                _addHiddenElems();   
+            }
             update();
             return this;
         }

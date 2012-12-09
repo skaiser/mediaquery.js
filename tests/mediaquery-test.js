@@ -259,7 +259,7 @@ describe("getConfig()", function () {
     it("returns specific properties from configuration object", function () {
         // Return a property not an object because by default it returns
         // an object if no properties match.
-        var result = jsmq.getConfig('useCustomStyles');
+        var result = jsmq.getConfig('useMyOwnStyles');
         expect(typeof result).toEqual('boolean');
     });
     
