@@ -19,6 +19,17 @@ var off = function (ev, el, fn) {
     }  
 };
 
+var getLowestObjKey = function (obj) {
+    var sorted = [];
+    for (k in obj) {
+        if (obj.hasOwnProperty(k)) {
+            sorted.push(k);
+        }
+    }
+    sorted.sort().reverse();
+    return sorted[sorted.length - 1];
+}
+
 
 describe("Public methods are defined", function () {
     
@@ -58,16 +69,8 @@ describe("Public methods are defined", function () {
         expect(jsmq.isAt).toBeDefined();
     });
     
-    it("jsmq.isAtDevice", function () {
-        expect(jsmq.isAtDevice).toBeDefined();
-    });
-    
     it("jsmq.isBelow", function () {
         expect(jsmq.isBelow).toBeDefined();
-    });
-    
-    it("jsmq.isBelowDevice", function () {
-        expect(jsmq.isBelowDevice).toBeDefined();
     });
     
 });
@@ -261,6 +264,77 @@ describe("getConfig()", function () {
         // an object if no properties match.
         var result = jsmq.getConfig('useMyOwnStyles');
         expect(typeof result).toEqual('boolean');
+    });
+    
+});
+
+
+describe("isAt()", function () {
+    
+    it("returns a boolean value", function () {
+        expect(typeof jsmq.isAt()).toEqual('boolean');
+    });
+    
+    it("using number value matches current state value", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get()];    // 61, etc
+        expect(jsmq.isAt(atNum)).toEqual(true);
+    });
+   
+    it("using size value matches current state value", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get()],    
+            atSize = jsmq.getConfig('sizes')[atNum];        // jsmq-large, etc.
+        expect(jsmq.isAt(atSize)).toEqual(true);
+    });
+    
+    it("using wrong number value does not match current state value", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get()];    // 61, etc    
+        expect(jsmq.isAt(atNum + 1)).toEqual(false);
+    });
+    
+    it("using invalid size value does not match current state value", function () {
+        expect(jsmq.isAt('kjndscjndcjndcj - no match')).toEqual(false);
+    });
+    
+    // If we use a device width to test against, it has to always be true since both
+    // should be equal.
+    it("matching device width always returns true", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
+        expect(jsmq.isAt(atNum, true)).toEqual(true);
+    });
+    
+    it("changing device width value always returns false", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
+        expect(jsmq.isAt(atNum + 1, true)).toEqual(false);
+    });
+    
+    it("matching device width string name value always returns true", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )],
+            atSize = jsmq.getConfig('sizes')[atNum];
+        expect(jsmq.isAt(atSize, true)).toEqual(true);
+    });
+    
+    it("changing device width string name value always returns false", function () {
+        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
+            atSize = jsmq.getConfig('sizes')[atNum];
+        expect(jsmq.isAt(atSize + 'xxxxx', true)).toEqual(false);
+    });
+    
+});
+
+
+describe("isBelow()", function () {
+    
+    it("returns a boolean value", function () {
+        expect(typeof jsmq.isBelow()).toEqual('boolean');
+    });
+    
+    it("is never below device width", function () {
+        expect(jsmq.isBelow(jsmq.get(true), true)).toEqual(false);
+    });
+    
+    it("device width is never below lowest breakpoint width", function () {
+        var lowest = getLowestObjKey(jsmq.getConfig('sizes'));
+        expect(jsmq.isBelow(lowest, true)).toEqual(false);
     });
     
 });

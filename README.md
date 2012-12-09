@@ -90,9 +90,7 @@ You can also do something like this on a window resize to check what CSS state w
     jsmq.get();                     // Basically does a JS Media Query (like a CSS media query)
     jsmq.getConfig([prop]);         // Returns the local configuration object or optionally, a specific property
     jsmq.isAt('large');             // Does the current media query match this VIEWPORT width?
-    jsmq.isAtDevice('small');       // Does the current media query match this DEVICE width?
     jsmq.isBelow('medium');         // Is the current media query BELOW this VIEWPORT width?
-    jsmq.isBelowDevice(45);         // Is the current media query BELOW this DEVICE width?
 
 
 ## Philosophy
@@ -132,6 +130,7 @@ I also found matchMedia.js to crash IE8, at least when using it in a particular 
 
 ## Known Bugs
 
+My IE VMs aren't working right now, so I actually have no idea whether this works in IE. I've ordered some licenses and will test once I get IE access again.
 
 ## Attribution/Credits
 Jeremy Keith, James Pearce, Paul Irish, Nicholas Zakas and Springload for their inspiring and pioneering ideas and work.

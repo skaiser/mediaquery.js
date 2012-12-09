@@ -24,7 +24,7 @@
     
     _jsmq = (function () {
         
-        var VERSION = '0.2.0',
+        var VERSION = '0.2.1',
             PREFIX = 'jsmq-',
             UNITS = 'em',
             DEFAULT_EVENT = "jsmq:update",
@@ -137,7 +137,7 @@
          *  media query @media rule.
          *
          *  @method     _getWidth
-         *  @param      {Boolean}       useDeviceWidth  RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
+         *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
          *  @returns    {Number}
          *  @private
          */
@@ -188,32 +188,15 @@
          *      jsmq.isAt(45, true);
          *
          *  @method     isAt
-         *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
+         *  @param      {String|Number} value           Either a string for CSS classname or number from cfg.sizes
+         *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
          *  @returns    {Boolean}
          *  @static
          *  @public
          */
-        function isAt(value) {
+        function isAt(value, useDeviceWidth) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? parseInt(value, 10) === _getWidth() : false;
-        }
-        
-        
-        /**
-         *  Allows us to check whether we are at a specific media query BASED ON DEVICE WIDTH.
-         *  Examples:
-         *      jsmq.isAtDevice('small');
-         *      jsmq.isAtDevice(45, true);
-         *
-         *  @method     isAtDevice
-         *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @returns    {Boolean}
-         *  @static
-         *  @public
-         */
-        function isAtDevice(value) {
-            value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? parseInt(value, 10) === _getWidth(true) : false;
+            return value ? parseInt(value, 10) === _getWidth(useDeviceWidth) : false;
         }
         
         
@@ -224,32 +207,15 @@
          *      jsmq.isBelow(61, true);
          *
          *  @method     isBelow
-         *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
+         *  @param      {String|Number} value           Either a string for CSS classname or number from cfg.sizes
+         *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
          *  @returns    {Boolean}
          *  @static
          *  @public
          */
-        function isBelow(value) {
+        function isBelow(value, useDeviceWidth) {
             value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? _getWidth() < parseInt(value, 10) : false;
-        }
-        
-        
-        /**
-         *  Allows us to check whether we are BELOW a specific media query BASED ON DEVICE WIDTH.
-         *  Examples:
-         *      jsmq.isBelowDevice('large');
-         *      jsmq.isBelowDevice(61, true);
-         *
-         *  @method     isBelowDevice
-         *  @param      {String|Number}     value   Either a string for CSS classname or number from cfg.sizes
-         *  @returns    {Boolean}
-         *  @static
-         *  @public
-         */
-        function isBelowDevice(value) {
-            value = typeof value === 'number' ? value : cfg.names[value];
-            return value ? _getWidth(true) < parseInt(value, 10) : false;
+            return value ? _getWidth(useDeviceWidth) < parseInt(value, 10) : false;
         }
         
         
@@ -481,9 +447,7 @@
             init            : init,
             getConfig       : getConfig,
             isAt            : isAt,
-            isAtDevice      : isAtDevice,
-            isBelow         : isBelow,
-            isBelowDevice   : isBelowDevice
+            isBelow         : isBelow
         };
         
     })();
