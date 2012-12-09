@@ -82,24 +82,24 @@ You can also do something like this on a window resize to check what CSS state w
 ## API
 
     
-#### jsmq.VERSION
+### jsmq.VERSION
 Returns version info
 
 
-#### jsmq.PREFIX
+### jsmq.PREFIX
 Prefix to use on CSS classes and appended page elements
 
 
-#### jsmq.DEFAULT_EVENT
+### jsmq.DEFAULT_EVENT
 The name of the default custom event name that gets fired on updates
 
 
-#### jsmq.init()
+### jsmq.init()
 Makes things happen
 
 
-#### jsmq.update( [callback] )
-#### jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )
+### jsmq.update( [callback] )
+### jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )
 Refreshes the current CSS class, useful after a resize. It also fires an event after
 an update occurs. Accepts a callback function.
 
@@ -110,7 +110,7 @@ an update occurs. Accepts a callback function.
 **callback**: Callback after updating. Can be passed as a single argument.
 
 
-#### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
+### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
 Fire custom event
 
 **name**: A string containing the name of the custom event to fire
@@ -118,13 +118,13 @@ Fire custom event
 **elem**: Native DOM element to fire the event on
 
 
-#### jsmq.get( [useDeviceWidth] )
+### jsmq.get( [useDeviceWidth] )
 Returns the current media query state. Basically does a JS Media Query (like a CSS media query).
 
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
-#### jsmq.getConfig( [prop] )
+### jsmq.getConfig( [prop] )
 Returns the local configuration object or optionally, a specific property
 
 **prop**: A string of the name of a specfic configuration propery name to query.
@@ -134,7 +134,7 @@ Example: jsmq.getConfig('names');
 Example: jsmq.getConfig('sizes');
 
 
-#### jsmq.isAt( value [, useDeviceWidth] )
+### jsmq.isAt( value [, useDeviceWidth] )
 Does the current media query match our current width?
 
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))
@@ -142,7 +142,7 @@ Does the current media query match our current width?
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
-#### jsmq.isBelow( value [, useDeviceWidth] )
+### jsmq.isBelow( value [, useDeviceWidth] )
 Is the current media query BELOW our current width?
 
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))
