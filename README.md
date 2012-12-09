@@ -81,21 +81,6 @@ You can also do something like this on a window resize to check what CSS state w
 
 ## API
 
-    
-### jsmq.VERSION
-Returns version info.
-
-
-### jsmq.PREFIX
-Prefix to use on CSS classes and appended page elements.      
-**Default**: "jsmq-"
-
-
-### jsmq.DEFAULT_EVENT
-The name of the default custom event name that gets fired on updates.           
-**Default**: "jsmq:update"
-
-
 ### jsmq.init()
 Makes things happen.
 
@@ -138,6 +123,19 @@ Is the current media query BELOW our current width?
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
+
+### jsmq.PREFIX
+Prefix to use on CSS classes and appended page elements.      
+**Default**: "jsmq-"
+
+
+### jsmq.DEFAULT_EVENT
+The name of the default custom event name that gets fired on updates.           
+**Default**: "jsmq:update"
+
+    
+### jsmq.VERSION
+Returns version info.
 
 
 ## Philosophy
