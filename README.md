@@ -85,52 +85,60 @@ You can also do something like this on a window resize to check what CSS state w
 _Makes things happen._
 
 
-### jsmq.update( [callback] )
 ### jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )
+### jsmq.update( [callback] )
 _Refreshes the current CSS class, useful after a resize. It also fires an event after
-an update occurs. Accepts a callback function._     
+an update occurs. Accepts a callback function._
+
 **name**: A string containing the name of the custom event to fire     
 **elem**: Native DOM element to fire the event on    
 **callback**: Callback after updating. Can be passed as a single argument.
 
 
 ### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
-_Fire custom event_    
+_Fire custom event_
+
 **name**: A string containing the name of the custom event to fire      
 **elem**: Native DOM element to fire the event on
 
 
 ### jsmq.get( [useDeviceWidth] )
-_Returns the current media query state. Basically does a JS Media Query (like a CSS media query)._      
+_Returns the current media query state. Basically does a JS Media Query (like a CSS media query)._
+
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
 ### jsmq.getConfig( [prop] )
-_Returns the local configuration object or optionally, a specific property._     
+_Returns the local configuration object or optionally, a specific property._
+
 **prop**: A string of the name of a specfic configuration propery name to query.           
 Example: jsmq.getConfig('names');      
 Example: jsmq.getConfig('sizes');
 
 
 ### jsmq.isAt( value [, useDeviceWidth] )
-_Does the current media query match our current width?_      
+_Does the current media query match our current width?_
+
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
 ### jsmq.isBelow( value [, useDeviceWidth] )
-_Is the current media query BELOW our current width?_     
+_Is the current media query BELOW our current width?_
+
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
 ### jsmq.PREFIX
-_Prefix to use on CSS classes and appended page elements._      
+_Prefix to use on CSS classes and appended page elements._
+
 **Default**: "jsmq-"
 
 
 ### jsmq.DEFAULT_EVENT
-_The name of the default custom event name that gets fired on updates._           
+_The name of the default custom event name that gets fired on updates._
+
 **Default**: "jsmq:update"
 
     
