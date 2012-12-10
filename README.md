@@ -78,7 +78,7 @@ can use:
 
 You can also do something like this on a window resize to check what CSS state we are in:
 
-    jsmq.update().getState();            // "jsmq-large", etc.
+    jsmq.update().isAt();            // "jsmq-large", etc.
     
 
 ## API
@@ -116,19 +116,23 @@ _Set a configuration property/value_
 **value**: Any valid JavaScript data type you want to store
 
 
-### jsmq.getState( [useDeviceWidth] )
-_Returns the current media query state. Basically does a JS Media Query (like a CSS media query)._       
-**useDeviceWidth**: Boolean of whether to use media-device-width media query
-
-
 ### jsmq.reload()
 _Reloads the configuration by removing our media query nodes and CSS. Really only useful for unit testing, I think._
 
 
-### jsmq.isAt( value [, useDeviceWidth] )
-_Does the current media query match our current width? _      
+### jsmq.isAt( [value] [, useDeviceWidth] )
+_Does the current media query match our current width? Passing no arguments will return the CSS class
+name (e.g., 'jsmq-large') for the current state the user is in. Passing a single boolean argument
+will use the device-width to evaluate the return value._      
 **value**: Either a string for CSS classname (from get('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
+**Returns**: No arguments or single boolean argument returns CSS class name string. Others return boolean.
+Examples:
+    jsmq.isAt();                    // 'jsmq-large', etc.
+    jsmq.isAt(true);                // 'jsmq-large' for device-width
+    jsmq.isAt('jsmq-small');        // true/false
+    jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
+    jsmq.isAt(45, true);            // true/false for device width
 
 
 ### jsmq.isBelow( value [, useDeviceWidth] )

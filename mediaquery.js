@@ -22,7 +22,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.1',
+        var VERSION = '0.3.2',
             prevClass = '',
             initHasRun = false,
             
@@ -229,19 +229,30 @@
         
         /**
          *  Allows us to check whether we are at a specific media query.
-         *  Examples:
-         *      jsmq.isAt('small');
-         *      jsmq.isAt(45, true);
+         *  @example:
+         *      jsmq.isAt();                // 'jsmq-large', etc.
+         *      jsmq.isAt(true);            // 'jsmq-large'
+         *      jsmq.isAt('jsmq-small');    // true/false
+         *      jsmq.isAt(45, true);        // true/false
          *
          *  @method     isAt
-         *  @param      {String|Number} value           Either a string for CSS classname or number from cfg.sizes
-         *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
-         *  @return     {Boolean}
+         *  @param      [Boolean|String|Number] value           Boolean to use device-width or string for CSS classname or number from cfg.sizes
+         *  @param      [Boolean]               useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
+         *  @return     {Boolean|String}                        No arguments or single bool returns CSS class name string. Others return boolean.
          *  @public
          */
         function isAt(value, useDeviceWidth) {
-            value = typeof value === 'number' ? value : cfg.names[value];
+            
+            if (value === undefined || typeof value === 'boolean') {
+                useDeviceWidth = value;
+                return cfg.sizes[_getWidth(useDeviceWidth)];
+            }
+            
+            if (typeof value === 'string') {
+                value = cfg.names[value];
+            }
             return value ? parseInt(value, 10) === _getWidth(useDeviceWidth) : false;
+
         }
         
         
@@ -410,26 +421,13 @@
         
         
         /**
-         *  Gets the current 'media query' state of the breakpoint we are at right now.
-         *
-         *  @method     getState
-         *  @param      {Boolean}   useDeviceWidth  Whether to check using device or viewport width. Default is viewport
-         *  @return     {String}                    The CSS class name (i.e., a word) value for the breakpoint we are currently at
-         *  @public
-         */
-        function getState(useDeviceWidth) {
-            return cfg.sizes[_getWidth(useDeviceWidth)];
-        }
-        
-        
-        /**
          *  Adds the CSS class name (from cfg.sizes) to the html tag
          *
          *  @method     _setCssClass
          *  @private
          */
         function _setCssClass() {
-            var currClass = getState();
+            var currClass = isAt();
             
             if (prevClass !== currClass) {
                 docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
@@ -582,7 +580,6 @@
             get             : get,
             set             : set,
             init            : init,
-            getState        : getState,
             isAt            : isAt,
             isBelow         : isBelow,
             reload          : reload

@@ -65,10 +65,6 @@ describe("Public methods are defined", function () {
         expect(jsmq.init).toBeDefined();
     });
     
-    it("jsmq.getState", function () {
-        expect(jsmq.getState).toBeDefined();
-    }); 
-    
     it("jsmq.isAt", function () {
         expect(jsmq.isAt).toBeDefined();
     });
@@ -134,32 +130,6 @@ describe("init()", function () {
 });
 
 
-describe("getState()", function () {
-    
-    it("returns a value", function () {
-        // TODO: It would be nice if we could set the browser size and test the results
-        expect(jsmq.getState()).toBeTruthy();
-    });
-    
-    it("querying device width returns a value", function () {
-        // TODO: It would be nice if we could set the browser size and test the results
-        expect(jsmq.getState(true)).toBeTruthy();
-    });
-    
-    it("returns a valid value", function () {
-        var names = classNames.split(" ");
-        expect(names).toContain(jsmq.getState());
-    });
-    
-    it("querying device width returns a valid value", function () {
-        var names = classNames.split(" ");
-        expect(names).toContain(jsmq.getState(true));
-    });
-    
-});
-
-
-
 describe("update()", function () {
     var name = jsmq.DEFAULT_EVENT,
         el = document;
@@ -169,9 +139,9 @@ describe("update()", function () {
         expect(result.VERSION).toBeDefined();
     });
     
-    it("is chainable with get", function () {
+    it("is chainable with isAt()", function () {
         var names = classNames.split(" ");
-        expect(names).toContain(jsmq.update().getState());
+        expect(names).toContain(jsmq.update().isAt());
     });
     
     it("calls callback after update()", function () {
@@ -256,23 +226,65 @@ describe("fire()", function () {
 
 describe("isAt()", function () {
     
-    it("returns a boolean value", function () {
-        expect(typeof jsmq.isAt()).toEqual('boolean');
+    it("returns a value", function () {
+        // TODO: It would be nice if we could set the browser size and test the results
+        expect(jsmq.isAt()).toBeTruthy();
+    });
+    
+    it("querying device width returns a value", function () {
+        // TODO: It would be nice if we could set the browser size and test the results
+        expect(jsmq.isAt(true)).toBeTruthy();
+    });
+    
+    it("returns a string value when no arguments are passed", function () {
+        expect(typeof jsmq.isAt()).toEqual('string');
+    });
+    
+    it("returns a boolean value when at least one argument is passed", function () {
+        // Using object since that is not currently one of the specific logic paths
+        // and so won't be processed by the logic
+        expect(typeof jsmq.isAt({})).toEqual('boolean');
+    });
+    
+    it("returns a string value when single boolean argument is passed", function () {
+        expect(typeof jsmq.isAt(true)).toEqual('string');
+    });
+    
+    it("returns a string value when double boolean argument is passed", function () {
+        expect(typeof jsmq.isAt(true, true)).toEqual('string');
+    });
+    
+    it("returns a boolean value when a number is passed", function () {
+        expect(typeof jsmq.isAt(34)).toEqual('boolean');
+    });
+    
+    it("returns a boolean when a string is passed", function () {
+        expect(typeof jsmq.isAt('some string')).toEqual('boolean');
+    });
+    
+    it("returns a valid string value for current classname", function () {
+        var names = classNames.split(" ");
+        expect(names).toContain(jsmq.isAt());
+    });
+    
+    it("querying device width returns a valid value for current classname", function () {
+        var names = classNames.split(" ");
+        expect(names).toContain(jsmq.isAt(true));
     });
     
     it("using number value matches current state value", function () {
-        var atNum = jsmq.get('names')[jsmq.getState()];     // 61, etc
+        var atNum = jsmq.get('names')[jsmq.isAt()];         // 61, etc
         expect(jsmq.isAt(atNum)).toEqual(true);
     });
    
     it("using size value matches current state value", function () {
-        var atNum = jsmq.get('names')[jsmq.getState()],    
+        var atNum = jsmq.get('names')[jsmq.isAt()],         // TODO: Allow query by num - currently returns true    
             atSize = jsmq.get('sizes')[atNum];              // jsmq-large, etc.
         expect(jsmq.isAt(atSize)).toEqual(true);
     });
     
     it("using wrong number value does not match current state value", function () {
-        var atNum = jsmq.get('names')[jsmq.getState()];     // 61, etc    
+        var atNum = jsmq.get('names')[jsmq.isAt()];         // 61, etc    
         expect(jsmq.isAt(atNum + 1)).toEqual(false);
     });
     
@@ -283,27 +295,30 @@ describe("isAt()", function () {
     // If we use a device width to test against, it has to always be true since both
     // should be equal.
     it("matching device width always returns true", function () {
-        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
+        var atNum = jsmq.get('names')[jsmq.isAt(  true  )];
         expect(jsmq.isAt(atNum, true)).toEqual(true);
     });
     
     it("changing device width value always returns false", function () {
-        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
+        var atNum = jsmq.get('names')[jsmq.isAt(  true  )];
         expect(jsmq.isAt(atNum + 1, true)).toEqual(false);
     });
     
     it("matching device width string name value always returns true", function () {
-        var atNum = jsmq.get('names')[jsmq.getState(  true  )],
+        var atNum = jsmq.get('names')[jsmq.isAt(  true  )],
             atSize = jsmq.get('sizes')[atNum];
         expect(jsmq.isAt(atSize, true)).toEqual(true);
     });
     
     it("changing device width string name value always returns false", function () {
-        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
+        var atNum = jsmq.get('names')[jsmq.isAt(  true  )];
             atSize = jsmq.get('sizes')[atNum];
         expect(jsmq.isAt(atSize + 'xxxxx', true)).toEqual(false);
     });
     
+    
+    // passing in a class name to get back a number instead of string isAt('name')
+    // Test for passing in no prefix on classname
 });
 
 
@@ -314,7 +329,7 @@ describe("isBelow()", function () {
     });
     
     it("is never below device width", function () {
-        expect(jsmq.isBelow(jsmq.getState(true), true)).toEqual(false);
+        expect(jsmq.isBelow(jsmq.isAt(true), true)).toEqual(false);
     });
     
     it("device width is never below lowest breakpoint width", function () {
