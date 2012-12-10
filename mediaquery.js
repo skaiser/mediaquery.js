@@ -388,7 +388,7 @@
         
         
         /**
-         *  Fires custom event. Default is to fire 'jsmq:update' on document.body
+         *  Fires custom event. Default is to fire 'jsmq:update' on the default media element
          *
          *  @method     fire
          *  @param      [String]    name    Optional. Name of custom event to fire
@@ -548,7 +548,7 @@
         function init() {
             
             // Prevent init() from being accidentally run twice (by dev calling .init() manually
-            // and not explicitly doing it by using cfg.delayInt) since it runs at load by default.
+            // and not explicitly doing it by using cfg.delayInit) since it runs at load by default.
             if (!initHasRun) {
                 
                 if (!cfg.useMyOwnStyles) {
