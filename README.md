@@ -82,7 +82,7 @@ You can also do something like this on a window resize to check what CSS state w
 ## API
 
 ### jsmq.init()
-_Makes things happen. **This runs automagically at load by default.** See jsmq\_config [[[INSERT LINK]]]
+_Makes things happen. **This runs automagically at load by default.** See jsmq\_config 
 and/or reload() if you want to call this manually later._
 
 
@@ -107,7 +107,7 @@ _Returns the current media query state. Basically does a JS Media Query (like a 
 
 
 ### jsmq.set( prop, value )
-_Set a configuration property/value_
+_Set a configuration property/value_      
 **prop**: String representation of configuration property name
 **value**: Any valid JavaScript data type you want to store
 
