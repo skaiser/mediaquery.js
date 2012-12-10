@@ -44,26 +44,30 @@ describe("Public methods are defined", function () {
     it("jsmq.VERSION", function () {
         expect(jsmq.VERSION).toBeDefined();
     });
-
-    it("jsmq.init", function () {
-        expect(jsmq.init).toBeDefined();
-    });
     
     it("jsmq.update", function () {
         expect(jsmq.update).toBeDefined();
     });
-    
+
     it("jsmq.fire", function () {
         expect(jsmq.fire).toBeDefined();
     });
     
-    it("jsmq.getState", function () {
-        expect(jsmq.getState).toBeDefined();
-    });
-     
     it("jsmq.get", function () {
         expect(jsmq.get).toBeDefined();
     });
+    
+    it("jsmq.set", function () {
+        expect(jsmq.set).toBeDefined();
+    });
+    
+    it("jsmq.init", function () {
+        expect(jsmq.init).toBeDefined();
+    });
+    
+    it("jsmq.getState", function () {
+        expect(jsmq.getState).toBeDefined();
+    }); 
     
     it("jsmq.isAt", function () {
         expect(jsmq.isAt).toBeDefined();
@@ -71,6 +75,10 @@ describe("Public methods are defined", function () {
     
     it("jsmq.isBelow", function () {
         expect(jsmq.isBelow).toBeDefined();
+    });
+    
+    it("jsmq.reload", function () {
+        expect(jsmq.reload).toBeDefined();
     });
     
 });
