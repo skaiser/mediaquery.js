@@ -4,40 +4,59 @@
  *  Copyright (c) 2012 Stephen Kaiser
  */
 
+/**
+ *  @module mediaquery.js
+ *
+ */
 (function (window, document, undefined) {
     
     var _jsmq,
-        docEl,
+        docEl = document.documentElement,
         head = document.getElementsByTagName('head')[0];
+    
         
-    if (window.jsmq !== undefined) {
-        return;
-    }
     
-    if (document && document.documentElement) {
-        docEl = document.documentElement;
-    } else {
-        // Not in a browser?
-        return;
-    }
-    
-    
+    /**
+     *  @class jsmq
+     *
+     */
     _jsmq = (function () {
         
-        var VERSION = '0.2.2',
-            PREFIX = 'jsmq-',
-            UNITS = 'em',
-            DEFAULT_EVENT = "jsmq:update",
+        var VERSION = '0.3.0',
             prevClass = '',
-            cfg = {};
+            initHasRun = false,
             
+            // Cache local versions of "constants"
+            PREFIX,
+            UNITS,
+            DEFAULT_EVENT,
+            DEFAULT_EVENT_ELEM,
+            
+            // Local configuration object
+            cfg;
+            
+            
+        // Allow configurations to be passed in manually while still calling
+        // init() automagically at load. Anyone have any better techniques?
+        cfg = window.jsmq_config || {};
+            
+        
+        // Prefix that will be added to CSS class names and the HTML element ids
+        cfg.PREFIX = PREFIX = cfg.PREFIX || 'jsmq-';
+        
+        
+        // Default unit sizes to use for breakpoints. If you don't think you
+        // should use 'em', please consider this:
+        // http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/
+        cfg.UNITS = UNITS = cfg.UNITS || 'em';
+        
         
         /**
          *  Responsive breakpoint sizes.
          *  Sizes default to em values.
          *  See: http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/
          */
-        cfg.sizes = {
+        cfg.sizes = cfg.sizes || {
             '61': PREFIX + 'large',                      // 61em > 960px
             '60': PREFIX + 'medium',                     // 60em ~= 960px
             '45': PREFIX + 'small',                      // 45em ~= 720px
@@ -46,7 +65,7 @@
         
         
         // HTML id values of the elements that will be added to the page and queried
-        cfg.elemNames = {
+        cfg.elemNames = cfg.elemNames || {
             'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
             'device'    : PREFIX + 'media-device-width', // Width of actual device
             'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
@@ -54,19 +73,46 @@
         
         
         // Set to 'true' to skip auto-appending of CSS and add your stylesheet. Could minimize reflows.
-        cfg.useMyOwnStyles = false;
+        cfg.useMyOwnStyles = cfg.useMyOwnStyles || false;
         
         
         // Set to 'true' is you want to use elements that you've already added. Could minimize reflows.
-        cfg.useMyOwnElements = false;
+        cfg.useMyOwnElements = cfg.useMyOwnElements || false;
         
         
+        // TODO: Think about renaming this to indicate something more like "support browsers that don't
+        //  support media queries and/or window.getComputedStyle". It's not just IE, right?
         // Support IE < 9. Are you sure you want to do that to yourself?
-        cfg.supportOldIE = true;
+        cfg.supportOldIE = cfg.supportOldIE || false;
         
         
-        // Mapping of sizes by name - gets set later. Keeping reading :)
+        // Name of custom event that gets fired when media query update/change occurs
+        cfg.DEFAULT_EVENT = DEFAULT_EVENT = cfg.DEFAULT_EVENT || 'jsmq:update';
+        
+        
+        // Default native DOM element to bind the default update() event to
+        cfg.DEFAULT_EVENT_ELEM = DEFAULT_EVENT_ELEM = cfg.DEFAULT_EVT_ELEM || cfg.elemNames['viewport'];
+        
+        
+        // Whether to delay calling init() at load or not. Mostly useful for unit testing.
+        cfg.delayInit = cfg.delayInit || false;
+        
+        
+        // Are we running unit tests or not?
+        cfg.isTest = cfg.isTest || false;
+        
+        
+        /**
+         *  Don't set this your self. It is an auto generated mapping of sizes by name that gets
+         *  set later based on the 'sizes' configuration property. It is available for convenience
+         *  it reading state or doing checks later on, but is auto-populated (also for convenience)
+         *  so that you don't have to manage both sets of data. Keeping reading :)
+         *  
+         *  @property   names
+         *  @readonly
+         */
         cfg.names = {};
+        
         
         
         /**
@@ -74,7 +120,7 @@
          *
          *  @method     _getId
          *  @param      {String}    id  HTML id selector string
-         *  @returns    {Object}    The HTML node
+         *  @return     {Object}    The HTML node
          *  @private
          */  
         function _getId(id) {
@@ -91,7 +137,7 @@
          *  @method     _reverseKeyValue
          *  @param      {Object}    o           Object to have key/values reversed
          *  @param      {Boolean}   castNum     Whether to cast value to a Number
-         *  @returns    {Object}                A new object with key/values reversed
+         *  @return     {Object}                A new object with key/values reversed
          *  @private
          */
         function _reverseKeyValue(o, castNum) {
@@ -121,7 +167,7 @@
          *
          *  @method     getConfig
          *  @param      [String]    prop    Optional. Specfic configuration propery name to query.
-         *  @returns    {Object}            Local configuration object
+         *  @return     {Object}            Local configuration object
          *  @public
          */
         function getConfig(prop) {
@@ -138,12 +184,12 @@
          *
          *  @method     _getWidth
          *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
-         *  @returns    {Number}
+         *  @return     {Number}
          *  @private
          */
         function _getWidth(useDeviceWidth) {
             
-            if (window.getComputedStyle) {
+            if (window.getComputedStyle /* TODO: && window.matchMedia??*/) {
                 _getWidth = function (useDeviceWidth) {
                     var cs = window.getComputedStyle,
                         elemName = useDeviceWidth ? 'device' : 'viewport';
@@ -151,7 +197,7 @@
                 };
             }
             // Old IE
-            else if (cfg.supportOldIE && window.currentStyle) {
+            else if (cfg.supportOldIE && window.currentStyle/* TODO: || (!window.matchMedia && window.getComputedStyle)*/) {
                 _getWidth = function (useDeviceWidth) {
                     var el,
                         fontSize,
@@ -190,8 +236,7 @@
          *  @method     isAt
          *  @param      {String|Number} value           Either a string for CSS classname or number from cfg.sizes
          *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
-         *  @returns    {Boolean}
-         *  @static
+         *  @return     {Boolean}
          *  @public
          */
         function isAt(value, useDeviceWidth) {
@@ -209,8 +254,7 @@
          *  @method     isBelow
          *  @param      {String|Number} value           Either a string for CSS classname or number from cfg.sizes
          *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
-         *  @returns    {Boolean}
-         *  @static
+         *  @return     {Boolean}
          *  @public
          */
         function isBelow(value, useDeviceWidth) {
@@ -248,6 +292,7 @@
          *  @method     _createElem
          *  @param      {String}        name        Name of element from cfg.elemNames (e.g., 'viewport' or 'device')
          *  @param      [String]        nodeType    Optional. Type of HTML element to add to page (e.g., 'div')
+         *  @return     {Object}        el          The native DOM element that was created
          *  @private
          */
         function _createElem(name, nodeType) {
@@ -275,7 +320,7 @@
          *
          *  @method     _writeMediaQuery
          *  @param      {String|Number}     val     Integer value representing the breakpoint width
-         *  @returns    {String}                    String of CSS rules
+         *  @return     {String}                    String of CSS rules
          *  @private
          */
         function _writeMediaQuery(val) {
@@ -354,7 +399,7 @@
             var ev;
             
             name = name || DEFAULT_EVENT;
-            elem = elem || _getId(cfg.elemNames['viewport']);
+            elem = elem || _getId(DEFAULT_EVENT_ELEM);
             
             if (document.createEvent) {
                 ev = document.createEvent('Event');
@@ -369,7 +414,7 @@
          *
          *  @method     get
          *  @param      {Boolean}   useDeviceWidth  Whether to check using device or viewport width. Default is viewport
-         *  @returns    {String}                    The CSS class name (i.e., a word) value for the breakpoint we are currently at
+         *  @return     {String}                    The CSS class name (i.e., a word) value for the breakpoint we are currently at
          *  @public
          */
         function get(useDeviceWidth) {
@@ -401,8 +446,8 @@
          *  @param      [String]    name        Optional. Name of custom event to fire after update
          *  @param      [Object]    elem        Optional. Native HTML DOM element to fire on
          *  @param      [Function]  callback    Optional. Callback after updating. Can be passed as a single argument.
+         *  @return     {Object}    this        The jsmq object
          *  @chainable
-         *  @returns    {Object}    The jsmq object
          *  @public
          */
         function update(name, elem, callback) {
@@ -426,20 +471,101 @@
         
         
         /**
-         *  Runs things.
+         *  Set a configuration property/value
+         *
+         *  @method     set
+         *  @param      {String}    prop    String representation of configuration property name
+         *  @param      {ANY}       value   Any valid JavaScript data type you want to store
+         *  @return     {Object}    this    The jsmq object
+         *  @chainable
+         *  @public
+         */
+        function set(prop, value) {
+            
+            if (typeof prop === 'string' && value !== undefined) {
+                cfg[prop] = value;
+                
+                // Need to update names if size and vice versa
+                if (prop === 'sizes') {
+                    cfg.names = _reverseKeyValue(cfg.sizes, true);
+                } else if (prop === 'names') {
+                    cfg.sizes = _reverseKeyValue(cfg.names);
+                } else if (prop === 'removeTest') {
+                    // For testing. Delete both test val and revemoTest prop
+                    delete cfg[value];
+                    delete cfg[prop];
+                }
+                // Only return 'this' if params were correct so we can test it.
+                return this;
+            }
+        }
+        
+        
+        /**
+         *  Reloads the configuration by removing our media query nodes and CSS.
+         *  Really only useful for unit testing, I think.
+         *
+         *  @method     reload
+         *  @return     {Object}    this    The jsmq object
+         *  @chainable
+         *  @public
+         */
+        function reload() {
+            
+            // parentNode holds a reference to the removed node, so create a new
+            // var for head to avoid 'polluting' our original reference.
+            // See: https://developer.mozilla.org/en-US/docs/DOM/Node.removeChild
+            var parentNode = head,
+                elems = cfg.elemNames,
+                prop;
+                
+            for (prop in elems) {
+                if (elems.hasOwnProperty(prop)) {
+                    // In case we already removed them with reload()
+                    try {
+                        parentNode.removeChild(_getId(elems[prop]));    
+                    } catch (e) {}
+                    
+                    // TODO: If this gets used for more than testing, we need to remove event listeners
+                }
+            }
+            parentNode = null;
+            initHasRun = false;
+            
+            return this;
+        }
+        
+        
+        /**
+         *  Runs things. This runs automagically at load by default. See jsmq_config and/or
+         *  reload() if you want to call this manually later.
          *
          *  @method     init
+         *  @return     {Object}    this    The jsmq object
          *  @chainable
          *  @public
          */
         function init() {
-            if (!cfg.useMyOwnStyles) {
-                _addInlineCss();
+            
+            // Prevent init() from being accidentally run twice (by dev calling .init() manually
+            // and not explicitly doing it by using cfg.delayInt) since it runs at load by default.
+            if (!initHasRun) {
+                
+                if (!cfg.useMyOwnStyles) {
+                    _addInlineCss();
+                }
+                
+                if (!cfg.useMyOwnElements) { 
+                    _addHiddenElems();   
+                }
+                update();
+                
+            } else if (initHasRun && cfg.isTest) {
+                // Mostly for controlling environment for unit testing
+                reload();
             }
-            if (!cfg.useMyOwnElements) { 
-                _addHiddenElems();   
-            }
-            update();
+            
+            initHasRun = true;
             return this;
         }
         
@@ -451,15 +577,15 @@
          */
         return {
             VERSION         : VERSION,
-            PREFIX          : PREFIX,
-            DEFAULT_EVENT   : DEFAULT_EVENT,
             update          : update,
             fire            : fire,
             get             : get,
+            set             : set,
             init            : init,
             getConfig       : getConfig,
             isAt            : isAt,
-            isBelow         : isBelow
+            isBelow         : isBelow,
+            reload          : reload
         };
         
     })();
@@ -467,13 +593,11 @@
     
     // Export
     window.jsmq = _jsmq;
-    window.jsmq_config = window.jsmq_config || {
-        delayInit: false    
-    };
     
     
-    if (!window.jsmq_config.delayInit) {
+    if (!jsmq.getConfig('delayInit')) {
         window.jsmq.init();   
     }
+    
     
 })(this, this.document);

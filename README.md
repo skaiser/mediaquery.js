@@ -5,7 +5,7 @@ mediaquery.js
 
 ### What is this?
 
-This is a small (less than 1KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
+This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
 
 
 ### Why use this?
@@ -82,7 +82,8 @@ You can also do something like this on a window resize to check what CSS state w
 ## API
 
 ### jsmq.init()
-_Makes things happen._
+_Makes things happen. **This runs automagically at load by default.** See jsmq\_config [[[INSERT LINK]]]
+and/or reload() if you want to call this manually later._
 
 
 ### jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )
@@ -105,6 +106,16 @@ _Returns the current media query state. Basically does a JS Media Query (like a 
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 
+### jsmq.set( prop, value )
+_Set a configuration property/value_
+**prop**: String representation of configuration property name
+**value**: Any valid JavaScript data type you want to store
+
+
+### jsmq.reload()
+_Reloads the configuration by removing our media query nodes and CSS. Really only useful for unit testing, I think._
+
+
 ### jsmq.getConfig( [prop] )
 _Returns the local configuration object or optionally, a specific property._     
 **prop**: A string of the name of a specfic configuration propery name to query.           
@@ -123,6 +134,15 @@ _Is the current media query BELOW our current width?_
 **value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
+    
+### jsmq.VERSION
+_Returns version info._
+
+## Configuration Options (more info to come - check source code for now)
+
+<a name="jsmq_config">
+### jsmq_config
+
 
 ### jsmq.PREFIX
 _Prefix to use on CSS classes and appended page elements._      
@@ -133,9 +153,6 @@ _Prefix to use on CSS classes and appended page elements._
 _The name of the default custom event name that gets fired on updates._           
 **Default**: "jsmq:update"
 
-    
-### jsmq.VERSION
-_Returns version info._
 
 
 ## Philosophy

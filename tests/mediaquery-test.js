@@ -76,8 +76,25 @@ describe("Public methods are defined", function () {
 });
 
 
+describe("getConfig()", function () {
+    
+    it("returns configuration object", function () {
+        expect(typeof jsmq.getConfig()).toEqual('object');
+    });
+    
+    it("returns specific properties from configuration object", function () {
+        // Return a property not an object because by default it returns
+        // an object if no properties match.
+        var result = jsmq.getConfig('useMyOwnStyles');
+        expect(typeof result).toEqual('boolean');
+    });
+    
+});
+
+
 describe("init()", function () {
-    var docEl = document.documentElement;
+    var docEl = document.documentElement,
+        PREFIX = jsmq.getConfig('PREFIX');
     
     it("has not added a class name to <html>", function () {
         expect('').toEqual(docEl.className);
@@ -90,17 +107,17 @@ describe("init()", function () {
     });
     
     it("has added media element", function () {
-        var el = document.getElementById(jsmq.PREFIX + 'media-width');
+        var el = document.getElementById(PREFIX + 'media-width');
         expect(el).not.toBeNull();
     });
     
     it("has added device element", function () {
-        var el = document.getElementById(jsmq.PREFIX + 'media-device-width');
+        var el = document.getElementById(PREFIX + 'media-device-width');
         expect(el).not.toBeNull();
     });
     
     it("has added inline style element", function () {
-        var el = document.getElementById(jsmq.PREFIX + 'styles');
+        var el = document.getElementById(PREFIX + 'styles');
         expect(el).not.toBeNull();
     });
     
@@ -171,7 +188,7 @@ describe("update()", function () {
 
 
 describe("fire()", function () {
-    var name = jsmq.DEFAULT_EVENT,
+    var name = jsmq.getConfig('DEFAULT_EVENT'),
         el = document,
         result,
         fn = function (e) {
@@ -197,14 +214,15 @@ describe("fire()", function () {
         expect(result).toEqual(name);
     });
     
-    // TODO: This may or may not be default element. Expose the elem so can test
     it("fires default event on default element", function () {
-        var el = document.getElementById('jsmq-media-width');
-        
-        on(jsmq.DEFAULT_EVENT, el, function (e) {
+        // Explicitly set them inside the test since they are the test case.
+        var el = document.getElementById(jsmq.getConfig('DEFAULT_EVENT_ELEM')),
+            name = jsmq.getConfig('DEFAULT_EVENT');
+            
+        on(name, el, function (e) {
             result = e.type;
         });
-        jsmq.fire(jsmq.DEFAULT_EVENT, el);
+        jsmq.fire(name, el);
         expect(result).toEqual(name);
     });
     
@@ -223,22 +241,6 @@ describe("fire()", function () {
         on(name, el, fn);
         jsmq.fire(name, el);
         expect(result).toEqual(name);
-    });
-    
-});
-
-
-describe("getConfig()", function () {
-    
-    it("returns configuration object", function () {
-        expect(typeof jsmq.getConfig()).toEqual('object');
-    });
-    
-    it("returns specific properties from configuration object", function () {
-        // Return a property not an object because by default it returns
-        // an object if no properties match.
-        var result = jsmq.getConfig('useMyOwnStyles');
-        expect(typeof result).toEqual('boolean');
     });
     
 });
@@ -313,3 +315,133 @@ describe("isBelow()", function () {
     });
     
 });
+
+
+// Note a lot of these tests rely on getConfig()
+describe("set()", function () {
+    
+    it("does not return value if no params are sent", function () {
+        expect(jsmq.set()).not.toBeDefined();
+    });
+    
+    it("does not return value if first param is not a string", function () {
+        expect(jsmq.set({}, {})).not.toBeDefined();
+    });
+    
+    it("does not return value if second param is not passed", function () {
+        expect(jsmq.set('test')).not.toBeDefined();
+    });
+    
+    it("is able to remove a test prop", function () {
+        var test = 'test',
+            result1,
+            result2;
+        jsmq.set(test, test);
+        // Set it, then remove it
+        result1 = jsmq.getConfig()[test];
+        jsmq.set('removeTest', test);
+        result2 = jsmq.getConfig()[test];
+        // Not checking for undefined b/c we want to know that 1st set worked
+        expect(result2).not.toEqual(result1);
+    });
+    
+    it("removeTest removes itself", function () {
+        var test = 'test';
+        jsmq.set(test, test).set('removeTest', test);
+        expect(jsmq.getConfig()['removeTest']).not.toBeDefined();
+    });
+    
+    // Can't use instanceof jsmq because we are overwriting constructor with module pattern
+    it("returns jsmq object if params are correct", function () {
+        var test = 'test';
+        expect(typeof jsmq.set(test, test)['init']).toEqual('function');
+        jsmq.set('removeTest', test);
+    });
+    
+    it("is chainable when params passed as expected", function () {
+        var test1 = 'test1',
+            test2 = 'test2';
+        expect(typeof jsmq.set(test1, test1).set(test2, test2)['init']).toEqual('function');
+        jsmq.set('removeTest', test1).set('removeTest', test2);
+    });
+    
+    it("sets configuration properties", function () {
+        var prop = 'some fake prop',
+            expected = 'new test value',    
+            result;
+        jsmq.set(prop, expected);
+        result = jsmq.getConfig()[prop];
+        expect(result).toEqual(expected);
+        jsmq.set('removeTest', prop);
+    });
+    
+    it("can set falsy properties", function () {
+        var prop = 'some fake prop',
+            result;
+        jsmq.set(prop, false);
+        result = jsmq.getConfig()[prop];
+        expect(result).toBeFalsy();
+        jsmq.set('removeTest', prop);
+    });
+    
+    it("sets configuration properties with chaining", function () {
+        var prop1 = 'fake prop1',
+            prop2 = 'fake prop2',
+            expected = 'fake prop1fake prop2',
+            result;
+        jsmq.set(prop1, prop1).set(prop2, prop2);
+        result = jsmq.getConfig(prop1);
+        result += jsmq.getConfig(prop2);
+        expect(result).toEqual(expected);
+        jsmq.set('removeTest', prop1).set('removeTest', prop2);
+    });
+    
+    // Watch it! These two are confusing because the props get reversed
+    it("updates cfg.names when setting cfg.sizes", function () {
+        var copy = jsmq.getConfig('sizes'),
+            newName = 'this is new',
+            newSizes = { "14" : newName };
+        jsmq.set('sizes', newSizes);
+        // Props get reversed
+        expect(jsmq.getConfig('names')[newName]).toEqual(14);
+        // Put it back - presumes set() works, but if we got this far, it does!
+        jsmq.set('sizes', copy);
+    });
+    
+    it("updates cfg.sizes when setting cfg.names", function () {
+        var copy = jsmq.getConfig('names'),
+            newSize = 52,
+            newNames = { "really large size" : newSize };
+        jsmq.set('names', newNames);
+        // Props get reversed
+        expect(jsmq.getConfig('sizes')[newSize]).toEqual("really large size");
+        jsmq.set('names', copy);
+    });
+    
+});
+
+
+describe("reload()", function () {
+    
+    // TODO: update
+   // it("returns string", function () {
+     //   expect(typeof jsmq.reload()).toEqual('string');
+    //});
+    
+    
+});
+
+
+
+
+//reload
+// returns string (for now)
+// still has same property after reload
+// setting a property and reload maintains config values
+// has new elems on page
+// spy on reload() being called
+// spy on init() not being called - add to init()
+
+// All kinds of tests for init/reload and setting configuration values!!
+
+//jsmq.set('sizes', {'45': 'jsmq-medium', '56': 'jsmq-small'}).reload().init()
