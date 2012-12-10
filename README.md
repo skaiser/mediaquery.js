@@ -125,9 +125,10 @@ _Does the current media query match our current width? Passing no arguments will
 name (e.g., 'jsmq-large') for the current state the user is in. Passing a single boolean argument
 will use the device-width to evaluate the return value._      
 **value**: Either a string for CSS classname (from get('names')) or number (from getConfig('sizes'))     
-**useDeviceWidth**: Boolean of whether to use media-device-width media query
+**useDeviceWidth**: Boolean of whether to use media-device-width media query       
 **Returns**: No arguments or single boolean argument returns CSS class name string. Others return boolean.
 Examples:
+
     jsmq.isAt();                    // 'jsmq-large', etc.
     jsmq.isAt(true);                // 'jsmq-large' for device-width
     jsmq.isAt('jsmq-small');        // true/false
