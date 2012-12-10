@@ -5,7 +5,9 @@ mediaquery.js
 
 ### What is this?
 
-This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design." 
+This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design."
+
+[View demo](http://mediaqueryjs.com/)
 
 
 ### Why use this?
@@ -76,7 +78,7 @@ can use:
 
 You can also do something like this on a window resize to check what CSS state we are in:
 
-    jsmq.update().get();            // "jsmq-large", etc.
+    jsmq.update().getState();            // "jsmq-large", etc.
     
 
 ## API
@@ -101,9 +103,11 @@ _Fire custom event_
 **elem**: Native DOM element to fire the event on
 
 
-### jsmq.get( [useDeviceWidth] )
-_Returns the current media query state. Basically does a JS Media Query (like a CSS media query)._      
-**useDeviceWidth**: Boolean of whether to use media-device-width media query
+### jsmq.get( [prop] )
+_Returns the local configuration object or optionally, a specific property._     
+**prop**: A string of the name of a specfic configuration propery name to query.           
+Example: jsmq.getConfig('names');      
+Example: jsmq.getConfig('sizes');
 
 
 ### jsmq.set( prop, value )
@@ -112,20 +116,18 @@ _Set a configuration property/value_
 **value**: Any valid JavaScript data type you want to store
 
 
+### jsmq.getState( [useDeviceWidth] )
+_Returns the current media query state. Basically does a JS Media Query (like a CSS media query)._       
+**useDeviceWidth**: Boolean of whether to use media-device-width media query
+
+
 ### jsmq.reload()
 _Reloads the configuration by removing our media query nodes and CSS. Really only useful for unit testing, I think._
 
 
-### jsmq.getConfig( [prop] )
-_Returns the local configuration object or optionally, a specific property._     
-**prop**: A string of the name of a specfic configuration propery name to query.           
-Example: jsmq.getConfig('names');      
-Example: jsmq.getConfig('sizes');
-
-
 ### jsmq.isAt( value [, useDeviceWidth] )
-_Does the current media query match our current width?_      
-**value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
+_Does the current media query match our current width? _      
+**value**: Either a string for CSS classname (from get('names')) or number (from getConfig('sizes'))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query
 
 

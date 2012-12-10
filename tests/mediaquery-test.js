@@ -57,12 +57,12 @@ describe("Public methods are defined", function () {
         expect(jsmq.fire).toBeDefined();
     });
     
-    it("jsmq.get", function () {
-        expect(jsmq.get).toBeDefined();
+    it("jsmq.getState", function () {
+        expect(jsmq.getState).toBeDefined();
     });
      
-    it("jsmq.getConfig", function () {
-        expect(jsmq.getConfig).toBeDefined();
+    it("jsmq.get", function () {
+        expect(jsmq.get).toBeDefined();
     });
     
     it("jsmq.isAt", function () {
@@ -76,16 +76,16 @@ describe("Public methods are defined", function () {
 });
 
 
-describe("getConfig()", function () {
+describe("get()", function () {
     
     it("returns configuration object", function () {
-        expect(typeof jsmq.getConfig()).toEqual('object');
+        expect(typeof jsmq.get()).toEqual('object');
     });
     
     it("returns specific properties from configuration object", function () {
         // Return a property not an object because by default it returns
         // an object if no properties match.
-        var result = jsmq.getConfig('useMyOwnStyles');
+        var result = jsmq.get('useMyOwnStyles');
         expect(typeof result).toEqual('boolean');
     });
     
@@ -94,7 +94,7 @@ describe("getConfig()", function () {
 
 describe("init()", function () {
     var docEl = document.documentElement,
-        PREFIX = jsmq.getConfig('PREFIX');
+        PREFIX = jsmq.get('PREFIX');
     
     it("has not added a class name to <html>", function () {
         expect('').toEqual(docEl.className);
@@ -126,26 +126,26 @@ describe("init()", function () {
 });
 
 
-describe("get()", function () {
+describe("getState()", function () {
     
     it("returns a value", function () {
         // TODO: It would be nice if we could set the browser size and test the results
-        expect(jsmq.get()).toBeTruthy();
+        expect(jsmq.getState()).toBeTruthy();
     });
     
     it("querying device width returns a value", function () {
         // TODO: It would be nice if we could set the browser size and test the results
-        expect(jsmq.get(true)).toBeTruthy();
+        expect(jsmq.getState(true)).toBeTruthy();
     });
     
     it("returns a valid value", function () {
         var names = classNames.split(" ");
-        expect(names).toContain(jsmq.get());
+        expect(names).toContain(jsmq.getState());
     });
     
     it("querying device width returns a valid value", function () {
         var names = classNames.split(" ");
-        expect(names).toContain(jsmq.get(true));
+        expect(names).toContain(jsmq.getState(true));
     });
     
 });
@@ -163,7 +163,7 @@ describe("update()", function () {
     
     it("is chainable with get", function () {
         var names = classNames.split(" ");
-        expect(names).toContain(jsmq.update().get());
+        expect(names).toContain(jsmq.update().getState());
     });
     
     it("calls callback after update()", function () {
@@ -188,7 +188,7 @@ describe("update()", function () {
 
 
 describe("fire()", function () {
-    var name = jsmq.getConfig('DEFAULT_EVENT'),
+    var name = jsmq.get('DEFAULT_EVENT'),
         el = document,
         result,
         fn = function (e) {
@@ -216,8 +216,8 @@ describe("fire()", function () {
     
     it("fires default event on default element", function () {
         // Explicitly set them inside the test since they are the test case.
-        var el = document.getElementById(jsmq.getConfig('DEFAULT_EVENT_ELEM')),
-            name = jsmq.getConfig('DEFAULT_EVENT');
+        var el = document.getElementById(jsmq.get('DEFAULT_EVENT_ELEM')),
+            name = jsmq.get('DEFAULT_EVENT');
             
         on(name, el, function (e) {
             result = e.type;
@@ -253,18 +253,18 @@ describe("isAt()", function () {
     });
     
     it("using number value matches current state value", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get()];    // 61, etc
+        var atNum = jsmq.get('names')[jsmq.getState()];     // 61, etc
         expect(jsmq.isAt(atNum)).toEqual(true);
     });
    
     it("using size value matches current state value", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get()],    
-            atSize = jsmq.getConfig('sizes')[atNum];        // jsmq-large, etc.
+        var atNum = jsmq.get('names')[jsmq.getState()],    
+            atSize = jsmq.get('sizes')[atNum];              // jsmq-large, etc.
         expect(jsmq.isAt(atSize)).toEqual(true);
     });
     
     it("using wrong number value does not match current state value", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get()];    // 61, etc    
+        var atNum = jsmq.get('names')[jsmq.getState()];     // 61, etc    
         expect(jsmq.isAt(atNum + 1)).toEqual(false);
     });
     
@@ -275,24 +275,24 @@ describe("isAt()", function () {
     // If we use a device width to test against, it has to always be true since both
     // should be equal.
     it("matching device width always returns true", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
+        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
         expect(jsmq.isAt(atNum, true)).toEqual(true);
     });
     
     it("changing device width value always returns false", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
+        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
         expect(jsmq.isAt(atNum + 1, true)).toEqual(false);
     });
     
     it("matching device width string name value always returns true", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )],
-            atSize = jsmq.getConfig('sizes')[atNum];
+        var atNum = jsmq.get('names')[jsmq.getState(  true  )],
+            atSize = jsmq.get('sizes')[atNum];
         expect(jsmq.isAt(atSize, true)).toEqual(true);
     });
     
     it("changing device width string name value always returns false", function () {
-        var atNum = jsmq.getConfig('names')[jsmq.get(  true  )];
-            atSize = jsmq.getConfig('sizes')[atNum];
+        var atNum = jsmq.get('names')[jsmq.getState(  true  )];
+            atSize = jsmq.get('sizes')[atNum];
         expect(jsmq.isAt(atSize + 'xxxxx', true)).toEqual(false);
     });
     
@@ -306,18 +306,18 @@ describe("isBelow()", function () {
     });
     
     it("is never below device width", function () {
-        expect(jsmq.isBelow(jsmq.get(true), true)).toEqual(false);
+        expect(jsmq.isBelow(jsmq.getState(true), true)).toEqual(false);
     });
     
     it("device width is never below lowest breakpoint width", function () {
-        var lowest = getLowestObjKey(jsmq.getConfig('sizes'));
+        var lowest = getLowestObjKey(jsmq.get('sizes'));
         expect(jsmq.isBelow(lowest, true)).toEqual(false);
     });
     
 });
 
 
-// Note a lot of these tests rely on getConfig()
+// Note a lot of these tests rely on get()
 describe("set()", function () {
     
     it("does not return value if no params are sent", function () {
@@ -338,9 +338,9 @@ describe("set()", function () {
             result2;
         jsmq.set(test, test);
         // Set it, then remove it
-        result1 = jsmq.getConfig()[test];
+        result1 = jsmq.get()[test];
         jsmq.set('removeTest', test);
-        result2 = jsmq.getConfig()[test];
+        result2 = jsmq.get()[test];
         // Not checking for undefined b/c we want to know that 1st set worked
         expect(result2).not.toEqual(result1);
     });
@@ -348,7 +348,7 @@ describe("set()", function () {
     it("removeTest removes itself", function () {
         var test = 'test';
         jsmq.set(test, test).set('removeTest', test);
-        expect(jsmq.getConfig()['removeTest']).not.toBeDefined();
+        expect(jsmq.get()['removeTest']).not.toBeDefined();
     });
     
     // Can't use instanceof jsmq because we are overwriting constructor with module pattern
@@ -370,7 +370,7 @@ describe("set()", function () {
             expected = 'new test value',    
             result;
         jsmq.set(prop, expected);
-        result = jsmq.getConfig()[prop];
+        result = jsmq.get()[prop];
         expect(result).toEqual(expected);
         jsmq.set('removeTest', prop);
     });
@@ -379,7 +379,7 @@ describe("set()", function () {
         var prop = 'some fake prop',
             result;
         jsmq.set(prop, false);
-        result = jsmq.getConfig()[prop];
+        result = jsmq.get()[prop];
         expect(result).toBeFalsy();
         jsmq.set('removeTest', prop);
     });
@@ -390,31 +390,31 @@ describe("set()", function () {
             expected = 'fake prop1fake prop2',
             result;
         jsmq.set(prop1, prop1).set(prop2, prop2);
-        result = jsmq.getConfig(prop1);
-        result += jsmq.getConfig(prop2);
+        result = jsmq.get(prop1);
+        result += jsmq.get(prop2);
         expect(result).toEqual(expected);
         jsmq.set('removeTest', prop1).set('removeTest', prop2);
     });
     
     // Watch it! These two are confusing because the props get reversed
     it("updates cfg.names when setting cfg.sizes", function () {
-        var copy = jsmq.getConfig('sizes'),
+        var copy = jsmq.get('sizes'),
             newName = 'this is new',
             newSizes = { "14" : newName };
         jsmq.set('sizes', newSizes);
         // Props get reversed
-        expect(jsmq.getConfig('names')[newName]).toEqual(14);
+        expect(jsmq.get('names')[newName]).toEqual(14);
         // Put it back - presumes set() works, but if we got this far, it does!
         jsmq.set('sizes', copy);
     });
     
     it("updates cfg.sizes when setting cfg.names", function () {
-        var copy = jsmq.getConfig('names'),
+        var copy = jsmq.get('names'),
             newSize = 52,
             newNames = { "really large size" : newSize };
         jsmq.set('names', newNames);
         // Props get reversed
-        expect(jsmq.getConfig('sizes')[newSize]).toEqual("really large size");
+        expect(jsmq.get('sizes')[newSize]).toEqual("really large size");
         jsmq.set('names', copy);
     });
     

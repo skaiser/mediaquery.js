@@ -22,7 +22,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.0',
+        var VERSION = '0.3.1',
             prevClass = '',
             initHasRun = false,
             
@@ -165,12 +165,12 @@
         /**
          *  Returns local configuration object
          *
-         *  @method     getConfig
+         *  @method     get
          *  @param      [String]    prop    Optional. Specfic configuration propery name to query.
          *  @return     {Object}            Local configuration object
          *  @public
          */
-        function getConfig(prop) {
+        function get(prop) {
             // Some properties can be 'false' so need to check against 'undefined'
             return cfg[prop] !== undefined ? cfg[prop] : cfg;
         }
@@ -412,12 +412,12 @@
         /**
          *  Gets the current 'media query' state of the breakpoint we are at right now.
          *
-         *  @method     get
+         *  @method     getState
          *  @param      {Boolean}   useDeviceWidth  Whether to check using device or viewport width. Default is viewport
          *  @return     {String}                    The CSS class name (i.e., a word) value for the breakpoint we are currently at
          *  @public
          */
-        function get(useDeviceWidth) {
+        function getState(useDeviceWidth) {
             return cfg.sizes[_getWidth(useDeviceWidth)];
         }
         
@@ -429,7 +429,7 @@
          *  @private
          */
         function _setCssClass() {
-            var currClass = get();
+            var currClass = getState();
             
             if (prevClass !== currClass) {
                 docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
@@ -582,7 +582,7 @@
             get             : get,
             set             : set,
             init            : init,
-            getConfig       : getConfig,
+            getState        : getState,
             isAt            : isAt,
             isBelow         : isBelow,
             reload          : reload
@@ -595,7 +595,7 @@
     window.jsmq = _jsmq;
     
     
-    if (!jsmq.getConfig('delayInit')) {
+    if (!jsmq.get('delayInit')) {
         window.jsmq.init();   
     }
     
