@@ -340,7 +340,23 @@ _For unit testing. Are we running tests or not?_
 
 <a name="event-default"></a>
 #### jsmq:update
-_Fires after a CSS class change event occurs when [update()](#method-update) is called._
+_Fires after a CSS class change event occurs when [update()](#method-update) is called. The following additional properties are available on the Event Object to help with filtering logic after an event:_       
+**Additional properties on the Event Object**:     
+**event.className**: Name of current CSS class being used (e.g., 'jsmq-large')      
+**event.size**: Size (number) of the CSS class      
+Example:
+
+	$('#jsmq-media-width').on('jsmq:update', function (e) {
+		if (e.className === MyApp.LARGE_WIDTH) {
+			// Do stuff for large screens
+		}
+		
+		// OR 
+		
+		if (e.size === 45) {
+			// Do stuff 
+		}
+	});
 
 
 

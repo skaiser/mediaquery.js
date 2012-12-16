@@ -225,6 +225,19 @@ describe("fire()", function () {
         expect(result).toEqual(name);
     });
     
+    
+    // TODO: why does this fail even though e.type works above
+    it("event object has className property", function () {
+        on(name, el, function (e) {
+            result = e.target.jsmqCurrClass;
+        });
+        runs(function () {
+            jsmq.fire(name, el, "some");    
+        });
+        runs(function () {
+            expect(result).toBeDefined();
+        });
+    });
 });
 
 
@@ -490,3 +503,9 @@ describe("getSizes()", function () {
 // All kinds of tests for init/reload and setting configuration values!!
 
 //jsmq.set('sizes', {'45': 'jsmq-medium', '56': 'jsmq-small'}).reload().init()
+
+
+// fire()
+// tests for passing classname and size
+
+// Testing _getWidth for IEs and older browsers, etc

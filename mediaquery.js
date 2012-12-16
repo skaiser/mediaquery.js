@@ -24,7 +24,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.6',
+        var VERSION = '0.3.7',
             prevClass = '',
             initHasRun = false,
             
@@ -85,9 +85,13 @@
         cfg.useMyOwnElements = cfg.useMyOwnElements || false;
         
         
-        // Support IE < 9 and other old browsers with no mediq queries.
+        // Support IE < 10 and other old browsers with no mediq queries.
         // Are you sure you want to do that to yourself?
         cfg.supportOldBrowsers = cfg.supportOldBrowsers || true;
+        
+        
+        // TODO: IE9+ should be supported without supporting IE < 9 since they natively supports media queries
+        //cfg.notIEBelow9 = true;
         
         
         // Name of custom event that gets fired when media query update/change occurs
@@ -482,20 +486,24 @@
          *  Fires custom event. Default is to fire 'jsmq:update' on the default media element
          *
          *  @method     fire
-         *  @param      [String]    name    Optional. Name of custom event to fire
-         *  @param      [Object]    elem    Optional. Native HTML DOM element to fire on
+         *  @param      [String]    name        Optional. Name of custom event to fire
+         *  @param      [Object]    elem        Optional. Native HTML DOM element to fire on
+         *  @param      [String]    currClass   Optional. Current class name used on the page (e.g., 'jsmq-large')
          *  @public
          */
-        function fire(name, elem) {
+        function fire(name, elem, currClass) {
             var ev;
             
             name = name || DEFAULT_EVENT;
             elem = elem || _getId(DEFAULT_EVENT_ELEM);
+            // prevClass should actually contain current class in the default setup
+            currClass = currClass || prevClass;     
             
             if (document.createEvent) {
                 ev = document.createEvent('Event');
                 ev.initEvent(name, true, true);
-                elem.dispatchEvent(ev);
+                //http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/
+                elem.dispatchEvent(ev);    
             }
         }
         
@@ -512,7 +520,7 @@
             if (prevClass !== currClass) {
                 docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
                 prevClass = currClass;
-                return true;    
+                return prevClass;    
             }
         }
         
@@ -536,7 +544,7 @@
             changed = _setCssClass();
             
             if (changed) {
-                fire(name, elem);
+                fire(name, elem, changed);
             }
             
             // TODO: Is it more intuitive to ALWAYS call this or only if changed?
