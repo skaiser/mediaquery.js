@@ -19,6 +19,12 @@ This is a small (about 1.5KB) JS library independent solution for making sure yo
 * If you want a more reliable way to query what size the CSS media query thinks the screen is at vesus the [unreliable way that some browsers report the size using JS][1] 
 
 
+## Supported Browsers
+
+(IE6+, any others)       
+As of v0.3.3, there is support for IE6+ and other older browsers that don't support media queries. Any other modern browsers should work too!
+
+
 ## Installation
 
 Insert the following into the `<head>` on your page:
@@ -121,7 +127,7 @@ _Is the current media query BELOW our current width?_
 
 ### jsmq.getSortedSizes()
 _Returns an array of cfg.sizes number values sorted high to low. This makes it so that you can run checks and
-set constant variables in your app code without needing to know the names of the sizes ahead of time._
+set constant variables in your app code without needing to know the names of the sizes ahead of time._       
 Example:
     var mySizes = jsmq.getSortedSizes();
     var LARGE\_WIDTH = jsmq.get('sizes')[mySizes[0]];
