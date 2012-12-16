@@ -5,7 +5,9 @@ mediaquery.js
 
 ### What is this?
 
-This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries" and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized. It is an experiment in an alternate approach to implementing "responsive design."
+This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries"
+and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized.
+It is an experiment in an alternate approach to implementing "responsive design." I think we should call it "JSS media queries." :)
 
 [View demo](http://mediaqueryjs.com/)
 
@@ -90,7 +92,7 @@ You can also do something like this on a window resize to check what CSS state w
 ## API
 
 ### jsmq.init()
-_Makes things happen. **This runs automagically at load by default.** See jsmq\_config 
+_Makes things happen. **This runs automagically at load by default.** See jsmq\_config
 and/or reload() if you want to call this manually later._
 
 
