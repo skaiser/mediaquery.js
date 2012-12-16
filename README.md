@@ -269,56 +269,69 @@ _Reloads the configuration by removing our media query nodes and CSS. Really onl
 #### window.jsmq_config
 _If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls [init()](#method-init) on itself, you need to set this_ **before** _mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options._
 
-#### PREFIX
+#### PREFIX (String)
 _Prefix to use on CSS classes and appended page elements._      
 **Default**: "jsmq-"
 
-#### DEFAULT_EVENT
+#### DEFAULT_EVENT (String)
 _The name of the default custom event name that gets fired on updates._           
 **Default**: "jsmq:update"
 
-#### DEFAULT_EVENT_ELEM
+#### DEFAULT_EVENT_ELEM (String)
 _Default native DOM element to bind the default [update()](#method-update) event to._       
 **Default**: elemNames['viewport'] (i.e., 'jsmq-mediq-width')
 
-#### UNITS
+#### UNITS (String)
 _Default unit sizes to use for breakpoints. If you don't think you should use 'em', please consider [this][6]:_      
 **Default**: 'em'
 
 <a name="config-sizes"></a>
-#### sizes
+#### sizes (Object)
 _Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/][6]_      
-**Default**: 61, 60, 45, 30
+**Default**:      
+
+	{
+    	'61': PREFIX + 'large',                      // 61em > 960px
+        '60': PREFIX + 'medium',                     // 60em ~= 960px
+        '45': PREFIX + 'small',                      // 45em ~= 720px
+        '30': PREFIX + 'smaller'                     // 30em ~= 480px
+    };
 
 <a name="config-names"></a>
-#### names
+#### names (Object)
 **Do set this yourself with set(). They are defined in [sizes](#config-sizes) and this is automagically mapped to [sizes](#config-sizes)**.      
 _CSS classnames that represent your breakpoint sizes. These are the names you will scope your CSS selectors with to emulate @media rules. Use PREFIX to change the 'jsmq-' value._    
 **Default**: 'jsmq-large', 'jsmq-medium', 'jsmq-small', 'jsmq-smaller'
 
-#### elemNames
+#### elemNames (Object)
 _HTML id values of the elements that will be added to the page and queried._      
-**Default**: 'jsmq-media-width' and 'jsmq-media-device-width'
+**Default**:     
+
+	{
+    	'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
+        'device'    : PREFIX + 'media-device-width', // Width of actual device
+        'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
+    };
 
 <a name="config-mystyles"></a>
-#### useMyOwnStyles
+#### useMyOwnStyles (Boolean)
 _Set to 'true' to skip auto-appending of CSS and add your stylesheet. Could minimize reflows._    
 **Default**: false
 
 <a name="config-myelements"></a>
-#### useMyOwnElements
+#### useMyOwnElements (Boolean)
 _Set to 'true' is you want to use elements that you've already added. Could minimize reflows._     
 **Default**: false
 
-#### supportOldBrowsers
+#### supportOldBrowsers (Boolean)
 _Support IE < 9 and other old browsers with no mediq queries. Added in v0.3.3._    
 **Default**: true (mostly so demos show it working…I recommend setting this to false)
 
-#### delayInit
+#### delayInit (Boolean)
 _Whether to delay calling [init()](#method-init) at load or not. Mostly useful for unit testing._      
 **Default**: false
 
-#### isTest
+#### isTest (Boolean)
 _For unit testing. Are we running tests or not?_      
 **Default**: false
 
