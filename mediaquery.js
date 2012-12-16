@@ -24,7 +24,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.5',
+        var VERSION = '0.3.6',
             prevClass = '',
             initHasRun = false,
             
@@ -85,9 +85,8 @@
         cfg.useMyOwnElements = cfg.useMyOwnElements || false;
         
         
-        // TODO: Think about renaming this to indicate something more like "support browsers that don't
-        //  support media queries and/or window.getComputedStyle". It's not just IE, right?
-        // Support IE < 9. Are you sure you want to do that to yourself?
+        // Support IE < 9 and other old browsers with no mediq queries.
+        // Are you sure you want to do that to yourself?
         cfg.supportOldBrowsers = cfg.supportOldBrowsers || true;
         
         
@@ -174,7 +173,7 @@
          *
          *  @method     get
          *  @param      [String]    prop    Optional. Specfic configuration propery name to query.
-         *  @return     {Object}            Local configuration object
+         *  @return     {Object}            Local configuration object or specific property.
          *  @public
          */
         function get(prop) {
@@ -664,7 +663,7 @@
             isAt            : isAt,
             isBelow         : isBelow,
             reload          : reload,
-            getSortedSizes  : getSortedSizes
+            getSizes        : getSortedSizes
         };
         
     })();
