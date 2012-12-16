@@ -22,7 +22,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.2',
+        var VERSION = '0.3.3',
             prevClass = '',
             initHasRun = false,
             
@@ -83,7 +83,7 @@
         // TODO: Think about renaming this to indicate something more like "support browsers that don't
         //  support media queries and/or window.getComputedStyle". It's not just IE, right?
         // Support IE < 9. Are you sure you want to do that to yourself?
-        cfg.supportOldIE = cfg.supportOldIE || false;
+        cfg.supportOldIE = cfg.supportOldIE || true;
         
         
         // Name of custom event that gets fired when media query update/change occurs
@@ -136,7 +136,7 @@
          *
          *  @method     _reverseKeyValue
          *  @param      {Object}    o           Object to have key/values reversed
-         *  @param      {Boolean}   castNum     Whether to cast value to a Number
+         *  @param      [Boolean]   castNum     Whether to cast value to a Number
          *  @return     {Object}                A new object with key/values reversed
          *  @private
          */
@@ -189,7 +189,7 @@
          */
         function _getWidth(useDeviceWidth) {
             
-            if (window.getComputedStyle /* TODO: && window.matchMedia??*/) {
+            if (window.getComputedStyle /*&& window.matchMedia*/) {
                 _getWidth = function (useDeviceWidth) {
                     var cs = window.getComputedStyle,
                         elemName = useDeviceWidth ? 'device' : 'viewport';
@@ -197,19 +197,28 @@
                 };
             }
             // Old IE
-            else if (cfg.supportOldIE && window.currentStyle/* TODO: || (!window.matchMedia && window.getComputedStyle)*/) {
+            else if (cfg.supportOldIE && head.currentStyle/* TODO: || (!window.matchMedia && window.getComputedStyle)*/) {
                 _getWidth = function (useDeviceWidth) {
                     var el,
                         fontSize,
+                        height = '1em',
                         elemName = useDeviceWidth ? 'device' : 'viewport',
-                        width = useDeviceWidth ? screen.width : window.clientWidth;
+                        width = useDeviceWidth ? screen.width : window.innerWidth || docEl.clientWidth;
                     
                     // We need to divide the pixel width by the font size if using ems.
                     // TODO: Uh...actually test this in an IE browser once I get another VM...
                     if (UNITS === 'em') {
                         el = _getId(cfg.elemNames[elemName]);
-                        el.style.height = '1em';
-                        fontSize = parseInt(el.currentStyle.height, 10) || 16;
+                        el.style.height = height;
+                        
+                        if (el.currentStyle) {
+                            height = el.currentStyle.height;
+                        } else {
+                            height = window.getComputedStyle(el).getPropertyValue('height');
+                        }
+                        // IE8 (others?) doesn't convert to px, so check to see if still in 'em'
+                        // and fallback to browser default size if so
+                        fontSize = height.match(/em/) !== null ? 16 : parseInt(height, 10);
                         // Original
                         el.style.height = 0;
                         return width / fontSize;
@@ -226,6 +235,42 @@
         // Overwrite self once we do object detection
         _getWidth();
         
+        
+        
+        /**
+         *  This sucks. But IE may not return a match on cfg.sizes[size],
+         *  so we need to see if the current width is within our current range.
+         */
+        function _findRange(width) {
+            var ranges = [],
+                sorted = _getSortedSizes(),
+                len = sorted.length,
+                range,
+                upper,
+                lower,
+                i;
+            
+            // Get the highs and lows to make ranges (e.g., '60-45')
+            for (i = 0; i < len; i++) {
+                ranges.push(sorted[i] + '-' + (sorted[i + 1] || 0));
+            }
+            
+            len = ranges.length;
+            
+            for (i = 0; i < len; i++) {
+                range = ranges[i].split('-');
+                upper = range[0];
+                lower = range[1];
+                
+                // Find out if we're in this size range
+                if (width <= upper && width > lower) {
+                    return cfg.sizes[upper];
+                } 
+                
+            }
+            // Default to largest
+            return cfg.sizes[sorted[0]]; 
+        }
         
         /**
          *  Allows us to check whether we are at a specific media query.
@@ -245,7 +290,10 @@
             
             if (value === undefined || typeof value === 'boolean') {
                 useDeviceWidth = value;
-                return cfg.sizes[_getWidth(useDeviceWidth)];
+                // If device doesn't support media query and cfg uses 'em', we may not get back a match.
+                //  Fallback to largest size defined
+                var width = _getWidth(useDeviceWidth);
+                return cfg.sizes[width] || _findRange(width);
             }
             
             if (typeof value === 'string') {
@@ -348,6 +396,21 @@
         }
         
         
+        function _getSortedSizes() {
+            var sorted = [],
+                sizes = cfg.sizes,
+                size;
+            
+            for (size in sizes) {
+                
+                if (sizes.hasOwnProperty(size)) {
+                    sorted.push(size);    
+                }
+            }
+            
+            return sorted.sort().reverse();
+        }
+        
         /**
          *  Loops through cfg.sizes to create required CSS rules to add to page.
          *
@@ -382,7 +445,7 @@
                     css =   '#' + cfg.elemNames.viewport + ',' +
                             '#' + cfg.elemNames.device + ' {' +
                                 // Hide element in case not using <script>
-                                'height: 0;' +
+                                'height: 0;' +    
                                 'display: none;' +
                                 'position: absolute;' +
                                 'left: -999999em;' +
