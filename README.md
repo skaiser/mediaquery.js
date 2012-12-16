@@ -33,13 +33,13 @@ This prevents weird behaviors that can happen when the CSS media query gets
 triggered, but JS reports the `window.inner(outer)Width` to be completely different or [at least inconsistent across devices][1].
 4. It
 gives us the option to _not_ respond to user resizes unless we absolutely
-want to, yet **_we can still be responsive at page load (on the client-side,
-without user-agent sniffing)._** 
+want to, yet **we can still be responsive at page load (on the client-side,
+without user-agent sniffing).** 
 5. You can still add your own media queries for
 things like background images (to prevent unnecessary downloads), of course. You
 will probably still want to preface them with the "JSS media query" class name,
 though, to make sure things don't get out of sync.
-6. Works with `@import` rules
+6. Works with `@import` rules (unconfirmed)
 
 
 ### How does it work?
@@ -55,13 +55,13 @@ them (if the browser supports media queries)
 and is based on your defined breakpoints
 
 
-That's it. You can then **_hook into the window.resize event to detect changes
-consistently and accurately based on native media query behavior_**, or if you
+That's it. You can then **hook into the window.resize event to detect changes
+consistently and accurately based on native media query behavior**, or if you
 choose to support older browsers, viewport measurements (more reliable than
 newer mobile browsers in this regard).
 
-Then, **_instead of putting all your CSS rules inside of media queries, you preface
-them with the CSS class you defined in your breakpoints_**. For example:
+Then, **instead of putting all your CSS rules inside of media queries, you preface
+them with the CSS class you defined in your breakpoints**. For example:
 
 	.jsmq-large .some-style {color: green;}
 	.jsmq-medium .some-style {color: orange;}
@@ -170,7 +170,7 @@ Or before doing an animation:
 
 <a name="method-init"></a>
 #### jsmq.init()
-_Makes things happen. **This runs automagically at load by default.** See [jsmq\_config](#jsmq_config)
+_Makes things happen._ **This runs automagically at load by default.** _See [jsmq\_config](#jsmq_config)
 and/or [reload()](#method-reload) if you want to call this manually later._     
 **Returns**: The jsmq object.
 
@@ -267,7 +267,7 @@ _Reloads the configuration by removing our media query nodes and CSS. Really onl
 
 <a name="jsmq_config"></a>
 #### window.jsmq_config
-_If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls [init()](#method-init) on itself, you need to set this **before** mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options._
+_If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls [init()](#method-init) on itself, you need to set this_ **before** _mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options._
 
 #### PREFIX
 _Prefix to use on CSS classes and appended page elements._      
@@ -287,7 +287,7 @@ _Default unit sizes to use for breakpoints. If you don't think you should use 'e
 
 <a name="config-sizes"></a>
 #### sizes
-_Responsive breakpoint sizes. **Sizes default to 'em' values**. See: [http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/][6]_      
+_Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/][6]_      
 **Default**: 61, 60, 45, 30
 
 <a name="config-names"></a>
