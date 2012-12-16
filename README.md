@@ -266,7 +266,7 @@ _Reloads the configuration by removing our media query nodes and CSS. Really onl
 ## Configuration Options/Properties
 
 <a name="jsmq_config"></a>
-#### window.jsmq_config
+#### window.jsmq_config (Object)
 _If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls [init()](#method-init) on itself, you need to set this_ **before** _mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options._
 
 #### PREFIX (String)
