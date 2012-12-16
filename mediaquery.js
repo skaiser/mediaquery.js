@@ -10,6 +10,8 @@
  */
 (function (window, document, undefined) {
     
+    "use strict";
+    
     var _jsmq,
         docEl = document.documentElement,
         head = document.getElementsByTagName('head')[0];
@@ -22,7 +24,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.4',
+        var VERSION = '0.3.5',
             prevClass = '',
             initHasRun = false,
             
@@ -31,6 +33,9 @@
             UNITS,
             DEFAULT_EVENT,
             DEFAULT_EVENT_ELEM,
+            
+            // Function that will overwrite itself at runtime
+            _getWidth,
             
             // Local configuration object
             cfg;
@@ -189,7 +194,7 @@
          *  @return     {Number}
          *  @private
          */
-        function _getWidth(useDeviceWidth) {
+        _getWidth = function (useDeviceWidth) {
             
             if (window.getComputedStyle && window.matchMedia) {
                 _getWidth = function (useDeviceWidth) {
@@ -234,7 +239,7 @@
                 };
             }
             
-        }
+        };
         // Overwrite self once we do object detection
         _getWidth();
         
@@ -540,7 +545,7 @@
                 callbackFn.apply();
             }
             
-            return this;
+            return window.jsmq;
         }
         
         
@@ -570,7 +575,7 @@
                     delete cfg[prop];
                 }
                 // Only return 'this' if params were correct so we can test it.
-                return this;
+                return window.jsmq;
             }
         }
         
@@ -606,7 +611,7 @@
             parentNode = null;
             initHasRun = false;
             
-            return this;
+            return window.jsmq;
         }
         
         
@@ -640,7 +645,7 @@
             }
             
             initHasRun = true;
-            return this;
+            return window.jsmq;
         }
         
         
@@ -669,9 +674,9 @@
     window.jsmq = _jsmq;
     
     
-    if (!jsmq.get('delayInit')) {
+    if (!window.jsmq.get('delayInit')) {
         window.jsmq.init();   
     }
     
     
-})(this, this.document);
+})(window, window.document);
