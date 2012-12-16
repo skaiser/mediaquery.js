@@ -77,6 +77,10 @@ describe("Public methods are defined", function () {
         expect(jsmq.reload).toBeDefined();
     });
     
+    it("jsmq.getSortedSizes", function () {
+        expect(jsmq.getSortedSizes).toBeDefined();
+    });
+    
 });
 
 
@@ -454,6 +458,24 @@ describe("reload()", function () {
     
 });
 
+
+
+
+describe("getSortedSizes()", function () {
+    
+    it("returns an array", function () {
+        expect(jsmq.getSortedSizes()[0]).toBeDefined();
+    });
+    
+    it("is sorted high to low", function () {
+        var sorted = jsmq.getSortedSizes(),
+            high = sorted[0],
+            low = sorted[sorted.length - 1];
+        expect(high).toBeGreaterThan(low);
+    });
+    
+    
+});
 
 
 

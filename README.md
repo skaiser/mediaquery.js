@@ -97,10 +97,35 @@ an update occurs. Accepts a callback function._
 **callback**: Callback after updating. Can be passed as a single argument.
 
 
-### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
-_Fire custom event_    
-**name**: A string containing the name of the custom event to fire      
-**elem**: Native DOM element to fire the event on
+### jsmq.isAt( [value] [, useDeviceWidth] )
+_Does the current media query match our current width? Passing no arguments will return the CSS class
+name (e.g., 'jsmq-large') for the current state the user is in. Passing a single boolean argument
+will use the device-width to evaluate the return value._      
+**value**: Either a string for CSS classname (from get('names')) or number (from getConfig('sizes'))     
+**useDeviceWidth**: Boolean of whether to use media-device-width media query       
+**Returns**: No arguments or single boolean argument returns CSS class name string. Others return boolean.     
+Examples:
+
+    jsmq.isAt();                    // 'jsmq-large', etc.
+    jsmq.isAt(true);                // 'jsmq-large' for device-width
+    jsmq.isAt('jsmq-small');        // true/false
+    jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
+    jsmq.isAt(45, true);            // true/false for device width
+
+
+### jsmq.isBelow( value [, useDeviceWidth] )
+_Is the current media query BELOW our current width?_     
+**value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
+**useDeviceWidth**: Boolean of whether to use media-device-width media query
+
+
+### jsmq.getSortedSizes()
+_Returns an array of cfg.sizes number values sorted high to low. This makes it so that you can run checks and
+set constant variables in your app code without needing to know the names of the sizes ahead of time._
+Example:
+    var mySizes = jsmq.getSortedSizes();
+    var LARGE\_WIDTH = jsmq.get('sizes')[mySizes[0]];
+    if ($('html').hasClass(LARGE\_WIDTH)) { // do stuff}
 
 
 ### jsmq.get( [prop] )
@@ -116,34 +141,19 @@ _Set a configuration property/value_
 **value**: Any valid JavaScript data type you want to store
 
 
+### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
+_Fire custom event_    
+**name**: A string containing the name of the custom event to fire      
+**elem**: Native DOM element to fire the event on
+
+
 ### jsmq.reload()
 _Reloads the configuration by removing our media query nodes and CSS. Really only useful for unit testing, I think._
-
-
-### jsmq.isAt( [value] [, useDeviceWidth] )
-_Does the current media query match our current width? Passing no arguments will return the CSS class
-name (e.g., 'jsmq-large') for the current state the user is in. Passing a single boolean argument
-will use the device-width to evaluate the return value._      
-**value**: Either a string for CSS classname (from get('names')) or number (from getConfig('sizes'))     
-**useDeviceWidth**: Boolean of whether to use media-device-width media query       
-**Returns**: No arguments or single boolean argument returns CSS class name string. Others return boolean.
-Examples:
-
-    jsmq.isAt();                    // 'jsmq-large', etc.
-    jsmq.isAt(true);                // 'jsmq-large' for device-width
-    jsmq.isAt('jsmq-small');        // true/false
-    jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
-    jsmq.isAt(45, true);            // true/false for device width
-
-
-### jsmq.isBelow( value [, useDeviceWidth] )
-_Is the current media query BELOW our current width?_     
-**value**: Either a string for CSS classname (from getConfig('names')) or number (from getConfig('sizes'))     
-**useDeviceWidth**: Boolean of whether to use media-device-width media query
 
     
 ### jsmq.VERSION
 _Returns version info._
+
 
 ## Configuration Options (more info to come - check source code for now)
 

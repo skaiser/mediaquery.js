@@ -22,7 +22,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.3',
+        var VERSION = '0.3.4',
             prevClass = '',
             initHasRun = false,
             
@@ -83,7 +83,7 @@
         // TODO: Think about renaming this to indicate something more like "support browsers that don't
         //  support media queries and/or window.getComputedStyle". It's not just IE, right?
         // Support IE < 9. Are you sure you want to do that to yourself?
-        cfg.supportOldIE = cfg.supportOldIE || true;
+        cfg.supportOldBrowsers = cfg.supportOldBrowsers || true;
         
         
         // Name of custom event that gets fired when media query update/change occurs
@@ -147,6 +147,7 @@
             for (k in o) {
             
                 if (o.hasOwnProperty(k)) {
+                    // TODO: Just use parseInt?
                     newObj[o[k]] = castNum ? Number(k) : k;        
                 }
             }
@@ -160,6 +161,7 @@
          *  numeric value.
          */
         cfg.names = _reverseKeyValue(cfg.sizes, true);
+        
         
         
         /**
@@ -189,7 +191,7 @@
          */
         function _getWidth(useDeviceWidth) {
             
-            if (window.getComputedStyle /*&& window.matchMedia*/) {
+            if (window.getComputedStyle && window.matchMedia) {
                 _getWidth = function (useDeviceWidth) {
                     var cs = window.getComputedStyle,
                         elemName = useDeviceWidth ? 'device' : 'viewport';
@@ -197,7 +199,7 @@
                 };
             }
             // Old IE
-            else if (cfg.supportOldIE && head.currentStyle/* TODO: || (!window.matchMedia && window.getComputedStyle)*/) {
+            else if (cfg.supportOldBrowsers && (head.currentStyle || window.getComputedStyle)) {
                 _getWidth = function (useDeviceWidth) {
                     var el,
                         fontSize,
@@ -219,8 +221,9 @@
                         // IE8 (others?) doesn't convert to px, so check to see if still in 'em'
                         // and fallback to browser default size if so
                         fontSize = height.match(/em/) !== null ? 16 : parseInt(height, 10);
-                        // Original
+                        // Put it back to original
                         el.style.height = 0;
+                        
                         return width / fontSize;
                     }
                     return width;
@@ -238,12 +241,43 @@
         
         
         /**
+         *  Makes sure the sizes are in order from highest to lowest
+         *  since browser implementations may not ensure the order
+         *  of object properties when doing a 'for in' loop.
+         *
+         *  @method     getSortedSizes
+         *  @return     {Array}         Array of cfg.sizes number values sorted high to low
+         *  @public
+         */
+        function getSortedSizes() {
+            var sorted = [],
+                sizes = cfg.sizes,
+                size;
+            
+            for (size in sizes) {
+                if (sizes.hasOwnProperty(size)) {
+                    sorted.push(size);    
+                }
+            }
+            
+            // Make sure that the highest value is first to maintain the cascade in CSS
+            return sorted.sort().reverse();
+        }
+        
+        
+        
+        /**
          *  This sucks. But IE may not return a match on cfg.sizes[size],
-         *  so we need to see if the current width is within our current range.
+         *  so we need to see if the current width is within our current range
+         *  (i.e., is the width currently between 60 and 45 ems?)
+         *
+         *  @method     _findRange
+         *  @return     {String}    String value of the current CSS class based on current JSS media query
+         *  @private
          */
         function _findRange(width) {
             var ranges = [],
-                sorted = _getSortedSizes(),
+                sorted = getSortedSizes(),
                 len = sorted.length,
                 range,
                 upper,
@@ -396,21 +430,6 @@
         }
         
         
-        function _getSortedSizes() {
-            var sorted = [],
-                sizes = cfg.sizes,
-                size;
-            
-            for (size in sizes) {
-                
-                if (sizes.hasOwnProperty(size)) {
-                    sorted.push(size);    
-                }
-            }
-            
-            return sorted.sort().reverse();
-        }
-        
         /**
          *  Loops through cfg.sizes to create required CSS rules to add to page.
          *
@@ -420,7 +439,6 @@
         function _addInlineCss() {
             var sorted = [],
                 css = '',
-                k,
                 i; 
             
             /**
@@ -428,15 +446,10 @@
              *  we can't trust browser implementations to be consistent and must
              *  force the order we want by first getting the property values,
              *  sorting them and then reversing it. Then, we can iterate back
-             *  through to write the values in a "trusted" order.
+             *  through to write the values in a "trusted" order and make sure
+             *  the highest value is first to maintain the cascade in CSS.
              */
-            for (k in cfg.sizes) {
-                if (cfg.sizes.hasOwnProperty(k)) {
-                    sorted.push(k);
-                }
-            }
-            // Make sure that the highest value is first to maintain the cascade in CSS
-            sorted.sort().reverse();
+            sorted = getSortedSizes();
             
             for (i = 0; i < sorted.length; i++) {
                 
@@ -645,7 +658,8 @@
             init            : init,
             isAt            : isAt,
             isBelow         : isBelow,
-            reload          : reload
+            reload          : reload,
+            getSortedSizes  : getSortedSizes
         };
         
     })();
