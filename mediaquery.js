@@ -216,7 +216,6 @@
                         width = useDeviceWidth ? screen.width : window.innerWidth || docEl.clientWidth;
                     
                     // We need to divide the pixel width by the font size if using ems.
-                    // TODO: Uh...actually test this in an IE browser once I get another VM...
                     if (UNITS === 'em') {
                         el = _getId(cfg.elemNames[elemName]);
                         el.style.height = height;
@@ -280,39 +279,28 @@
          *  (i.e., is the width currently between 60 and 45 ems?)
          *
          *  @method     _findRange
-         *  @return     {String}    String value of the current CSS class based on current JSS media query
+         *  @param      {Number}    width   Width value of screen or viewport
+         *  @return     {String}            String value of the current CSS class based on current JSS media query
          *  @private
          */
         function _findRange(width) {
-            var ranges = [],
-                sorted = getSortedSizes(),
+            var sorted = getSortedSizes(),
                 len = sorted.length,
-                range,
-                upper,
-                lower,
-                i;
-            
-            // Get the highs and lows to make ranges (e.g., '60-45')
-            for (i = 0; i < len; i++) {
-                ranges.push(sorted[i] + '-' + (sorted[i + 1] || 0));
-            }
-            
-            len = ranges.length;
-            
-            for (i = 0; i < len; i++) {
-                range = ranges[i].split('-');
-                upper = range[0];
-                lower = range[1];
+                upper = sorted[0],
+                i = 1;
                 
-                // Find out if we're in this size range
-                if (width <= upper && width > lower) {
+            // Lower value of last range is 0
+            for (; i <= len; i++) {
+                
+                if (width <= upper && width > (sorted[i] || 0)) {
                     return cfg.sizes[upper];
-                } 
-                
+                }
+                upper = sorted[i];
             }
-            // Default to largest
+            // Default to largest if no matches
             return cfg.sizes[sorted[0]]; 
         }
+        
         
         /**
          *  Allows us to check whether we are at a specific media query.
