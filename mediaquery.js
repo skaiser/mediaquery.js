@@ -24,7 +24,7 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.7',
+        var VERSION = '0.3.8',
             prevClass = '',
             initHasRun = false,
             
@@ -476,21 +476,23 @@
          *  @method     fire
          *  @param      [String]    name        Optional. Name of custom event to fire
          *  @param      [Object]    elem        Optional. Native HTML DOM element to fire on
-         *  @param      [String]    currClass   Optional. Current class name used on the page (e.g., 'jsmq-large')
+         *  @param      [String]    className   Optional. Current class name used on the page (e.g., 'jsmq-large')
          *  @public
          */
-        function fire(name, elem, currClass) {
+        function fire(name, elem, className) {
             var ev;
             
             name = name || DEFAULT_EVENT;
             elem = elem || _getId(DEFAULT_EVENT_ELEM);
             // prevClass should actually contain current class in the default setup
-            currClass = currClass || prevClass;     
+            className = className || prevClass;     
             
             if (document.createEvent) {
                 ev = document.createEvent('Event');
                 ev.initEvent(name, true, true);
-                //http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/
+                // Pass helpful info
+                ev.className = className;
+                ev.size = cfg.names[className];
                 elem.dispatchEvent(ev);    
             }
         }

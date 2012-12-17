@@ -179,7 +179,7 @@ describe("fire()", function () {
         
     afterEach(function () {
         off(name, el, fn);
-        name = jsmq.DEFAULT_EVENT;
+        name = jsmq.get('DEFAULT_EVENT');
         el = document;
         result = undefined;
     });
@@ -225,18 +225,36 @@ describe("fire()", function () {
         expect(result).toEqual(name);
     });
     
-    
-    // TODO: why does this fail even though e.type works above
     it("event object has className property", function () {
         on(name, el, function (e) {
-            result = e.target.jsmqCurrClass;
+            result = e.className;
         });
-        runs(function () {
-            jsmq.fire(name, el, "some");    
+        jsmq.fire(name, el, jsmq.isAt());    
+        expect(result).toBeDefined();
+    });
+    
+    it("event object has size property", function () {
+        on(name, el, function (e) {
+            result = e.size;
         });
-        runs(function () {
-            expect(result).toBeDefined();
+        jsmq.fire(name, el, jsmq.isAt());    
+        expect(result).toBeDefined();
+    });
+    
+    it("event object has correct value for className property", function () {
+        on(name, el, function (e) {
+            result = e.className;
         });
+        jsmq.fire(name, el, jsmq.isAt());    
+        expect(result).toEqual(jsmq.isAt());
+    });
+    
+    it("event object has correct value for size property", function () {
+        on(name, el, function (e) {
+            result = e.size;
+        });
+        jsmq.fire(name, el, jsmq.isAt());    
+        expect(result).toEqual(jsmq.get('names')[jsmq.isAt()]);
     });
 });
 
