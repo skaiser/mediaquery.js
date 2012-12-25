@@ -81,6 +81,14 @@ describe("Public methods are defined", function () {
         expect(jsmq.getSizes).toBeDefined();
     });
     
+    it("jsmq.nextLarger", function () {
+        expect(jsmq.nextLarger).toBeDefined();
+    });
+    
+    it("jsmq.allLarger", function () {
+        expect(jsmq.allLarger).toBeDefined();
+    });
+    
 });
 
 
@@ -490,8 +498,6 @@ describe("reload()", function () {
 });
 
 
-
-
 describe("getSizes()", function () {
     
     it("returns an array", function () {
@@ -505,9 +511,46 @@ describe("getSizes()", function () {
         expect(high).toBeGreaterThan(low);
     });
     
+});
+
+describe("nextLarger()", function () {
+    var sorted = jsmq.getSizes(),
+        sizes = jsmq.get('sizes');
+    
+    it("is not defined if no valid size passed", function () {
+        expect(jsmq.nextLarger('something is not quite right')).not.toBeDefined();
+    });
+    
+    it("returns a string", function () {
+        expect(typeof jsmq.nextLarger(sizes[sorted[1]])).toEqual('string');
+    });
+    
+    it("returns a larger classname", function () {
+        expect(jsmq.nextLarger(sizes[sorted[1]])).toEqual('jsmq-large');
+    });
     
 });
 
+
+describe("allLarger()", function () {
+    var sorted = jsmq.getSizes(),
+        sizes = jsmq.get('sizes'),
+        len = sorted.length;
+    
+    it("returns a string", function () {
+        expect(typeof jsmq.allLarger(sizes[sorted[1]])).toEqual('string');
+    });
+    
+    // a.k.a. - does not infinitely loop if passed an invalid value!!
+    it("returns empty string if no valid size passed", function () {
+        expect(jsmq.allLarger('something is not quite right')).toEqual('');
+    });
+    
+    it("returns a string with larger classnames", function () {
+        expect(jsmq.allLarger(sizes[sorted[len - 1]])).toMatch(/jsmq-lt-large/);
+    });
+    
+});
 
 
 //reload

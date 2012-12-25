@@ -204,11 +204,27 @@ Examples:
 
 <a name="method-isbelow"></a>
 #### jsmq.isBelow( value [, useDeviceWidth] )
-_Is the current media query BELOW our current width? I've found this very useful for doing some branching logic where I needed to animate to 100% if below a certain width, etc._     
+_Is the current media query BELOW our current width? I've found this very useful for doing some branching logic where I needed to animate to 100% if below a certain width, etc. Though the example below is quite contrived._     
 **value**: Either a string for CSS classname (from [get('names')](#method-get)) or number (from [get('sizes')](#method-get))     
 **useDeviceWidth**: Boolean of whether to use media-device-width media query      
 **Returns**: Boolean of whether current width is below a given width.
+Example:
 
+	// Animate a panel 100% width if below a certain width or 200px, if larger.
+	var mySizes = jsmq.getSizes(); 		// [61, 60, 45, 30]
+    var MEDIUM_WIDTH = mySizes[1]; 		// '60'
+    
+    if (jsmq.isBelow(MEDIUM_WIDTH))) { 
+    	$panel.animate({width: '100%'});
+    } else {
+    	$panel.animate({width: '200px'});
+    }
+    
+    // OR
+    
+    if ($('html').hasClass('jsmq-lt-medium')) { 
+    	// do stuff
+    }
 
 #### jsmq.getSizes()
 _Returns an array of [cfg.sizes](#config-sizes) number values sorted high to low. This is very helpful in setting some constants within your own app code that you can use later with [isAt()](#method-isat) or [isBelow()](#method-isbelow) in `if` statements without needing to know the names of the sizes ahead of time. You just configure them once for mediaquery.js and that's it!_      
@@ -241,11 +257,39 @@ Examples:
 
 
 #### jsmq.set( prop, value )
-_Set a [configuration property/value](#config-options)_      
-**prop**: String representation of configuration property name
-**value**: Any valid JavaScript data type you want to store      
-**Returns**: The jsmq object if both arguments are passed. Undefined if not.
+_Set a [configuration property/value](#config-options). Note that you probably want to set up the [delayInit](#config-delayinit) configuration option to delay calling init() to make good use of this method. Otherwise, init() runs as soon as the script loads and your config options have already been passed in._      
+**prop**: String representation of configuration property name.     
+**value**: Any valid JavaScript data type you want to store.      
+**Returns**: The jsmq object if both arguments are passed. Undefined if not.    
+Example:
 
+	jsmq.set('isTest', true);
+
+
+#### jsmq.allLarger( at )
+_Returns a string containing CSS classnames for all larger breakpoints with a
+'lt-' modifier on the classname so that you can do something like the following
+example in your CSS rules to target all sizes below a certain size._     
+**at**: CSS classname of the size to find larger values for.      
+**Returns**: String with CSS classes for _all_ larger breakpoints.
+Example:
+
+	jsmq.allLarger('jsmq-smaller');		// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
+
+In your CSS, you could do something like the following to reduce the font-size for `<h1>` elements for all breakpoints below the 'medium' breakpoint size:
+
+	.jsmq-lt-medium h1 { font-size: 0.8em; }
+
+
+#### jsmq.nextLarger( at )
+_Returns the CSS classname of the next largest breakpoint, if there is one._     
+**at**: CSS classname of the size to find larger values for.      
+**Returns**: CSS classname of the next largest breakpoint, if there is one.     
+Example:
+
+	// With the viewport at the 'medium' breakpiont size
+	jsmq.nextLarger(jsmq.isAt());		// "jsmq-large"
+	
 
 #### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
 _Fire custom event_    
@@ -327,6 +371,7 @@ _Set to 'true' is you want to use elements that you've already added. Could mini
 _Support IE < 9 and other old browsers with no mediq queries. Added in v0.3.3._    
 **Default**: true (mostly so demos show it working…I recommend setting this to false)
 
+<a name="config-delayinit"></a>
 #### delayInit (Boolean)
 _Whether to delay calling [init()](#method-init) at load or not. Mostly useful for unit testing._      
 **Default**: false

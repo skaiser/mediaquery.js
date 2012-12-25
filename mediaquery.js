@@ -24,9 +24,10 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.8',
+        var VERSION = '0.3.9',
             prevClass = '',
             initHasRun = false,
+            sortedSizes,
             
             // Cache local versions of "constants"
             PREFIX,
@@ -135,6 +136,58 @@
             return document.getElementById(id);
         }
         
+        
+        /**
+         *  Finds the index of a value in an Array. Basically the same as jQuery's $.inArray.
+         *
+         *  @method     _inArray
+         *  @param      {String|Number} val     The value you want to find the index of
+         *  @param      {Array}         arr     The array to search in
+         *  @param      {Number}        i       The start index
+         *  @return     {Number}                Just like indexOf, it returns -1 if no match
+         *                                      and > -1 if there is a match
+         *  @private
+         */
+        function _inArray(val, arr, i) {
+            var len;
+            
+            if (arr) {
+                len = arr.length;
+                i = (i && i < len - 1) ? i : 0;
+            
+                for (; i < len; i++) {
+        
+                    if (i in arr && arr[i] == val) {
+                        return i;
+                    }
+                }
+            }
+            
+            return -1;
+        }
+        
+        
+        /**
+         *  Returns the key name from an object using the value to find it.
+         *
+         *  @method     _key
+         *  @param      {String|Number}     key     The key's value
+         *  @param      {Object}            o       The object to search in
+         *  @return     {String}                    The key's actual name
+         *  @private
+         */
+        function _key(key, o) {
+            var prop;
+            o = o || cfg.sizes;
+            
+            for (prop in o) {
+                if (o.hasOwnProperty(prop)) {
+                    if (o[prop] === key) {
+                        return prop;
+                    }
+                }
+            }
+        }
         
         /**
          *  Returns a new object that reverses the key/value pairs of another object.
@@ -272,6 +325,7 @@
         }
         
         
+        sortedSizes = getSortedSizes();
         
         /**
          *  This sucks. But IE may not return a match on cfg.sizes[size],
@@ -499,6 +553,87 @@
         
         
         /**
+         *  Finds the index in the sorted sizes array that using the CSS classname string.
+         *  This helps us to know what size comes before (or after) this size.
+         *
+         *  @method     _findPos
+         *  @param      {String}    at  String for the CSS classname of the position to find.
+         *  @return     {Number}        Index in the sorted array of CSS class. Return -1 if not
+         *  @private
+         */
+        function _findPos(at) {
+            return _inArray(_key(at), sortedSizes);
+        }
+        
+        
+        /**
+         *  Finds the CSS classname of the size that is larger than the passed in size.
+         *
+         *  @method     _findPrevPos
+         *  @param      {Number}        pos     Index in the sorted size array to start from.
+         *  @return     {String}                CSS classname of the next largest breakpoint.
+         *  @private
+         */
+        function _findPrevPos(pos) {
+            if (pos > 0 && pos < sortedSizes.length) {
+                return cfg.sizes[sortedSizes[pos - 1]];
+            }
+        }
+        
+        
+        /**
+         *  Returns the CSS classname of the next largest breakpoint, if there is one.
+         *
+         *  @method     nextLarger
+         *  @param      {String}        at  CSS classname of the size to find a larger value for
+         *  @return     {String}            CSS classname of the next largest breakpoint, if one
+         *  @public
+         */
+        function findNextLarger(at) {
+            return _findPrevPos(_findPos(at));
+        }
+        
+        
+        /**
+         *  Returns a string containing CSS classnames for all larger breakpoints with a
+         *  'lt-' modifier on the classname so that you can do something like the following
+         *  in your CSS rules to target all sizes below a certain size:
+         *  @example
+         *      .jsmq-lt-medium { font-size: 0.8em; }
+         *
+         *  @method     allLarger
+         *  @param      {String}        at  CSS classname of the size to find larger values for
+         *  @return     {String}            String with CSS classes for all larger breakpoints.
+         *  @public
+         */
+        function findAllLarger(at) {
+            var pos = _findPos(at),
+                str = '';
+                
+            if (pos > 0) {
+                do {
+                    str += _buildBelowClass(_findPrevPos(pos)) || '';
+                } while (pos--)
+            }
+            return str;
+        }
+        
+        
+        /**
+         *  Makes a CSS classname with a "less than" indicator in the name for using to apply
+         *  CSS rules that apply to any breakpoint below a certain size.
+         *
+         *  @method     _buildBelowClass
+         *  @param      {String}            str     CSS classname to modify.
+         *  @return     {String}                    Modified classname
+         *  @private
+         */
+        function _buildBelowClass(str) {
+            return str ? ' ' + PREFIX + 'lt-' + str.split(PREFIX)[1] : '';
+        }
+        
+        
+        /**
          *  Adds the CSS class name (from cfg.sizes) to the html tag
          *
          *  @method     _setCssClass
@@ -508,6 +643,7 @@
             var currClass = isAt();
             
             if (prevClass !== currClass) {
+                currClass += findAllLarger(currClass);
                 docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
                 prevClass = currClass;
                 return prevClass;    
@@ -661,7 +797,9 @@
             isAt            : isAt,
             isBelow         : isBelow,
             reload          : reload,
-            getSizes        : getSortedSizes
+            getSizes        : getSortedSizes,
+            nextLarger      : findNextLarger,
+            allLarger       : findAllLarger
         };
         
     })();
