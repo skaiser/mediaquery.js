@@ -547,7 +547,7 @@ describe("allLarger()", function () {
     });
     
     it("returns a string with larger classnames", function () {
-        expect(jsmq.allLarger(sizes[sorted[len - 1]])).toMatch(/jsmq-lt-large/);
+        expect(jsmq.allLarger(sizes[sorted[len - 1]])).toMatch(/below-jsmq-large/);
     });
     
 });

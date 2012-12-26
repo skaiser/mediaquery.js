@@ -112,38 +112,52 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
 
 **Instead of doing this in your CSS:**
 
-    .someStyle {
-        color: black;
-    }
+    .hero-unit p {
+		font-size: 18px;
+	}
 
-    @media only screen and (max-width: 63em) { 
-        .someStyle {
-            color: blue;
+    @media only screen and (max-width: 60em) { 
+        .hero-unit p {
+            font-size: 17px;
         }
     }
 
     @media only screen and (max-width: 45em) {
-        .someStyle {
-            color: red;
-            width: 100%;
-        }
+		.hero-unit {
+			padding: 45px 15px;
+		}
     }
-
+    
+	@media only screen and (min-width: 30em) and (max-width: 45em) {
+		.carousel-control {
+			left: -5px;
+			top: -20px;
+		}
+	}
     
 **Do this:**
 
 
-    .someStyle {
-        color: black;
-    }
+    .hero-unit p {
+		font-size: 18px;
+	}
     
-    .jsmq-large .someStyle {
-        color: blue;
-    }
+    /* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */
+	.below-jsmq-large .hero-unit p {
+		font-size: 17px;
+	}
     
-    .jsmq-medium .someStyle {
-        color: red;
-    }
+    /* All sizes BELOW this width (i.e., 'max-width: 45em') */
+	.below-jsmq-medium .hero-unit {
+		padding: 45px 15px;
+	}
+			
+	/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */
+	.jsmq-small .carousel-control {
+		left: -5px;
+		top: -20px;
+	}
+    
 
 If you want to update the CSS class after page load (e.g., after a window resize event (recommended)), you
 can use:
@@ -271,7 +285,7 @@ _Returns a string containing CSS classnames for all larger breakpoints with a
 'lt-' modifier on the classname so that you can do something like the following
 example in your CSS rules to target all sizes below a certain size._     
 **at**: CSS classname of the size to find larger values for.      
-**Returns**: String with CSS classes for _all_ larger breakpoints.
+**Returns**: String with CSS classes for _all_ larger breakpoints.     
 Example:
 
 	jsmq.allLarger('jsmq-smaller');		// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
@@ -317,6 +331,34 @@ _If you want to set configuration options without changing them in the code base
 _Prefix to use on CSS classes and appended page elements._      
 **Default**: "jsmq-"
 
+#### BELOW_PREFIX (String)
+_CSS classname prefix that will be used for sizes below a given size. For example: 'below-jsmq-medium' would be valid to use if you wanted to target styles for all cases below the 'medium' width._      
+**Default**: "below-"     
+Example:
+
+	/* 
+	 * Target all devices BELOW the medium width (i.e., the 'small' width and lower)
+	 * Similar to @media (max-width: 720px) {…}
+	 * or @media (max-width: 45em) {…}
+	 */
+	.below-jsmq-medium .hero-unit p {
+		font-size: 17px;
+	}
+	.below-jsmq-medium .carousel-control {
+		left: -5px;
+		top: -20px;
+	}
+	
+	/* 
+	 * Target all devices AT the medium width only
+	 * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }
+	 * or @media (min-width: 45em) and (max-width: 60em) { ... }
+	 */
+	.jsmq-medium .hero-unit {
+		padding: 45px 15px;
+	}
+	
+	
 #### DEFAULT_EVENT (String)
 _The name of the default custom event name that gets fired on updates._           
 **Default**: "jsmq:update"

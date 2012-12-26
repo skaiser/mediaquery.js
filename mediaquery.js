@@ -24,13 +24,14 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.3.9',
+        var VERSION = '0.4.0',
             prevClass = '',
             initHasRun = false,
             sortedSizes,
             
             // Cache local versions of "constants"
             PREFIX,
+            BELOW_PREFIX,
             UNITS,
             DEFAULT_EVENT,
             DEFAULT_EVENT_ELEM,
@@ -49,6 +50,12 @@
         
         // Prefix that will be added to CSS class names and the HTML element ids
         cfg.PREFIX = PREFIX = cfg.PREFIX || 'jsmq-';
+        
+        
+        // CSS classname prefix that will be used for sizes below a given size.
+        // For example: 'below-jsmq-medium' would be valid to use if you wanted to target
+        // styles for all cases below the 'medium' width.
+        cfg.BELOW_PREFIX = BELOW_PREFIX = cfg.BELOW_PREFIX || 'below-';
         
         
         // Default unit sizes to use for breakpoints. If you don't think you
@@ -629,7 +636,7 @@
          *  @private
          */
         function _buildBelowClass(str) {
-            return str ? ' ' + PREFIX + 'lt-' + str.split(PREFIX)[1] : '';
+            return str ? ' ' + BELOW_PREFIX + str : '';
         }
         
         
