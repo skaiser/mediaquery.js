@@ -18,7 +18,7 @@ and to give developers (you) more control over whether or not you page is "respo
 It is an experiment in an alternate approach to implementing "responsive design." I think we should call it "JSS media queries." :)
 
 
-### Why is this better?
+### Why should I use this?
 The advantages of this approach are several:
 
 1. We now have control (through JavaScript) of when
@@ -410,7 +410,7 @@ _Set to 'true' is you want to use elements that you've already added. Could mini
 **Default**: false
 
 #### supportOldBrowsers (Boolean)
-_Support IE < 9 and other old browsers with no mediq queries. Added in v0.3.3._    
+_Support IE < 9 and other old browsers with no media queries. Added in v0.3.3._    
 **Default**: true (mostly so demos show it working…I recommend setting this to false)
 
 <a name="config-delayinit"></a>
@@ -434,7 +434,7 @@ _Fires after a CSS class change event occurs when [update()](#method-update) is 
 Example:
 
 	$('#jsmq-media-width').on('jsmq:update', function (e) {
-		if (e.className === MyApp.LARGE_WIDTH) {
+		if (e.className.match(MyApp.LARGE_WIDTH)) {
 			// Do stuff for large screens
 		}
 		
@@ -442,6 +442,12 @@ Example:
 		
 		if (e.size === 45) {
 			// Do stuff 
+		}
+		
+		// OR
+		
+		if ($('html').hasClass(MyApp.LARGE_WIDTH)) {
+			// Do stuff
 		}
 	});
 
