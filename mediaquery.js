@@ -24,8 +24,9 @@
      */
     _jsmq = (function () {
         
-        var VERSION = '0.4.0',
+        var VERSION = '0.4.1',
             prevClass = '',
+            baseClass = '',
             initHasRun = false,
             sortedSizes,
             
@@ -553,7 +554,8 @@
                 ev.initEvent(name, true, true);
                 // Pass helpful info
                 ev.className = className;
-                ev.size = cfg.names[className];
+                ev.baseClass = baseClass;
+                ev.size = cfg.names[baseClass] || _key(baseClass);
                 elem.dispatchEvent(ev);    
             }
         }
@@ -648,6 +650,8 @@
          */
         function _setCssClass() {
             var currClass = isAt();
+            // Issue #11: Fire does not always return proper size
+            baseClass = currClass;
             
             if (prevClass !== currClass) {
                 currClass += findAllLarger(currClass);

@@ -180,15 +180,14 @@ describe("update()", function () {
 describe("fire()", function () {
     var name = jsmq.get('DEFAULT_EVENT'),
         el = document,
-        result,
-        fn = function (e) {
-            result = e.type;
-        };
+        result = undefined,
+        fn = function (e) { result = e.type; };
         
     afterEach(function () {
         off(name, el, fn);
         name = jsmq.get('DEFAULT_EVENT');
         el = document;
+        fn = function (e) { result = e.type; };
         result = undefined;
     });
     
@@ -204,65 +203,109 @@ describe("fire()", function () {
         expect(result).toEqual(name);
     });
     
+    it("default event object has className property", function () {
+        fn = function (e) { result = e.className; };
+        on(name, el, fn);
+        jsmq.fire();
+        expect(result).toBeDefined();
+    });
+    
+    it("default event object has size property", function () {
+        fn = function (e) { result = e.size; };
+        on(name, el, fn);
+        jsmq.fire();
+        expect(result).toBeDefined();
+    });
+    
+    it("default event object has baseClass property", function () {
+        fn = function (e) { result = e.baseClass; };
+        on(name, el, fn);
+        jsmq.fire();
+        expect(result).toBeDefined();
+    });
+    
     it("fires default event on default element", function () {
         // Explicitly set them inside the test since they are the test case.
-        var el = document.getElementById(jsmq.get('DEFAULT_EVENT_ELEM')),
-            name = jsmq.get('DEFAULT_EVENT');
-            
-        on(name, el, function (e) {
-            result = e.type;
-        });
+        el = document.getElementById(jsmq.get('DEFAULT_EVENT_ELEM'));
+        name = jsmq.get('DEFAULT_EVENT');
+        fn = function (e) { result = e.type; };  
+        on(name, el, fn);
         jsmq.fire(name, el);
         expect(result).toEqual(name);
     });
     
     it("fires custom event", function () {
-        var name = 'jsmq:custom';
-        
+        name = 'jsmq:custom';
         on(name, el, fn);
         jsmq.fire(name);
         expect(result).toEqual(name);
     });
     
-    it("fires custom event on custom element after update()", function () {
-        var name = 'jsmq:custom',
-            el = document.getElementById('results');
-            
+    it("fires custom event on custom element", function () {
+        name = 'jsmq:custom';
+        el = document.getElementById('results');
         on(name, el, fn);
         jsmq.fire(name, el);
         expect(result).toEqual(name);
     });
     
-    it("event object has className property", function () {
-        on(name, el, function (e) {
-            result = e.className;
-        });
-        jsmq.fire(name, el, jsmq.isAt());    
+    it("event object has className property when passed args", function () {
+        fn = function (e) { result = e.className; };
+        on(name, el, fn);
+        jsmq.fire(name, el, jsmq.isAt());
         expect(result).toBeDefined();
     });
     
-    it("event object has size property", function () {
-        on(name, el, function (e) {
-            result = e.size;
-        });
-        jsmq.fire(name, el, jsmq.isAt());    
+    it("event object has size property when passed args", function () {
+        fn = function (e) { result = e.size; };
+        on(name, el, fn);
+        jsmq.fire(name, el, jsmq.isAt());
+        expect(result).toBeDefined();
+    });
+    
+    it("event object has baseClass property when passed args", function () {
+        fn = function (e) { result = e.baseClass; };
+        on(name, el, fn);
+        jsmq.fire(name, el, jsmq.isAt());
+        expect(result).toBeDefined();
+    });
+    
+    // Issue #11: Fire does not always return proper size
+    it("event object size property is defined by default", function () {
+        fn = function (e) { result = e.size; };
+        on(name, el, fn);
+        jsmq.fire(name, el);
         expect(result).toBeDefined();
     });
     
     it("event object has correct value for className property", function () {
-        on(name, el, function (e) {
-            result = e.className;
-        });
+        fn = function (e) { result = e.className; };
+        on(name, el, fn);
         jsmq.fire(name, el, jsmq.isAt());    
         expect(result).toEqual(jsmq.isAt());
     });
     
     it("event object has correct value for size property", function () {
-        on(name, el, function (e) {
-            result = e.size;
-        });
+        fn = function (e) { result = e.size; };
+        on(name, el, fn);
         jsmq.fire(name, el, jsmq.isAt());    
         expect(result).toEqual(jsmq.get('names')[jsmq.isAt()]);
+    });
+    
+    it("event object only returns single value for baseClass property", function () {
+        fn = function (e) { result = e.baseClass; };
+        on(name, el, fn);
+        jsmq.fire(name, el, 'some thing with spaces');
+        expect(result).not.toMatch(/\s/);
+    });
+    
+    it("className property includes full list of classes applied", function () {
+        fn = function (e) { result = e.className; };
+        on(name, el, fn);
+        // Simulation since currently have no way to force the browser to return specific size
+        // TODO: Could use allLarger, but then we are depending on that working
+        jsmq.fire(name, el, 'jsmq-medium below-jsmq-large');
+        expect(result).toMatch(/\s/);
     });
 });
 
@@ -547,7 +590,8 @@ describe("allLarger()", function () {
     });
     
     it("returns a string with larger classnames", function () {
-        expect(jsmq.allLarger(sizes[sorted[len - 1]])).toMatch(/below-jsmq-large/);
+        var regx = new RegExp(jsmq.get('BELOW_PREFIX'));
+        expect(jsmq.allLarger(sizes[sorted[len - 1]])).toMatch(regx);
     });
     
 });

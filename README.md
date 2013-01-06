@@ -429,8 +429,9 @@ _For unit testing. Are we running tests or not?_
 #### jsmq:update
 _Fires after a CSS class change event occurs when [update()](#method-update) is called. The following additional properties are available on the Event Object to help with filtering logic after an event:_       
 **Additional properties on the Event Object**:     
-**event.className**: Name of current CSS class being used (e.g., 'jsmq-large')      
+**event.className**: String of all current (jsmq) CSS classes being used (e.g., 'jsmq-medium below-jsmq-large')      
 **event.size**: Size (number) of the CSS class      
+**event.baseClass**: The base class value for the size we are at (i.e., what [isAt()](#method-isat) would return)      
 Example:
 
 	$('#jsmq-media-width').on('jsmq:update', function (e) {
@@ -442,6 +443,12 @@ Example:
 		
 		if (e.size === 45) {
 			// Do stuff 
+		}
+		
+		// OR
+		
+		if (e.baseClass === MyApp.MEDIUM_WIDTH) {
+			// Do stuff for medium screens
 		}
 		
 		// OR
