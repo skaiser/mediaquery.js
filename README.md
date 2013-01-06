@@ -292,7 +292,7 @@ Example:
 
 In your CSS, you could do something like the following to reduce the font-size for `<h1>` elements for all breakpoints below the 'medium' breakpoint size:
 
-	.jsmq-lt-medium h1 { font-size: 0.8em; }
+	.below-jsmq-medium h1 { font-size: 0.8em; }
 
 
 #### jsmq.nextLarger( at )
