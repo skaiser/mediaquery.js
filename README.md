@@ -385,7 +385,7 @@ _Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://b
 
 <a name="config-names"></a>
 #### names (Object)
-**Do set this yourself with set(). They are defined in [sizes](#config-sizes) and this is automagically mapped to [sizes](#config-sizes)**.      
+**Do not set this yourself with set(). They are defined in [sizes](#config-sizes) and this is automagically mapped to [sizes](#config-sizes)**.      
 _CSS classnames that represent your breakpoint sizes. These are the names you will scope your CSS selectors with to emulate @media rules. Use PREFIX to change the 'jsmq-' value._    
 **Default**: 'jsmq-large', 'jsmq-medium', 'jsmq-small', 'jsmq-smaller'
 
