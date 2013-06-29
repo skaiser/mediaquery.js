@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Mediaquery.js by skaiser</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Mediaquery.js</h1>
+          <h2>Keeps JavaScript and CSS in sync using a unique approach that allows you to control styles for responsive design without doing user-agent detection.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/skaiser/mediaquery.js/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/skaiser/mediaquery.js/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/skaiser/mediaquery.js" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="mediaqueryjs" class="anchor" href="#mediaqueryjs"><span class="octicon octicon-link"></span></a>mediaquery.js</h1>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<hr><h3>
+<a name="supported-browsers" class="anchor" href="#supported-browsers"><span class="octicon octicon-link"></span></a>Supported Browsers</h3>
+
+<p>(IE6+ and any other browsers)<br>
+As of v0.3.3, there is support for IE6+ and other older browsers that don't support media queries. Any other modern browsers should work too!</p>
+
+<p><a href="http://mediaqueryjs.com/">View demo</a></p>
+
+<h3>
+<a name="what-is-this" class="anchor" href="#what-is-this"><span class="octicon octicon-link"></span></a>What is this?</h3>
+
+<p>This is a small (about 1.5KB) JS library independent solution for making sure your JS and CSS are in sync with regards to changing "media queries"
+and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized.
+It is an experiment in an alternate approach to implementing "responsive design." I think we should call it "JSS media queries." :)</p>
+
+<h3>
+<a name="why-should-i-use-this" class="anchor" href="#why-should-i-use-this"><span class="octicon octicon-link"></span></a>Why should I use this?</h3>
+
+<p>The advantages of this approach are several:</p>
+
+<ol>
+<li>We now have control (through JavaScript) of when
+those CSS classes get changed instead of them automatically happening when the
+user (most likely only the developer or designer) resizes the page. </li>
+<li>We can
+more easily support older browsers without doing any real tricks other than
+measuring the viewport or screen width. </li>
+<li>It also gives us a guarantee that JS and
+CSS are in sync with what each of them think the user's screen/viewport size is.
+This prevents weird behaviors that can happen when the CSS media query gets
+triggered, but JS reports the <code>window.inner(outer)Width</code> to be completely different or <a href="http://tripleodeon.com/2011/12/first-understand-your-screen/">at least inconsistent across devices</a>.</li>
+<li>It
+gives us the option to <em>not</em> respond to user resizes unless we absolutely
+want to, yet <strong>we can still be responsive at page load (on the client-side,
+without user-agent sniffing).</strong> </li>
+<li>You can still add your own media queries for
+things like background images (to prevent unnecessary downloads), of course. You
+will probably still want to preface them with the "JSS media query" class name,
+though, to make sure things don't get out of sync.</li>
+<li>Works with <code>@import</code> rules (unconfirmed)</li>
+</ol><h3>
+<a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>How does it work?</h3>
+
+<p>Mediaquery.js adds a CSS class to the html element and adds three elements to the head
+element of your page (configurable):</p>
+
+<ol>
+<li>Adds an inline style tag with generated
+media queries representing your defined breakpoints</li>
+<li>Adds two script tags
+that are simply non-rendered items that will have media query rules applied to
+them (if the browser supports media queries)</li>
+<li>The CSS class is configurable
+and is based on your defined breakpoints</li>
+</ol><p>That's it. You can then <strong>hook into the window.resize event to detect changes
+consistently and accurately based on native media query behavior</strong>, or if you
+choose to support older browsers, viewport measurements (more reliable than
+newer mobile browsers in this regard).</p>
+
+<p>Then, <strong>instead of putting all your CSS rules inside of media queries, you preface
+them with the CSS class you defined in your breakpoints</strong>. For example:</p>
+
+<pre><code>.jsmq-large .some-style {color: green;}
+.jsmq-medium .some-style {color: orange;}
+</code></pre>
+
+<p><strong>These are now your media query rules.</strong></p>
+
+<p>If you want to provide your own elements and stylesheets to avoid incurring the reflow cost of appending the elements at page load, you can add
+them to the page yourself beforehand and set: </p>
+
+<pre><code>window.jsmq_config = { 
+    useMyOwnStyles: true, 
+    useMyOwnElements: true
+}; 
+</code></pre>
+
+<p>either in the head <strong><em>before</em></strong> you load mediaquery.js or
+(recommended) just add it to the mediaquery.min.js file above the library code. See the <a href="#config-options">Configuration Options</a> section for more details.</p>
+
+<h3>
+<a name="common-use-cases" class="anchor" href="#common-use-cases"><span class="octicon octicon-link"></span></a>Common use cases</h3>
+
+<ul>
+<li>If you like the power of CSS media queries, but have ever had trouble ensuring your "responsive JS" is in sync with your "responsive CSS"</li>
+<li>If you've ever wanted to have your "responsive design" only be "responsive" to the user's browser/screen size at page load, but not necessarily <em>after</em> page load (i.e., browser resize)</li>
+<li>If you need to support "responsive design" in older browsers (IE), but don't want to make separate CSS rules for them</li>
+<li>If you only want to have to declare your "responsive breakpoints" in one place</li>
+<li>If you want a more reliable way to query what size the CSS media query thinks the screen is at vesus the <a href="http://tripleodeon.com/2011/12/first-understand-your-screen/">unreliable way that some browsers report the size using JS</a> </li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<hr><p>Insert the following into the <code>&lt;head&gt;</code> on your page:</p>
+
+<pre><code>&lt;script src="mediaquery.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. </p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<hr><p>Insert the following into the <code>&lt;head&gt;</code> on your page:</p>
+
+<pre><code>&lt;script src="mediaquery.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Prepend your CSS rules that are inside <code>@media</code> rules with standard CSS class selectors representing the names of your "breakpoints". For example:</p>
+
+<p><strong>Instead of doing this in your CSS:</strong></p>
+
+<pre><code>.hero-unit p {
+    font-size: 18px;
+}
+
+@media only screen and (max-width: 60em) { 
+    .hero-unit p {
+        font-size: 17px;
+    }
+}
+
+@media only screen and (max-width: 45em) {
+    .hero-unit {
+        padding: 45px 15px;
+    }
+}
+
+@media only screen and (min-width: 30em) and (max-width: 45em) {
+    .carousel-control {
+        left: -5px;
+        top: -20px;
+    }
+}
+</code></pre>
+
+<p><strong>Do this:</strong></p>
+
+<pre><code>.hero-unit p {
+    font-size: 18px;
+}
+
+/* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */
+.below-jsmq-large .hero-unit p {
+    font-size: 17px;
+}
+
+/* All sizes BELOW this width (i.e., 'max-width: 45em') */
+.below-jsmq-medium .hero-unit {
+    padding: 45px 15px;
+}
+
+/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */
+.jsmq-small .carousel-control {
+    left: -5px;
+    top: -20px;
+}
+</code></pre>
+
+<p>If you want to update the CSS class after page load (e.g., after a window resize event (recommended)), you
+can use:</p>
+
+<pre><code>jsmq.update();
+</code></pre>
+
+<p>By default, <code>jsmq.update</code> fires the <code>"jsmq:update"</code> event after a CSS class state has changed.</p>
+
+<p>You can also do something like this on a window resize to check what CSS state we are in:</p>
+
+<pre><code>jsmq.update().isAt();            // "jsmq-large", etc.
+</code></pre>
+
+<p>Or before doing an animation:</p>
+
+<pre><code>if (jsmq.isBelow('jsmq-medium')) {
+    // animate panel full width
+} else {
+    // animate panel 200px
+}
+</code></pre>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<hr><h2>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<p><a name="method-init"></a></p>
+
+<h4>
+<a name="jsmqinit" class="anchor" href="#jsmqinit"><span class="octicon octicon-link"></span></a>jsmq.init()</h4>
+
+<p><em>Makes things happen.</em> <strong>This runs automagically at load by default.</strong> <em>See <a href="#jsmq_config">jsmq_config</a>
+and/or <a href="#method-reload">reload()</a> if you want to call this manually later.</em><br><strong>Returns</strong>: The jsmq object.</p>
+
+<p><a name="method-update"></a></p>
+
+<h4>
+<a name="jsmqupdate-callback-" class="anchor" href="#jsmqupdate-callback-"><span class="octicon octicon-link"></span></a>jsmq.update( [callback] )</h4>
+
+<h4>
+<a name="jsmqupdate-namejsmqupdate--elemjsmq-media-width--callback-" class="anchor" href="#jsmqupdate-namejsmqupdate--elemjsmq-media-width--callback-"><span class="octicon octicon-link"></span></a>jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )</h4>
+
+<p><em>Refreshes the current CSS class. Useful after a window resize. It also <a href="#event-default">fires an event</a> after
+an update occurs. Accepts a callback function.</em><br><strong>name</strong>: A string containing the name of the custom event to fire<br><strong>elem</strong>: Native DOM element to fire the event on<br><strong>callback</strong>: Callback after updating. Can be passed as a single argument.<br><strong>Returns</strong>: The jsmq object.</p>
+
+<p><a name="method-isat"></a></p>
+
+<h4>
+<a name="jsmqisat-value--usedevicewidth-" class="anchor" href="#jsmqisat-value--usedevicewidth-"><span class="octicon octicon-link"></span></a>jsmq.isAt( [value] [, useDeviceWidth] )</h4>
+
+<p><em>Does the current media query match our current width? Passing no arguments will return the CSS class
+name (e.g., 'jsmq-large') for the current state the user is in. Passing a single boolean argument
+will use the device-width to evaluate the return value.</em><br><strong>value</strong>: Either a string for CSS classname (from <a href="#method-get">get('names')</a>) or number (from <a href="#method-get">get('sizes')</a>)<br><strong>useDeviceWidth</strong>: Boolean of whether to use media-device-width media query<br><strong>Returns</strong>: No arguments or single boolean argument returns CSS class name string. Others return boolean.<br>
+Examples:</p>
+
+<pre><code>jsmq.isAt();                    // 'jsmq-large', etc.
+jsmq.isAt(true);                // 'jsmq-large' for device-width
+jsmq.isAt('jsmq-small');        // true/false
+jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
+jsmq.isAt(45, true);            // true/false for device width
+</code></pre>
+
+<p><a name="method-isbelow"></a></p>
+
+<h4>
+<a name="jsmqisbelow-value--usedevicewidth-" class="anchor" href="#jsmqisbelow-value--usedevicewidth-"><span class="octicon octicon-link"></span></a>jsmq.isBelow( value [, useDeviceWidth] )</h4>
+
+<p><em>Is the current media query BELOW our current width? I've found this very useful for doing some branching logic where I needed to animate to 100% if below a certain width, etc. Though the example below is quite contrived.</em><br><strong>value</strong>: Either a string for CSS classname (from <a href="#method-get">get('names')</a>) or number (from <a href="#method-get">get('sizes')</a>)<br><strong>useDeviceWidth</strong>: Boolean of whether to use media-device-width media query<br><strong>Returns</strong>: Boolean of whether current width is below a given width.
+Example:</p>
+
+<pre><code>// Animate a panel 100% width if below a certain width or 200px, if larger.
+var mySizes = jsmq.getSizes();      // [61, 60, 45, 30]
+var MEDIUM_WIDTH = mySizes[1];      // '60'
+
+if (jsmq.isBelow(MEDIUM_WIDTH))) { 
+    $panel.animate({width: '100%'});
+} else {
+    $panel.animate({width: '200px'});
+}
+
+// OR
+
+if ($('html').hasClass('jsmq-lt-medium')) { 
+    // do stuff
+}
+</code></pre>
+
+<h4>
+<a name="jsmqgetsizes" class="anchor" href="#jsmqgetsizes"><span class="octicon octicon-link"></span></a>jsmq.getSizes()</h4>
+
+<p><em>Returns an array of <a href="#config-sizes">cfg.sizes</a> number values sorted high to low. This is very helpful in setting some constants within your own app code that you can use later with <a href="#method-isat">isAt()</a> or <a href="#method-isbelow">isBelow()</a> in <code>if</code> statements without needing to know the names of the sizes ahead of time. You just configure them once for mediaquery.js and that's it!</em><br><strong>Returns</strong>: An array of <a href="#config-sizes">cfg.sizes</a> number values sorted high to low.<br>
+Example:     </p>
+
+<pre><code>var mySizes = jsmq.getSizes();                      // [61, 60, 45, 30]
+var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];    // 'jsmq-large'
+
+if (jsmq.isAt() === LARGE_WIDTH)) { 
+    // do stuff
+}
+
+// OR
+
+if ($('html').hasClass(LARGE_WIDTH)) { 
+    // do stuff
+}
+</code></pre>
+
+<p><a name="method-get"></a></p>
+
+<h4>
+<a name="jsmqget-prop-" class="anchor" href="#jsmqget-prop-"><span class="octicon octicon-link"></span></a>jsmq.get( [prop] )</h4>
+
+<p><em>Returns the configuration object or optionally, a <a href="#config-options">specific property</a>.</em><br><strong>prop</strong>: A string of the name of a specfic configuration propery name to query.<br><strong>Returns</strong>: Local configuration object or specific property.<br>
+Examples: </p>
+
+<pre><code>jsmq.get('names');      // { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.
+jsmq.get('sizes');      // { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.
+</code></pre>
+
+<h4>
+<a name="jsmqset-prop-value-" class="anchor" href="#jsmqset-prop-value-"><span class="octicon octicon-link"></span></a>jsmq.set( prop, value )</h4>
+
+<p><em>Set a <a href="#config-options">configuration property/value</a>. Note that you probably want to set up the <a href="#config-delayinit">delayInit</a> configuration option to delay calling init() to make good use of this method. Otherwise, init() runs as soon as the script loads and your config options have already been passed in.</em><br><strong>prop</strong>: String representation of configuration property name.<br><strong>value</strong>: Any valid JavaScript data type you want to store.<br><strong>Returns</strong>: The jsmq object if both arguments are passed. Undefined if not.<br>
+Example:</p>
+
+<pre><code>jsmq.set('isTest', true);
+</code></pre>
+
+<h4>
+<a name="jsmqalllarger-at-" class="anchor" href="#jsmqalllarger-at-"><span class="octicon octicon-link"></span></a>jsmq.allLarger( at )</h4>
+
+<p><em>Returns a string containing CSS classnames for all larger breakpoints with a
+'lt-' modifier on the classname so that you can do something like the following
+example in your CSS rules to target all sizes below a certain size.</em><br><strong>at</strong>: CSS classname of the size to find larger values for.<br><strong>Returns</strong>: String with CSS classes for <em>all</em> larger breakpoints.<br>
+Example:</p>
+
+<pre><code>jsmq.allLarger('jsmq-smaller');     // "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
+</code></pre>
+
+<p>In your CSS, you could do something like the following to reduce the font-size for <code>&lt;h1&gt;</code> elements for all breakpoints below the 'medium' breakpoint size:</p>
+
+<pre><code>.below-jsmq-medium h1 { font-size: 0.8em; }
+</code></pre>
+
+<h4>
+<a name="jsmqnextlarger-at-" class="anchor" href="#jsmqnextlarger-at-"><span class="octicon octicon-link"></span></a>jsmq.nextLarger( at )</h4>
+
+<p><em>Returns the CSS classname of the next largest breakpoint, if there is one.</em><br><strong>at</strong>: CSS classname of the size to find larger values for.<br><strong>Returns</strong>: CSS classname of the next largest breakpoint, if there is one.<br>
+Example:</p>
+
+<pre><code>// With the viewport at the 'medium' breakpiont size
+jsmq.nextLarger(jsmq.isAt());       // "jsmq-large"
+</code></pre>
+
+<h4>
+<a name="jsmqfire-namejsmqupdate--elemjsmq-media-width-" class="anchor" href="#jsmqfire-namejsmqupdate--elemjsmq-media-width-"><span class="octicon octicon-link"></span></a>jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )</h4>
+
+<p><em>Fire custom event</em><br><strong>name</strong>: A string containing the name of the custom event to fire<br><strong>elem</strong>: Native DOM element to fire the event on</p>
+
+<p><a name="method-reload"></a></p>
+
+<h4>
+<a name="jsmqreload" class="anchor" href="#jsmqreload"><span class="octicon octicon-link"></span></a>jsmq.reload()</h4>
+
+<p><em>Reloads the configuration by removing our media query nodes and CSS. Really only useful for unit testing, I think.</em></p>
+
+<h4>
+<a name="jsmqversion" class="anchor" href="#jsmqversion"><span class="octicon octicon-link"></span></a>jsmq.VERSION</h4>
+
+<p><strong>Returns</strong>: Version info</p>
+
+<p><a name="config-options"></a></p>
+
+<h2>
+<a name="configuration-optionsproperties" class="anchor" href="#configuration-optionsproperties"><span class="octicon octicon-link"></span></a>Configuration Options/Properties</h2>
+
+<p><a name="jsmq_config"></a></p>
+
+<h4>
+<a name="windowjsmq_config-object" class="anchor" href="#windowjsmq_config-object"><span class="octicon octicon-link"></span></a>window.jsmq_config (Object)</h4>
+
+<p><em>If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls <a href="#method-init">init()</a> on itself, you need to set this</em> <strong>before</strong> <em>mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options.</em></p>
+
+<h4>
+<a name="prefix-string" class="anchor" href="#prefix-string"><span class="octicon octicon-link"></span></a>PREFIX (String)</h4>
+
+<p><em>Prefix to use on CSS classes and appended page elements.</em><br><strong>Default</strong>: "jsmq-"</p>
+
+<h4>
+<a name="below_prefix-string" class="anchor" href="#below_prefix-string"><span class="octicon octicon-link"></span></a>BELOW_PREFIX (String)</h4>
+
+<p><em>CSS classname prefix that will be used for sizes below a given size. For example: 'below-jsmq-medium' would be valid to use if you wanted to target styles for all cases below the 'medium' width.</em><br><strong>Default</strong>: "below-"<br>
+Example:</p>
+
+<pre><code>/* 
+ * Target all devices BELOW the medium width (i.e., the 'small' width and lower)
+ * Similar to @media (max-width: 720px) {…}
+ * or @media (max-width: 45em) {…}
+ */
+.below-jsmq-medium .hero-unit p {
+    font-size: 17px;
+}
+.below-jsmq-medium .carousel-control {
+    left: -5px;
+    top: -20px;
+}
+
+/* 
+ * Target all devices AT the medium width only
+ * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }
+ * or @media (min-width: 45em) and (max-width: 60em) { ... }
+ */
+.jsmq-medium .hero-unit {
+    padding: 45px 15px;
+}
+</code></pre>
+
+<h4>
+<a name="default_event-string" class="anchor" href="#default_event-string"><span class="octicon octicon-link"></span></a>DEFAULT_EVENT (String)</h4>
+
+<p><em>The name of the default custom event name that gets fired on updates.</em><br><strong>Default</strong>: "jsmq:update"</p>
+
+<h4>
+<a name="default_event_elem-string" class="anchor" href="#default_event_elem-string"><span class="octicon octicon-link"></span></a>DEFAULT_EVENT_ELEM (String)</h4>
+
+<p><em>Default native DOM element to bind the default <a href="#method-update">update()</a> event to.</em><br><strong>Default</strong>: elemNames<a href="i.e.," title="jsmq-mediq-width">'viewport'</a></p>
+
+<h4>
+<a name="units-string" class="anchor" href="#units-string"><span class="octicon octicon-link"></span></a>UNITS (String)</h4>
+
+<p><em>Default unit sizes to use for breakpoints. If you don't think you should use 'em', please consider <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/">this</a>:</em><br><strong>Default</strong>: 'em'</p>
+
+<p><a name="config-sizes"></a></p>
+
+<h4>
+<a name="sizes-object" class="anchor" href="#sizes-object"><span class="octicon octicon-link"></span></a>sizes (Object)</h4>
+
+<p><em>Responsive breakpoint sizes.</em> <strong>Sizes default to 'em' values</strong>. <em>See: <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/">http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/</a></em><br><strong>Default</strong>:      </p>
+
+<pre><code>{
+    '61': PREFIX + 'large',                      // 61em &gt; 960px
+    '60': PREFIX + 'medium',                     // 60em ~= 960px
+    '45': PREFIX + 'small',                      // 45em ~= 720px
+    '30': PREFIX + 'smaller'                     // 30em ~= 480px
+};
+</code></pre>
+
+<p><a name="config-names"></a></p>
+
+<h4>
+<a name="names-object" class="anchor" href="#names-object"><span class="octicon octicon-link"></span></a>names (Object)</h4>
+
+<p><strong>Do not set this yourself with set(). They are defined in <a href="#config-sizes">sizes</a> and this is automagically mapped to <a href="#config-sizes">sizes</a></strong>.<br><em>CSS classnames that represent your breakpoint sizes. These are the names you will scope your CSS selectors with to emulate <a href="https://github.com/media" class="user-mention">@media</a> rules. Use PREFIX to change the 'jsmq-' value.</em><br><strong>Default</strong>: 'jsmq-large', 'jsmq-medium', 'jsmq-small', 'jsmq-smaller'</p>
+
+<h4>
+<a name="elemnames-object" class="anchor" href="#elemnames-object"><span class="octicon octicon-link"></span></a>elemNames (Object)</h4>
+
+<p><em>HTML id values of the elements that will be added to the page and queried.</em><br><strong>Default</strong>:     </p>
+
+<pre><code>{
+    'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
+    'device'    : PREFIX + 'media-device-width', // Width of actual device
+    'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
+};
+</code></pre>
+
+<p><a name="config-mystyles"></a></p>
+
+<h4>
+<a name="usemyownstyles-boolean" class="anchor" href="#usemyownstyles-boolean"><span class="octicon octicon-link"></span></a>useMyOwnStyles (Boolean)</h4>
+
+<p><em>Set to 'true' to skip auto-appending of CSS and add your stylesheet. Could minimize reflows.</em><br><strong>Default</strong>: false</p>
+
+<p><a name="config-myelements"></a></p>
+
+<h4>
+<a name="usemyownelements-boolean" class="anchor" href="#usemyownelements-boolean"><span class="octicon octicon-link"></span></a>useMyOwnElements (Boolean)</h4>
+
+<p><em>Set to 'true' is you want to use elements that you've already added. Could minimize reflows.</em><br><strong>Default</strong>: false</p>
+
+<h4>
+<a name="supportoldbrowsers-boolean" class="anchor" href="#supportoldbrowsers-boolean"><span class="octicon octicon-link"></span></a>supportOldBrowsers (Boolean)</h4>
+
+<p><em>Support IE &lt; 9 and other old browsers with no media queries. Added in v0.3.3.</em><br><strong>Default</strong>: true (mostly so demos show it working…I recommend setting this to false)</p>
+
+<p><a name="config-delayinit"></a></p>
+
+<h4>
+<a name="delayinit-boolean" class="anchor" href="#delayinit-boolean"><span class="octicon octicon-link"></span></a>delayInit (Boolean)</h4>
+
+<p><em>Whether to delay calling <a href="#method-init">init()</a> at load or not. Mostly useful for unit testing.</em><br><strong>Default</strong>: false</p>
+
+<h4>
+<a name="istest-boolean" class="anchor" href="#istest-boolean"><span class="octicon octicon-link"></span></a>isTest (Boolean)</h4>
+
+<p><em>For unit testing. Are we running tests or not?</em><br><strong>Default</strong>: false</p>
+
+<h2>
+<a name="events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events</h2>
+
+<p><a name="event-default"></a></p>
+
+<h4>
+<a name="jsmqupdate" class="anchor" href="#jsmqupdate"><span class="octicon octicon-link"></span></a>jsmq:update</h4>
+
+<p><em>Fires after a CSS class change event occurs when <a href="#method-update">update()</a> is called. The following additional properties are available on the Event Object to help with filtering logic after an event:</em><br><strong>Additional properties on the Event Object</strong>:<br><strong>event.className</strong>: String of all current (jsmq) CSS classes being used (e.g., 'jsmq-medium below-jsmq-large')<br><strong>event.size</strong>: Size (number) of the CSS class<br><strong>event.baseClass</strong>: The base class value for the size we are at (i.e., what <a href="#method-isat">isAt()</a> would return)<br>
+Example:</p>
+
+<pre><code>$('#jsmq-media-width').on('jsmq:update', function (e) {
+    if (e.className.match(MyApp.LARGE_WIDTH)) {
+        // Do stuff for large screens
+    }
+
+    // OR 
+
+    if (e.size === 45) {
+        // Do stuff 
+    }
+
+    // OR
+
+    if (e.baseClass === MyApp.MEDIUM_WIDTH) {
+        // Do stuff for medium screens
+    }
+
+    // OR
+
+    if ($('html').hasClass(MyApp.LARGE_WIDTH)) {
+        // Do stuff
+    }
+});
+</code></pre>
+
+<h2>
+<a name="philosophy" class="anchor" href="#philosophy"><span class="octicon octicon-link"></span></a>Philosophy</h2>
+
+<hr><p>There is something that has never felt quite right to me about using <em>only</em> CSS media queries to do "responsive design" - <strong>using CSS media queries, the CSS rules are immediately applied to adjust the layout when the browser is resized, but the JavaScript doesn't know about it</strong>. This has always bothered me. One reason this bothers me is that I'm not really sure how many users (i.e., not developers or designers testing their "responsive" page) actually resize their browser after page load (You can't currently resize windows in mobile devices (arguably the main reason we need to be "responsive")), but if we allow it to adjust, it needs to work!!  And then if they do resize, do they <em>definitely</em> want the layout to adjust? Your mind has to then reprocess the new layout and becomes kind of like a browser engine doing a "reflow" (what has moved? what is now completely gone?, etc.). </p>
+
+<p>Another reason is: what if you need to also apply different JS behaviors or add/remove markup? The JS needs to be in sync with the CSS media query and <a href="http://tripleodeon.com/2011/12/first-understand-your-screen/">not all browsers report width values the same</a>. We need "Responsive JavaScript" or "JSS Media Queries."</p>
+
+<p>This alternate approach to implementing "responsive design" is based off the idea presented in this article by Jeremy Keith: <a href="http://adactio.com/journal/5429/">Conditional CSS</a>. Here Jeremy describes using the <code>:after</code> psuedo element on the <code>body</code> tag to create a link between JS and CSS and also to provide meaningful names to the values, instead of being tied to pixel width values. And example is something like this: <code>body:after {content: "large-screen";}</code>. I really like the idea of this approach! And I tried the <a href="http://www.springload.co.nz/love-the-web/responsive-javascript">onMediaQuery jQuery plugin</a>. The main complication I found with it was that iOS 4 (specifically, iOS 4.2.1), my old iPhone, wasn't able to read this value. I was bummed. How many other browsers did this not work for? <a href="https://github.com/JoshBarr/js-media-queries">According to the Josh Barr from Springload, it doesn't work well on Android either</a>. So, I tried various other properties trying to simulate the useful method of using human readable strings (and somewhat future friendly - what if device pixel size changes?) to represent the size of the screen. I didn't find any that worked with strings, but <strong>I did find that using the "width" property, we could at least match the value of the CSS media query to check the current width.</strong> And <code>width</code> works everywhere.</p>
+
+<p>So, <strong>in this approach, we only use CSS media queries to set width values on "special" elements that we will then query from JS for their width. To emulate the behavior of CSS media queries in CSS, we just use class names (i.e., <code>.jsmq-large .someElement</code>). This allows us to be "responsive" to the browser/device size at page load and then <em>predictablly</em> decide when we want to change the layout for the user and ensure that JS is in sync with this CSS at this "moment"</strong>. It provides a potentially slightly simpler way to implement "responsive" into IE (or unsupported browsers), by hooking up a window.resize event, checking the viewport width, and applying the desired CSS class. All the CSS rules can then remain unchanged (how would you apply the same CSS rules inside a CSS media query to IE otherwise?).</p>
+
+<h3>
+<a name="why-not-matchmediajs-or-modernizrmq" class="anchor" href="#why-not-matchmediajs-or-modernizrmq"><span class="octicon octicon-link"></span></a>Why not matchMedia.js or Modernizr.MQ?</h3>
+
+<p>I found that Modernizr.MQ's implementation (which is basically the same as <a href="https://github.com/paulirish/matchMedia.js/">matchMedia.js</a>), was getting triggered because the window size changed when the soft keyboard popped up. This was causing a very strange issue in Android 2.x (Kindle Fire) in which the keyboard would hide after the user started typing (I had a 50ms delay on executing the widnow.resize callback).</p>
+
+<p>I also found matchMedia.js to crash IE8, at least when using it in a particular CMS envrionment I was using. I wasn't really able to reproduce this anywhere else, but I couldn't use it there because of this.</p>
+
+<h2>
+<a name="resources" class="anchor" href="#resources"><span class="octicon octicon-link"></span></a>Resources</h2>
+
+<hr><p><a href="http://tripleodeon.com/2011/12/first-understand-your-screen/">First, Understand Your Screen</a> by James Pearce</p>
+
+<p><a href="http://adactio.com/journal/5429/">Conditional CSS</a> by Jeremy Keith</p>
+
+<p><a href="http://www.springload.co.nz/love-the-web/responsive-javascript">onMediaQuery jQuery plugin</a></p>
+
+<p><a href="https://github.com/paulirish/matchMedia.js/">MatchMedia.js</a></p>
+
+<p><a href="https://github.com/JoshBarr/js-media-queries">onMediaQuery jQuery plugin Github</a></p>
+
+<p><a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/">The EMs have it: Proportional Media Queries FTW!</a> Cloud Four Blog by Lyza Gardner</p>
+
+<h2>
+<a name="known-bugs" class="anchor" href="#known-bugs"><span class="octicon octicon-link"></span></a>Known Bugs</h2>
+
+<hr><p>See <a href="https://github.com/skaiser/mediaquery.js/issues">Issues</a></p>
+
+<h2>
+<a name="attributioncredits" class="anchor" href="#attributioncredits"><span class="octicon octicon-link"></span></a>Attribution/Credits</h2>
+
+<hr><p>Jeremy Keith, James Pearce, Paul Irish, Nicholas Zakas and Springload for their inspiring and pioneering ideas and work.</p>
+
+<p>Thanks!!</p>
+
+<h2>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p>Stephen Kaiser</p>
+        </section>
+
+        <footer>
+          Mediaquery.js is maintained by <a href="https://github.com/skaiser">skaiser</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37244439-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
