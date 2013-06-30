@@ -1,5 +1,3 @@
-mediaquery.js
-==============
 
 ## Introduction
 ---
