@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title></title>
+    <script src="../javascripts/mediaquery.min.js"></script>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Mediaquery.js</h1>
+        <p>Keeps JavaScript and CSS in sync using a unique approach that allows you to control styles for responsive design without doing user-agent detection.</p>
+
+        <p class="view"><a href="https://github.com/skaiser/mediaquery.js">View the Project on GitHub <small>skaiser/mediaquery.js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/skaiser/mediaquery.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/skaiser/mediaquery.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/skaiser/mediaquery.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>Demo: Be responsive, but only at page load</h2>
+        <h4>Step 1: Resize the browser window</h4>
+        <p>Notice nothing changed? The site appears static, right? Go to Step 2.</p>
+        <h4>Step 2: Without resizing the browser, refresh the page</h4>
+        <p>The layout should have responded to the new browser width. (If not, try resizing some more.)</p>
+        <h4>Step 3: Resize the browser again</h4>
+        <p>Notice the layout is still adapted to the same screen size as it was when the page was loaded.
+        <h4>Step 4: Big deal, you say?</h4>
+        The page is actually responding to your screen width <em>100% on the client-side</em> using the reliability of CSS media queries, but <strong>giving
+        control to JavaScript, so that you can be sure they both think the browser is at the same size.</strong>
+        <a href="http://tripleodeon.com/2011/12/first-understand-your-screen/">JavaScript may not report things exactly the same cross-browser</a> 
+        and it certainly may differ from what CSS media queries may think the browser width is. It also causes maintenance overhead because
+        you need to define the breakpoints in CSS <em>and</em> in your JavaScript.</p>
+        <h4>Step 5: How does it work?</h4>
+        <p>It uses CSS media queries to assign the width of an invisble element (&lt;script&gt; by default) and then JavaScript
+        reads the width of that element and applies the needed CSS class (<a href="../">more information on the technique</a>).</p>
+        <p>
+        Here is what class(es) we currently have on the page: <strong><span id="cssClasses"></span></strong>
+        </p>
+        <h4>Step 6: Still want to be responsive after page load?</h4>
+        <p><a href="normal-responsive.html">Check out the more dynamic demo</a></p>
+        <h4>Step 7: Learn</h4>
+        <p><a href="../#api">Go read the full API</a></p>
+        
+        <hr>
+        <div class="debug">
+            <h3>Debug Info:</h3>
+            <p>Check this page in different browsers/devices and see what you get
+            (<a href="https://github.com/skaiser/mediaquery.js/issues">report a bug</a>).</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>screen.width</th>
+                        <th>window.outerWidth</th>
+                        <th>CSS media query</th>
+                        <th>JSS media query</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="screenWidth"></td>
+                        <td id="windowWidth"></td>
+                        <td id="cssWidth"></td>
+                        <td id="jssWidth"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            
+      </section>
+      <footer>
+        <!--<p>This project is maintained by <a href="https://github.com/skaiser">skaiser</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>-->
+      </footer>
+    </div>
+    <script>
+        (function () {
+            var screenWidth = document.getElementById('screenWidth'),
+                windowWidth = document.getElementById('windowWidth'),
+                cssWidth = document.getElementById('cssWidth'),
+                jssWidth = document.getElementById('jssWidth'),
+                cssClasses = document.getElementById('cssClasses');
+            
+            var on = function (ev, el, fn) {
+                if (el.addEventListener) {
+                    el.addEventListener(ev, fn, false);
+                } else if (el.attachEvent) {
+                    var r = el.attachEvent("on"+ ev, fn);
+                    return r;   
+                }
+            };
+            
+            var updateScreen = function () {
+                var size = jsmq.get('names')[jsmq.isAt()].toString(),
+                    operator = (size === jsmq.getSizes()[0]) ? '>' : '~<';
+                
+                screenWidth.innerText = screen.width + 'px';
+                windowWidth.innerText = window.outerWidth + 'px';
+                cssWidth.innerText = size + jsmq.get('UNITS') + ' (' + operator  + ' ' + (size * 16) + 'px)';
+                jssWidth.innerText = jsmq.isAt();
+                cssClasses.innerText = document.documentElement.className;
+            };
+            
+            on('resize', window, updateScreen);
+            
+            updateScreen();
+            
+        })();
+    </script>
+    <script src="../javascripts/scale.fix.js"></script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-37244439-2");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>
