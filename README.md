@@ -112,7 +112,9 @@ Ideally, since we are setting CSS classes to adjust the layout, this needs to ru
 
 Insert the following into the `<head>` on your page:
 
+```html
     <script src="mediaquery.min.js"></script>
+```
 
 Prepend your CSS rules that are inside `@media` rules with standard CSS class selectors representing the names of your "breakpoints". For example:
 
