@@ -2,12 +2,8 @@
 ## Introduction
 ---
 
-### Supported Browsers
-
-(IE6+ and any other browsers)       
-As of v0.3.3, there is support for IE6+ and other older browsers that don't support media queries. Any other modern browsers should work too!
-
 [View demo](http://mediaqueryjs.com/)&nbsp;&nbsp;|&nbsp;&nbsp;[API docs](#api)
+
 
 ### What is this?
 
@@ -15,6 +11,10 @@ This is a small (about 1.5KB) JS library independent solution for making sure yo
 and to give developers (you) more control over whether or not you page is "responsive" only at page load or when the browser is resized.
 It is an experiment in an alternate approach to implementing "responsive design." I think we should call it "JSS media queries." :)
 
+
+### Supported Browsers
+
+IE6+ and any other modern browser.
 
 
 ### Why should I use this?
