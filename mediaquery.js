@@ -29,7 +29,7 @@
          *  @property   VERSION
          *  @type       String
          */
-        var VERSION = '0.4.1',
+        var VERSION = '0.4.2',
             prevClass = '',
             baseClass = '',
             initHasRun = false,
@@ -62,7 +62,7 @@
          *  @type       Object
          *  @example
          *      // Override default options
-         *  	window.jsmq_config = { 
+         *      window.jsmq_config = { 
          *          useMyOwnStyles: true, 
          *          useMyOwnElements: true
          *      }; 
@@ -159,15 +159,15 @@
          *  @default    See example.
          *  @example
          *      window.jsmq_config.elemNames = {     
-         *          'viewport'  : PREFIX + 'media-width',        // Viewport/browser width     
-         *          'device'    : PREFIX + 'media-device-width', // Width of actual device     
-         *          'css'       : PREFIX + 'styles'              // id for inline styles for unit tests         
+         *          'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
+         *          'device'    : PREFIX + 'media-device-width', // Width of actual device
+         *          'css'       : PREFIX + 'styles'              // id for inline styles for unit tests
          *      };
          */
         cfg.elemNames = cfg.elemNames || {
             'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
             'device'    : PREFIX + 'media-device-width', // Width of actual device
-            'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
+            'css'       : PREFIX + 'styles'              // id for inline styles for unit tests
         };
         
         
@@ -179,7 +179,7 @@
          *  @type       Boolean
          *  @default    false
          *  @example
-         *  	window.jsmq_config.useMyOwnStyles = true;
+         *      window.jsmq_config.useMyOwnStyles = true;
          */
         cfg.useMyOwnStyles = cfg.useMyOwnStyles || false;
         
@@ -192,7 +192,7 @@
          *  @type       Boolean
          *  @default    false
          *  @example
-         *  	window.jsmq_config.useMyOwnElements = true; 
+         *      window.jsmq_config.useMyOwnElements = true; 
          */
         cfg.useMyOwnElements = cfg.useMyOwnElements || false;
         
@@ -359,7 +359,7 @@
          *
          *  @method     _reverseKeyValue
          *  @param      {Object}    o           Object to have key/values reversed
-         *  @param      [Boolean]   castNum     Whether to cast value to a Number
+         *  @param      {Boolean}   [castNum]   Whether to cast value to a Number
          *  @return     {Object}                A new object with key/values reversed
          *  @private
          */
@@ -378,7 +378,7 @@
         }
         
         
-        /**
+        /*
          *  This is used to switch key/values of cfg.sizes to make it so that we
          *  can do queries for the size using the CSS class name instead of the
          *  numeric value.
@@ -411,8 +411,8 @@
          *  media query @media rule.
          *
          *  @method     _getWidth
-         *  @param      [Boolean]       useDeviceWidth  Optional. RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
-         *  @return     {Number}
+         *  @param      {Boolean}       [useDeviceWidth]    RETURNS THE VALUE BASED ON THE DEVICE'S WIDTH
+         *  @return     {Number}                            Number value representing the width
          *  @private
          */
         _getWidth = function (useDeviceWidth) {
@@ -479,8 +479,8 @@
          *  @return     {Array}         Array of [sizes](#attr_sizes) number values sorted high to low
          *  @public
          *  @example
-         *      var mySizes = jsmq.getSizes(); 						// [61, 60, 45, 30]
-         *      var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];	    // 'jsmq-large'
+         *      var mySizes = jsmq.getSizes();                          // [61, 60, 45, 30]
+         *      var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];        // 'jsmq-large'
          *
          *      if (jsmq.isAt() === LARGE_WIDTH)) { 
          *          // do stuff
@@ -585,9 +585,9 @@
          *  @return     {Boolean}                           Boolean of whether current width is below a given width.
          *  @public
          *  @example
-         *  	// Animate a panel 100% width if below a certain width or 200px, if larger.
-         *      var mySizes = jsmq.getSizes(); 		// [61, 60, 45, 30]
-         *      var MEDIUM_WIDTH = mySizes[1]; 		// '60'
+         *      // Animate a panel 100% width if below a certain width or 200px, if larger.
+         *      var mySizes = jsmq.getSizes();      // [61, 60, 45, 30]
+         *      var MEDIUM_WIDTH = mySizes[1];      // '60'
          *
          *      if (jsmq.isBelow(MEDIUM_WIDTH))) { 
          *          $panel.animate({width: '100%'});
@@ -635,8 +635,8 @@
          *
          *  @method     _createElem
          *  @param      {String}        name        Name of element from cfg.elemNames (e.g., 'viewport' or 'device')
-         *  @param      [String]        nodeType    Optional. Type of HTML element to add to page (e.g., 'div')
-         *  @return     {Object}        el          The native DOM element that was created
+         *  @param      {String}        [nodeType]  Type of HTML element to add to page (e.g., 'div')
+         *  @return     {HTMLElement}   el          The native DOM element that was created
          *  @private
          */
         function _createElem(name, nodeType) {
@@ -692,7 +692,7 @@
                 css = '',
                 i; 
             
-            /**
+            /*
              *  Opera apparently iterates through objects in reverse order, so
              *  we can't trust browser implementations to be consistent and must
              *  force the order we want by first getting the property values,
@@ -744,7 +744,7 @@
             // prevClass should actually contain current class in the default setup
             className = className || prevClass;     
             
-            if (document.createEvent) {
+            if ("createEvent" in document) {
                 ev = document.createEvent('Event');
                 ev.initEvent(name, true, true);
                 // Pass helpful info
@@ -812,7 +812,7 @@
          *  @return     {String}            String with CSS classes for all larger breakpoints.
          *  @public
          *  @example
-         *      jsmq.allLarger('jsmq-smaller');		// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
+         *      jsmq.allLarger('jsmq-smaller');     // "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
          *  In your CSS, you could do something like the following to reduce the
          *  font-size for `<h1>` elements for all breakpoints below the 'medium' breakpoint size:
          *  @example
@@ -825,7 +825,7 @@
             if (pos > 0) {
                 do {
                     str += _buildBelowClass(_findPrevPos(pos)) || '';
-                } while (pos--)
+                } while (pos--);
             }
             return str;
         }
@@ -1047,7 +1047,7 @@
         
         
         
-        /**
+        /*
          *  Public methods.
          *  
          */
