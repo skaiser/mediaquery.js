@@ -18,6 +18,7 @@ and to give developers (you) more control over whether or not you page is "respo
 It is an experiment in an alternate approach to implementing "responsive design." I think we should call it "JSS media queries." :)
 
 
+
 ### Why should I use this?
 The advantages of this approach are several:
 
@@ -42,6 +43,15 @@ though, to make sure things don't get out of sync.
 6. Works with `@import` rules (unconfirmed)
 
 
+### Common use cases
+
+* If you like the power of CSS media queries, but have ever had trouble ensuring your "responsive JS" is in sync with your "responsive CSS"
+* If you've ever wanted to have your "responsive design" only be "responsive" to the user's browser/screen size at page load, but not necessarily _after_ page load (i.e., browser resize)
+* If you need to support "responsive design" in older browsers (IE), but don't want to make separate CSS rules for them
+* If you only want to have to declare your "responsive breakpoints" in one place
+* If you want a more reliable way to query what size the CSS media query thinks the screen is at vesus the [unreliable way that some browsers report the size using JS][1] 
+
+
 ### How does it work?
 Mediaquery.js adds a CSS class to the html element and adds three elements to the head
 element of your page (configurable):
@@ -63,31 +73,25 @@ newer mobile browsers in this regard).
 Then, **instead of putting all your CSS rules inside of media queries, you preface
 them with the CSS class you defined in your breakpoints**. For example:
 
+```css
 	.jsmq-large .some-style {color: green;}
 	.jsmq-medium .some-style {color: orange;}
-	
+```
+
 **These are now your media query rules.**
 
 If you want to provide your own elements and stylesheets to avoid incurring the reflow cost of appending the elements at page load, you can add
 them to the page yourself beforehand and set: 
 	
+```javascript
 	window.jsmq_config = { 
 		useMyOwnStyles: true, 
 		useMyOwnElements: true
 	}; 
-	
+```
+
 either in the head **_before_** you load mediaquery.js or
 (recommended) just add it to the mediaquery.min.js file above the library code. See the [Configuration Options](#config-options) section for more details.
-
-
-### Common use cases
-
-* If you like the power of CSS media queries, but have ever had trouble ensuring your "responsive JS" is in sync with your "responsive CSS"
-* If you've ever wanted to have your "responsive design" only be "responsive" to the user's browser/screen size at page load, but not necessarily _after_ page load (i.e., browser resize)
-* If you need to support "responsive design" in older browsers (IE), but don't want to make separate CSS rules for them
-* If you only want to have to declare your "responsive breakpoints" in one place
-* If you want a more reliable way to query what size the CSS media query thinks the screen is at vesus the [unreliable way that some browsers report the size using JS][1] 
-
 
 
 
@@ -96,8 +100,10 @@ either in the head **_before_** you load mediaquery.js or
 
 Insert the following into the `<head>` on your page:
 
+```html
     <script src="mediaquery.min.js"></script>
-    
+```
+
 Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. 
 
 
@@ -112,6 +118,8 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
 
 **Instead of doing this in your CSS:**
 
+```css
+	/* THE OLD WAY */
     .hero-unit p {
 		font-size: 18px;
 	}
@@ -134,10 +142,12 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
 			top: -20px;
 		}
 	}
+```
     
 **Do this:**
 
-
+```css
+	/* THE NEW WAY */
     .hero-unit p {
 		font-size: 18px;
 	}
@@ -157,26 +167,32 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
 		left: -5px;
 		top: -20px;
 	}
-    
+```
 
 If you want to update the CSS class after page load (e.g., after a window resize event (recommended)), you
 can use:
     
+```javascript
     jsmq.update();
+```
 
 By default, `jsmq.update` fires the `"jsmq:update"` event after a CSS class state has changed.
 
 You can also do something like this on a window resize to check what CSS state we are in:
 
+```javascript
     jsmq.update().isAt();            // "jsmq-large", etc.
+```
    
 Or before doing an animation:
 
+```javascript
 	if (jsmq.isBelow('jsmq-medium')) {
 		// animate panel full width
 	} else {
 		// animate panel 200px
 	}
+```
 
 ## API
 ---
@@ -187,6 +203,7 @@ Or before doing an animation:
 _Makes things happen._ **This runs automagically at load by default.** _See [jsmq\_config](#jsmq_config)
 and/or [reload()](#method-reload) if you want to call this manually later._     
 **Returns**: The jsmq object.
+
 
 <a name="method-update"></a>
 #### jsmq.update( [callback] )
@@ -209,11 +226,13 @@ will use the device-width to evaluate the return value._
 **Returns**: No arguments or single boolean argument returns CSS class name string. Others return boolean.     
 Examples:
 
+```javascript
     jsmq.isAt();                    // 'jsmq-large', etc.
     jsmq.isAt(true);                // 'jsmq-large' for device-width
     jsmq.isAt('jsmq-small');        // true/false
     jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
     jsmq.isAt(45, true);            // true/false for device width
+```
 
 
 <a name="method-isbelow"></a>
@@ -224,6 +243,7 @@ _Is the current media query BELOW our current width? I've found this very useful
 **Returns**: Boolean of whether current width is below a given width.
 Example:
 
+```javascript
 	// Animate a panel 100% width if below a certain width or 200px, if larger.
 	var mySizes = jsmq.getSizes(); 		// [61, 60, 45, 30]
     var MEDIUM_WIDTH = mySizes[1]; 		// '60'
@@ -239,12 +259,15 @@ Example:
     if ($('html').hasClass('jsmq-lt-medium')) { 
     	// do stuff
     }
+```
+
 
 #### jsmq.getSizes()
 _Returns an array of [cfg.sizes](#config-sizes) number values sorted high to low. This is very helpful in setting some constants within your own app code that you can use later with [isAt()](#method-isat) or [isBelow()](#method-isbelow) in `if` statements without needing to know the names of the sizes ahead of time. You just configure them once for mediaquery.js and that's it!_      
 **Returns**: An array of [cfg.sizes](#config-sizes) number values sorted high to low.     
 Example:     
-	
+
+```javascript
 	var mySizes = jsmq.getSizes(); 						// [61, 60, 45, 30]
     var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];	// 'jsmq-large'
     
@@ -257,6 +280,7 @@ Example:
     if ($('html').hasClass(LARGE_WIDTH)) { 
     	// do stuff
     }
+```
 
 
 <a name="method-get"></a>
@@ -266,8 +290,10 @@ _Returns the configuration object or optionally, a [specific property](#config-o
 **Returns**: Local configuration object or specific property.           
 Examples: 
 
+```javascript
 	jsmq.get('names');		// { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.
 	jsmq.get('sizes');		// { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.
+```
 
 
 #### jsmq.set( prop, value )
@@ -277,7 +303,9 @@ _Set a [configuration property/value](#config-options). Note that you probably w
 **Returns**: The jsmq object if both arguments are passed. Undefined if not.    
 Example:
 
+```javascript
 	jsmq.set('isTest', true);
+```
 
 
 #### jsmq.allLarger( at )
@@ -288,11 +316,15 @@ example in your CSS rules to target all sizes below a certain size._
 **Returns**: String with CSS classes for _all_ larger breakpoints.     
 Example:
 
+```javascript
 	jsmq.allLarger('jsmq-smaller');		// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
+```
 
 In your CSS, you could do something like the following to reduce the font-size for `<h1>` elements for all breakpoints below the 'medium' breakpoint size:
 
+```css
 	.below-jsmq-medium h1 { font-size: 0.8em; }
+```
 
 
 #### jsmq.nextLarger( at )
@@ -301,9 +333,11 @@ _Returns the CSS classname of the next largest breakpoint, if there is one._
 **Returns**: CSS classname of the next largest breakpoint, if there is one.     
 Example:
 
+```javascript
 	// With the viewport at the 'medium' breakpiont size
 	jsmq.nextLarger(jsmq.isAt());		// "jsmq-large"
-	
+```
+
 
 #### jsmq.fire( [name="jsmq:update"] [, elem="#jsmq-media-width"] )
 _Fire custom event_    
@@ -327,15 +361,18 @@ _Reloads the configuration by removing our media query nodes and CSS. Really onl
 #### window.jsmq_config (Object)
 _If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls [init()](#method-init) on itself, you need to set this_ **before** _mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options._
 
+
 #### PREFIX (String)
 _Prefix to use on CSS classes and appended page elements._      
 **Default**: "jsmq-"
+
 
 #### BELOW_PREFIX (String)
 _CSS classname prefix that will be used for sizes below a given size. For example: 'below-jsmq-medium' would be valid to use if you wanted to target styles for all cases below the 'medium' width._      
 **Default**: "below-"     
 Example:
 
+```css
 	/* 
 	 * Target all devices BELOW the medium width (i.e., the 'small' width and lower)
 	 * Similar to @media (max-width: 720px) {…}
@@ -357,31 +394,38 @@ Example:
 	.jsmq-medium .hero-unit {
 		padding: 45px 15px;
 	}
-	
+```
+
 	
 #### DEFAULT_EVENT (String)
 _The name of the default custom event name that gets fired on updates._           
 **Default**: "jsmq:update"
 
+
 #### DEFAULT_EVENT_ELEM (String)
 _Default native DOM element to bind the default [update()](#method-update) event to._       
 **Default**: elemNames['viewport'] (i.e., 'jsmq-mediq-width')
 
+
 #### UNITS (String)
 _Default unit sizes to use for breakpoints. If you don't think you should use 'em', please consider [this][6]:_      
 **Default**: 'em'
+
 
 <a name="config-sizes"></a>
 #### sizes (Object)
 _Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/][6]_      
 **Default**:      
 
+```javascript
 	{
     	'61': PREFIX + 'large',                      // 61em > 960px
         '60': PREFIX + 'medium',                     // 60em ~= 960px
         '45': PREFIX + 'small',                      // 45em ~= 720px
         '30': PREFIX + 'smaller'                     // 30em ~= 480px
     };
+```
+
 
 <a name="config-names"></a>
 #### names (Object)
@@ -389,38 +433,47 @@ _Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://b
 _CSS classnames that represent your breakpoint sizes. These are the names you will scope your CSS selectors with to emulate @media rules. Use PREFIX to change the 'jsmq-' value._    
 **Default**: 'jsmq-large', 'jsmq-medium', 'jsmq-small', 'jsmq-smaller'
 
+
 #### elemNames (Object)
 _HTML id values of the elements that will be added to the page and queried._      
 **Default**:     
 
+```javascript
 	{
     	'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
         'device'    : PREFIX + 'media-device-width', // Width of actual device
         'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
     };
+```
+
 
 <a name="config-mystyles"></a>
 #### useMyOwnStyles (Boolean)
 _Set to 'true' to skip auto-appending of CSS and add your stylesheet. Could minimize reflows._    
 **Default**: false
 
+
 <a name="config-myelements"></a>
 #### useMyOwnElements (Boolean)
 _Set to 'true' is you want to use elements that you've already added. Could minimize reflows._     
 **Default**: false
 
+
 #### supportOldBrowsers (Boolean)
 _Support IE < 9 and other old browsers with no media queries. Added in v0.3.3._    
 **Default**: true (mostly so demos show it working…I recommend setting this to false)
+
 
 <a name="config-delayinit"></a>
 #### delayInit (Boolean)
 _Whether to delay calling [init()](#method-init) at load or not. Mostly useful for unit testing._      
 **Default**: false
 
+
 #### isTest (Boolean)
 _For unit testing. Are we running tests or not?_      
 **Default**: false
+
 
 
 ## Events
@@ -434,6 +487,7 @@ _Fires after a CSS class change event occurs when [update()](#method-update) is 
 **event.baseClass**: The base class value for the size we are at (i.e., what [isAt()](#method-isat) would return)      
 Example:
 
+```javascript
 	$('#jsmq-media-width').on('jsmq:update', function (e) {
 		if (e.className.match(MyApp.LARGE_WIDTH)) {
 			// Do stuff for large screens
@@ -457,6 +511,7 @@ Example:
 			// Do stuff
 		}
 	});
+```
 
 
 
