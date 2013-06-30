@@ -9,7 +9,7 @@ mediaquery.js
 (IE6+ and any other browsers)       
 As of v0.3.3, there is support for IE6+ and other older browsers that don't support media queries. Any other modern browsers should work too!
 
-[View demo](http://mediaqueryjs.com/)
+[View demo](http://mediaqueryjs.com/)&nbsp;&nbsp;|&nbsp;&nbsp;[API docs](#api)
 
 ### What is this?
 
