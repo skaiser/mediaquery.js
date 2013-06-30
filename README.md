@@ -96,7 +96,7 @@ either in the head **_before_** you load mediaquery.js or
 ## Installation
 ---
 
-Insert the following into the `<head>` on your page:
+Insert the following into the `<head>` on your page **_after_** the viewport meta tag:
 
 ```html
 <script src="mediaquery.min.js"></script>
@@ -108,7 +108,7 @@ Ideally, since we are setting CSS classes to adjust the layout, this needs to ru
 ## Usage
 ---
 
-Insert the following into the `<head>` on your page:
+Insert the following into the `<head>` on your page **_after_** the viewport meta tag:
 
 ```html
 <script src="mediaquery.min.js"></script>
