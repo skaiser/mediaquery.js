@@ -28,10 +28,7 @@
         </ul>
       </header>
       <section>
-        <h1>
-<a name="mediaqueryjs" class="anchor" href="#mediaqueryjs"><span class="octicon octicon-link"></span></a>mediaquery.js</h1>
-
-<h2>
+        <h2>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <hr><h3>
@@ -40,7 +37,7 @@
 <p>(IE6+ and any other browsers)<br>
 As of v0.3.3, there is support for IE6+ and other older browsers that don't support media queries. Any other modern browsers should work too!</p>
 
-<p><a href="http://mediaqueryjs.com/">View demo</a></p>
+<p><a href="http://mediaqueryjs.com/">View demo</a>  |  <a href="#api">API docs</a></p>
 
 <h3>
 <a name="what-is-this" class="anchor" href="#what-is-this"><span class="octicon octicon-link"></span></a>What is this?</h3>
@@ -105,8 +102,8 @@ newer mobile browsers in this regard).</p>
 <p>Then, <strong>instead of putting all your CSS rules inside of media queries, you preface
 them with the CSS class you defined in your breakpoints</strong>. For example:</p>
 
-<div class="highlight"><pre>    <span class="nc">.jsmq-large</span> <span class="nc">.some-style</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="nb">green</span><span class="p">;}</span>
-    <span class="nc">.jsmq-medium</span> <span class="nc">.some-style</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="nb">orange</span><span class="p">;}</span>
+<div class="highlight"><pre><span class="nc">.jsmq-large</span> <span class="nc">.some-style</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="nb">green</span><span class="p">;}</span>
+<span class="nc">.jsmq-medium</span> <span class="nc">.some-style</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="nb">orange</span><span class="p">;}</span>
 </pre></div>
 
 <p><strong>These are now your media query rules.</strong></p>
@@ -114,10 +111,10 @@ them with the CSS class you defined in your breakpoints</strong>. For example:</
 <p>If you want to provide your own elements and stylesheets to avoid incurring the reflow cost of appending the elements at page load, you can add
 them to the page yourself beforehand and set: </p>
 
-<div class="highlight"><pre>    <span class="nb">window</span><span class="p">.</span><span class="nx">jsmq_config</span> <span class="o">=</span> <span class="p">{</span> 
-        <span class="nx">useMyOwnStyles</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> 
-        <span class="nx">useMyOwnElements</span><span class="o">:</span> <span class="kc">true</span>
-    <span class="p">};</span> 
+<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">jsmq_config</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="nx">useMyOwnStyles</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> 
+    <span class="nx">useMyOwnElements</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">};</span>
 </pre></div>
 
 <p>either in the head <strong><em>before</em></strong> you load mediaquery.js or
@@ -128,7 +125,7 @@ them to the page yourself beforehand and set: </p>
 
 <hr><p>Insert the following into the <code>&lt;head&gt;</code> on your page:</p>
 
-<div class="highlight"><pre>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"mediaquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"mediaquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </pre></div>
 
 <p>Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. </p>
@@ -138,82 +135,82 @@ them to the page yourself beforehand and set: </p>
 
 <hr><p>Insert the following into the <code>&lt;head&gt;</code> on your page:</p>
 
-<div class="highlight"><pre>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"mediaquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"mediaquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </pre></div>
 
 <p>Prepend your CSS rules that are inside <code>@media</code> rules with standard CSS class selectors representing the names of your "breakpoints". For example:</p>
 
 <p><strong>Instead of doing this in your CSS:</strong></p>
 
-<div class="highlight"><pre>    <span class="c">/* THE OLD WAY */</span>
+<div class="highlight"><pre><span class="c">/* THE OLD WAY */</span>
+<span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">60em</span><span class="o">)</span> <span class="p">{</span> 
     <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
-        <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+        <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
     <span class="p">}</span>
+<span class="p">}</span>
 
-    <span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">60em</span><span class="o">)</span> <span class="p">{</span> 
-        <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
-            <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
-        <span class="p">}</span>
+<span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">45em</span><span class="o">)</span> <span class="p">{</span>
+    <span class="nc">.hero-unit</span> <span class="p">{</span>
+        <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
     <span class="p">}</span>
+<span class="p">}</span>
 
-    <span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">45em</span><span class="o">)</span> <span class="p">{</span>
-        <span class="nc">.hero-unit</span> <span class="p">{</span>
-            <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
-        <span class="p">}</span>
+<span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">30em</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">45em</span><span class="o">)</span> <span class="p">{</span>
+    <span class="nc">.carousel-control</span> <span class="p">{</span>
+        <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
+        <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
     <span class="p">}</span>
-
-    <span class="k">@media</span> <span class="nt">only</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">30em</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">45em</span><span class="o">)</span> <span class="p">{</span>
-        <span class="nc">.carousel-control</span> <span class="p">{</span>
-            <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
-            <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 <p><strong>Do this:</strong></p>
 
-<div class="highlight"><pre>    <span class="c">/* THE NEW WAY */</span>
-    <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
-        <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span class="c">/* THE NEW WAY */</span>
+<span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+<span class="p">}</span>
 
-    <span class="c">/* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */</span>
-    <span class="nc">.below-jsmq-large</span> <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
-        <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="c">/* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */</span>
+<span class="nc">.below-jsmq-large</span> <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
+<span class="p">}</span>
 
-    <span class="c">/* All sizes BELOW this width (i.e., 'max-width: 45em') */</span>
-    <span class="nc">.below-jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="p">{</span>
-        <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="c">/* All sizes BELOW this width (i.e., 'max-width: 45em') */</span>
+<span class="nc">.below-jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
+<span class="p">}</span>
 
-    <span class="c">/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */</span>
-    <span class="nc">.jsmq-small</span> <span class="nc">.carousel-control</span> <span class="p">{</span>
-        <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
-        <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="c">/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */</span>
+<span class="nc">.jsmq-small</span> <span class="nc">.carousel-control</span> <span class="p">{</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
 <p>If you want to update the CSS class after page load (e.g., after a window resize event (recommended)), you
 can use:</p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
 </pre></div>
 
 <p>By default, <code>jsmq.update</code> fires the <code>"jsmq:update"</code> event after a CSS class state has changed.</p>
 
 <p>You can also do something like this on a window resize to check what CSS state we are in:</p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">update</span><span class="p">().</span><span class="nx">isAt</span><span class="p">();</span>            <span class="c1">// "jsmq-large", etc.</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">update</span><span class="p">().</span><span class="nx">isAt</span><span class="p">();</span>            <span class="c1">// "jsmq-large", etc.</span>
 </pre></div>
 
 <p>Or before doing an animation:</p>
 
-<div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isBelow</span><span class="p">(</span><span class="s1">'jsmq-medium'</span><span class="p">))</span> <span class="p">{</span>
-        <span class="c1">// animate panel full width</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="c1">// animate panel 200px</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isBelow</span><span class="p">(</span><span class="s1">'jsmq-medium'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// animate panel full width</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// animate panel 200px</span>
+<span class="p">}</span>
 </pre></div>
 
 <h2>
@@ -251,11 +248,11 @@ name (e.g., 'jsmq-large') for the current state the user is in. Passing a single
 will use the device-width to evaluate the return value.</em><br><strong>value</strong>: Either a string for CSS classname (from <a href="#method-get">get('names')</a>) or number (from <a href="#method-get">get('sizes')</a>)<br><strong>useDeviceWidth</strong>: Boolean of whether to use media-device-width media query<br><strong>Returns</strong>: No arguments or single boolean argument returns CSS class name string. Others return boolean.<br>
 Examples:</p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">();</span>                    <span class="c1">// 'jsmq-large', etc.</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>                <span class="c1">// 'jsmq-large' for device-width</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="s1">'jsmq-small'</span><span class="p">);</span>        <span class="c1">// true/false</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="s1">'jsmq-small'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  <span class="c1">// true/false for device-wdith</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>            <span class="c1">// true/false for device width</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">();</span>                    <span class="c1">// 'jsmq-large', etc.</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>                <span class="c1">// 'jsmq-large' for device-width</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="s1">'jsmq-small'</span><span class="p">);</span>        <span class="c1">// true/false</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="s1">'jsmq-small'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  <span class="c1">// true/false for device-wdith</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>            <span class="c1">// true/false for device width</span>
 </pre></div>
 
 <p><a name="method-isbelow"></a></p>
@@ -266,21 +263,21 @@ Examples:</p>
 <p><em>Is the current media query BELOW our current width? I've found this very useful for doing some branching logic where I needed to animate to 100% if below a certain width, etc. Though the example below is quite contrived.</em><br><strong>value</strong>: Either a string for CSS classname (from <a href="#method-get">get('names')</a>) or number (from <a href="#method-get">get('sizes')</a>)<br><strong>useDeviceWidth</strong>: Boolean of whether to use media-device-width media query<br><strong>Returns</strong>: Boolean of whether current width is below a given width.
 Example:</p>
 
-<div class="highlight"><pre>    <span class="c1">// Animate a panel 100% width if below a certain width or 200px, if larger.</span>
-    <span class="kd">var</span> <span class="nx">mySizes</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">getSizes</span><span class="p">();</span>      <span class="c1">// [61, 60, 45, 30]</span>
-    <span class="kd">var</span> <span class="nx">MEDIUM_WIDTH</span> <span class="o">=</span> <span class="nx">mySizes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>      <span class="c1">// '60'</span>
+<div class="highlight"><pre><span class="c1">// Animate a panel 100% width if below a certain width or 200px, if larger.</span>
+<span class="kd">var</span> <span class="nx">mySizes</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">getSizes</span><span class="p">();</span>      <span class="c1">// [61, 60, 45, 30]</span>
+<span class="kd">var</span> <span class="nx">MEDIUM_WIDTH</span> <span class="o">=</span> <span class="nx">mySizes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>      <span class="c1">// '60'</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isBelow</span><span class="p">(</span><span class="nx">MEDIUM_WIDTH</span><span class="p">)))</span> <span class="p">{</span> 
-        <span class="nx">$panel</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span> <span class="s1">'100%'</span><span class="p">});</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">$panel</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span> <span class="s1">'200px'</span><span class="p">});</span>
-    <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isBelow</span><span class="p">(</span><span class="nx">MEDIUM_WIDTH</span><span class="p">)))</span> <span class="p">{</span> 
+    <span class="nx">$panel</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span> <span class="s1">'100%'</span><span class="p">});</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">$panel</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span><span class="nx">width</span><span class="o">:</span> <span class="s1">'200px'</span><span class="p">});</span>
+<span class="p">}</span>
 
-    <span class="c1">// OR</span>
+<span class="c1">// OR</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'jsmq-lt-medium'</span><span class="p">))</span> <span class="p">{</span> 
-        <span class="c1">// do stuff</span>
-    <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'below-jsmq-medium'</span><span class="p">))</span> <span class="p">{</span> 
+    <span class="c1">// do stuff</span>
+<span class="p">}</span>
 </pre></div>
 
 <h4>
@@ -289,18 +286,18 @@ Example:</p>
 <p><em>Returns an array of <a href="#config-sizes">cfg.sizes</a> number values sorted high to low. This is very helpful in setting some constants within your own app code that you can use later with <a href="#method-isat">isAt()</a> or <a href="#method-isbelow">isBelow()</a> in <code>if</code> statements without needing to know the names of the sizes ahead of time. You just configure them once for mediaquery.js and that's it!</em><br><strong>Returns</strong>: An array of <a href="#config-sizes">cfg.sizes</a> number values sorted high to low.<br>
 Example:     </p>
 
-<div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">mySizes</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">getSizes</span><span class="p">();</span>                      <span class="c1">// [61, 60, 45, 30]</span>
-    <span class="kd">var</span> <span class="nx">LARGE_WIDTH</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'sizes'</span><span class="p">)[</span><span class="nx">mySizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>    <span class="c1">// 'jsmq-large'</span>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">mySizes</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">getSizes</span><span class="p">();</span>                      <span class="c1">// [61, 60, 45, 30]</span>
+<span class="kd">var</span> <span class="nx">LARGE_WIDTH</span> <span class="o">=</span> <span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'sizes'</span><span class="p">)[</span><span class="nx">mySizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>    <span class="c1">// 'jsmq-large'</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">()</span> <span class="o">===</span> <span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span> 
-        <span class="c1">// do stuff</span>
-    <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">()</span> <span class="o">===</span> <span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span> 
+    <span class="c1">// do stuff</span>
+<span class="p">}</span>
 
-    <span class="c1">// OR</span>
+<span class="c1">// OR</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span> 
-        <span class="c1">// do stuff</span>
-    <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span> 
+    <span class="c1">// do stuff</span>
+<span class="p">}</span>
 </pre></div>
 
 <p><a name="method-get"></a></p>
@@ -311,8 +308,8 @@ Example:     </p>
 <p><em>Returns the configuration object or optionally, a <a href="#config-options">specific property</a>.</em><br><strong>prop</strong>: A string of the name of a specfic configuration propery name to query.<br><strong>Returns</strong>: Local configuration object or specific property.<br>
 Examples: </p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'names'</span><span class="p">);</span>      <span class="c1">// { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'sizes'</span><span class="p">);</span>      <span class="c1">// { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'names'</span><span class="p">);</span>      <span class="c1">// { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'sizes'</span><span class="p">);</span>      <span class="c1">// { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.</span>
 </pre></div>
 
 <h4>
@@ -321,7 +318,7 @@ Examples: </p>
 <p><em>Set a <a href="#config-options">configuration property/value</a>. Note that you probably want to set up the <a href="#config-delayinit">delayInit</a> configuration option to delay calling init() to make good use of this method. Otherwise, init() runs as soon as the script loads and your config options have already been passed in.</em><br><strong>prop</strong>: String representation of configuration property name.<br><strong>value</strong>: Any valid JavaScript data type you want to store.<br><strong>Returns</strong>: The jsmq object if both arguments are passed. Undefined if not.<br>
 Example:</p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'isTest'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'isTest'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </pre></div>
 
 <h4>
@@ -332,12 +329,12 @@ Example:</p>
 example in your CSS rules to target all sizes below a certain size.</em><br><strong>at</strong>: CSS classname of the size to find larger values for.<br><strong>Returns</strong>: String with CSS classes for <em>all</em> larger breakpoints.<br>
 Example:</p>
 
-<div class="highlight"><pre>    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">allLarger</span><span class="p">(</span><span class="s1">'jsmq-smaller'</span><span class="p">);</span>     <span class="c1">// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"</span>
+<div class="highlight"><pre><span class="nx">jsmq</span><span class="p">.</span><span class="nx">allLarger</span><span class="p">(</span><span class="s1">'jsmq-smaller'</span><span class="p">);</span>     <span class="c1">// "below-jsmq-small below-jsmq-medium below-jsmq-large"</span>
 </pre></div>
 
 <p>In your CSS, you could do something like the following to reduce the font-size for <code>&lt;h1&gt;</code> elements for all breakpoints below the 'medium' breakpoint size:</p>
 
-<div class="highlight"><pre>    <span class="nc">.below-jsmq-medium</span> <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">0.8em</span><span class="p">;</span> <span class="p">}</span>
+<div class="highlight"><pre><span class="nc">.below-jsmq-medium</span> <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">0.8em</span><span class="p">;</span> <span class="p">}</span>
 </pre></div>
 
 <h4>
@@ -346,8 +343,8 @@ Example:</p>
 <p><em>Returns the CSS classname of the next largest breakpoint, if there is one.</em><br><strong>at</strong>: CSS classname of the size to find larger values for.<br><strong>Returns</strong>: CSS classname of the next largest breakpoint, if there is one.<br>
 Example:</p>
 
-<div class="highlight"><pre>    <span class="c1">// With the viewport at the 'medium' breakpiont size</span>
-    <span class="nx">jsmq</span><span class="p">.</span><span class="nx">nextLarger</span><span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">());</span>       <span class="c1">// "jsmq-large"</span>
+<div class="highlight"><pre><span class="c1">// With the viewport at the 'medium' breakpiont size</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">nextLarger</span><span class="p">(</span><span class="nx">jsmq</span><span class="p">.</span><span class="nx">isAt</span><span class="p">());</span>       <span class="c1">// "jsmq-large"</span>
 </pre></div>
 
 <h4>
@@ -390,27 +387,27 @@ Example:</p>
 <p><em>CSS classname prefix that will be used for sizes below a given size. For example: 'below-jsmq-medium' would be valid to use if you wanted to target styles for all cases below the 'medium' width.</em><br><strong>Default</strong>: "below-"<br>
 Example:</p>
 
-<div class="highlight"><pre>    <span class="c">/* </span>
-<span class="c">     * Target all devices BELOW the medium width (i.e., the 'small' width and lower)</span>
-<span class="c">     * Similar to @media (max-width: 720px) {…}</span>
-<span class="c">     * or @media (max-width: 45em) {…}</span>
-<span class="c">     */</span>
-    <span class="nc">.below-jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
-        <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.below-jsmq-medium</span> <span class="nc">.carousel-control</span> <span class="p">{</span>
-        <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
-        <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span class="c">/* </span>
+<span class="c"> * Target all devices BELOW the medium width (i.e., the 'small' width and lower)</span>
+<span class="c"> * Similar to @media (max-width: 720px) {…}</span>
+<span class="c"> * or @media (max-width: 45em) {…}</span>
+<span class="c"> */</span>
+<span class="nc">.below-jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">17px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.below-jsmq-medium</span> <span class="nc">.carousel-control</span> <span class="p">{</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">-20px</span><span class="p">;</span>
+<span class="p">}</span>
 
-    <span class="c">/* </span>
-<span class="c">     * Target all devices AT the medium width only</span>
-<span class="c">     * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }</span>
-<span class="c">     * or @media (min-width: 45em) and (max-width: 60em) { ... }</span>
-<span class="c">     */</span>
-    <span class="nc">.jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="p">{</span>
-        <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="c">/* </span>
+<span class="c"> * Target all devices AT the medium width only</span>
+<span class="c"> * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }</span>
+<span class="c"> * or @media (min-width: 45em) and (max-width: 60em) { ... }</span>
+<span class="c"> */</span>
+<span class="nc">.jsmq-medium</span> <span class="nc">.hero-unit</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">45px</span> <span class="m">15px</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
 <h4>
@@ -435,12 +432,12 @@ Example:</p>
 
 <p><em>Responsive breakpoint sizes.</em> <strong>Sizes default to 'em' values</strong>. <em>See: <a href="http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/">http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/</a></em><br><strong>Default</strong>:      </p>
 
-<div class="highlight"><pre>    <span class="p">{</span>
-        <span class="s1">'61'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'large'</span><span class="p">,</span>                      <span class="c1">// 61em &gt; 960px</span>
-        <span class="s1">'60'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'medium'</span><span class="p">,</span>                     <span class="c1">// 60em ~= 960px</span>
-        <span class="s1">'45'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'small'</span><span class="p">,</span>                      <span class="c1">// 45em ~= 720px</span>
-        <span class="s1">'30'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'smaller'</span>                     <span class="c1">// 30em ~= 480px</span>
-    <span class="p">};</span>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="s1">'61'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'large'</span><span class="p">,</span>                      <span class="c1">// 61em &gt; 960px</span>
+    <span class="s1">'60'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'medium'</span><span class="p">,</span>                     <span class="c1">// 60em ~= 960px</span>
+    <span class="s1">'45'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'small'</span><span class="p">,</span>                      <span class="c1">// 45em ~= 720px</span>
+    <span class="s1">'30'</span><span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'smaller'</span>                     <span class="c1">// 30em ~= 480px</span>
+<span class="p">};</span>
 </pre></div>
 
 <p><a name="config-names"></a></p>
@@ -455,11 +452,11 @@ Example:</p>
 
 <p><em>HTML id values of the elements that will be added to the page and queried.</em><br><strong>Default</strong>:     </p>
 
-<div class="highlight"><pre>    <span class="p">{</span>
-        <span class="s1">'viewport'</span>  <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'media-width'</span><span class="p">,</span>        <span class="c1">// Viewport/browser width</span>
-        <span class="s1">'device'</span>    <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'media-device-width'</span><span class="p">,</span> <span class="c1">// Width of actual device</span>
-        <span class="s1">'css'</span>       <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'styles'</span>              <span class="c1">// id for inline styles for unit tests    </span>
-    <span class="p">};</span>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="s1">'viewport'</span>  <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'media-width'</span><span class="p">,</span>        <span class="c1">// Viewport/browser width</span>
+    <span class="s1">'device'</span>    <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'media-device-width'</span><span class="p">,</span> <span class="c1">// Width of actual device</span>
+    <span class="s1">'css'</span>       <span class="o">:</span> <span class="nx">PREFIX</span> <span class="o">+</span> <span class="s1">'styles'</span>              <span class="c1">// id for inline styles for unit tests    </span>
+<span class="p">};</span>
 </pre></div>
 
 <p><a name="config-mystyles"></a></p>
@@ -504,29 +501,29 @@ Example:</p>
 <p><em>Fires after a CSS class change event occurs when <a href="#method-update">update()</a> is called. The following additional properties are available on the Event Object to help with filtering logic after an event:</em><br><strong>Additional properties on the Event Object</strong>:<br><strong>event.className</strong>: String of all current (jsmq) CSS classes being used (e.g., 'jsmq-medium below-jsmq-large')<br><strong>event.size</strong>: Size (number) of the CSS class<br><strong>event.baseClass</strong>: The base class value for the size we are at (i.e., what <a href="#method-isat">isAt()</a> would return)<br>
 Example:</p>
 
-<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s1">'#jsmq-media-width'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'jsmq:update'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span>
-            <span class="c1">// Do stuff for large screens</span>
-        <span class="p">}</span>
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'#jsmq-media-width'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'jsmq:update'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">// Do stuff for large screens</span>
+    <span class="p">}</span>
 
-        <span class="c1">// OR </span>
+    <span class="c1">// OR </span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">45</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c1">// Do stuff </span>
-        <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">45</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Do stuff </span>
+    <span class="p">}</span>
 
-        <span class="c1">// OR</span>
+    <span class="c1">// OR</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">baseClass</span> <span class="o">===</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">MEDIUM_WIDTH</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c1">// Do stuff for medium screens</span>
-        <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">baseClass</span> <span class="o">===</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">MEDIUM_WIDTH</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Do stuff for medium screens</span>
+    <span class="p">}</span>
 
-        <span class="c1">// OR</span>
+    <span class="c1">// OR</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span>
-            <span class="c1">// Do stuff</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'html'</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LARGE_WIDTH</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">// Do stuff</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 </pre></div>
 
 <h2>
