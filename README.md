@@ -74,8 +74,8 @@ Then, **instead of putting all your CSS rules inside of media queries, you prefa
 them with the CSS class you defined in your breakpoints**. For example:
 
 ```css
-	.jsmq-large .some-style {color: green;}
-	.jsmq-medium .some-style {color: orange;}
+.jsmq-large .some-style {color: green;}
+.jsmq-medium .some-style {color: orange;}
 ```
 
 **These are now your media query rules.**
@@ -84,10 +84,10 @@ If you want to provide your own elements and stylesheets to avoid incurring the 
 them to the page yourself beforehand and set: 
 	
 ```javascript
-	window.jsmq_config = { 
-		useMyOwnStyles: true, 
-		useMyOwnElements: true
-	}; 
+window.jsmq_config = { 
+    useMyOwnStyles: true, 
+    useMyOwnElements: true
+};
 ```
 
 either in the head **_before_** you load mediaquery.js or
@@ -101,7 +101,7 @@ either in the head **_before_** you load mediaquery.js or
 Insert the following into the `<head>` on your page:
 
 ```html
-    <script src="mediaquery.min.js"></script>
+<script src="mediaquery.min.js"></script>
 ```
 
 Ideally, since we are setting CSS classes to adjust the layout, this needs to run as early as possible. 
@@ -113,7 +113,7 @@ Ideally, since we are setting CSS classes to adjust the layout, this needs to ru
 Insert the following into the `<head>` on your page:
 
 ```html
-    <script src="mediaquery.min.js"></script>
+<script src="mediaquery.min.js"></script>
 ```
 
 Prepend your CSS rules that are inside `@media` rules with standard CSS class selectors representing the names of your "breakpoints". For example:
@@ -121,61 +121,61 @@ Prepend your CSS rules that are inside `@media` rules with standard CSS class se
 **Instead of doing this in your CSS:**
 
 ```css
-	/* THE OLD WAY */
+/* THE OLD WAY */
+.hero-unit p {
+    font-size: 18px;
+}
+
+@media only screen and (max-width: 60em) { 
     .hero-unit p {
-		font-size: 18px;
-	}
-
-    @media only screen and (max-width: 60em) { 
-        .hero-unit p {
-            font-size: 17px;
-        }
+        font-size: 17px;
     }
+}
 
-    @media only screen and (max-width: 45em) {
-		.hero-unit {
-			padding: 45px 15px;
-		}
+@media only screen and (max-width: 45em) {
+    .hero-unit {
+        padding: 45px 15px;
     }
-    
-	@media only screen and (min-width: 30em) and (max-width: 45em) {
-		.carousel-control {
-			left: -5px;
-			top: -20px;
-		}
-	}
+}
+
+@media only screen and (min-width: 30em) and (max-width: 45em) {
+    .carousel-control {
+        left: -5px;
+        top: -20px;
+    }
+}
 ```
     
 **Do this:**
 
 ```css
-	/* THE NEW WAY */
-    .hero-unit p {
-		font-size: 18px;
-	}
-    
-    /* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */
-	.below-jsmq-large .hero-unit p {
-		font-size: 17px;
-	}
-    
-    /* All sizes BELOW this width (i.e., 'max-width: 45em') */
-	.below-jsmq-medium .hero-unit {
-		padding: 45px 15px;
-	}
-			
-	/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */
-	.jsmq-small .carousel-control {
-		left: -5px;
-		top: -20px;
-	}
+/* THE NEW WAY */
+.hero-unit p {
+    font-size: 18px;
+}
+
+/* Target all screen sizes BELOW this width (i.e., 'max-width: 60em') */
+.below-jsmq-large .hero-unit p {
+    font-size: 17px;
+}
+
+/* All sizes BELOW this width (i.e., 'max-width: 45em') */
+.below-jsmq-medium .hero-unit {
+    padding: 45px 15px;
+}
+        
+/* Target ONLY screen sizes AT this width (i.e., 'min-width: 30em and max-width: 45em') */
+.jsmq-small .carousel-control {
+    left: -5px;
+    top: -20px;
+}
 ```
 
 If you want to update the CSS class after page load (e.g., after a window resize event (recommended)), you
 can use:
     
 ```javascript
-    jsmq.update();
+jsmq.update();
 ```
 
 By default, `jsmq.update` fires the `"jsmq:update"` event after a CSS class state has changed.
@@ -183,17 +183,17 @@ By default, `jsmq.update` fires the `"jsmq:update"` event after a CSS class stat
 You can also do something like this on a window resize to check what CSS state we are in:
 
 ```javascript
-    jsmq.update().isAt();            // "jsmq-large", etc.
+jsmq.update().isAt();            // "jsmq-large", etc.
 ```
    
 Or before doing an animation:
 
 ```javascript
-	if (jsmq.isBelow('jsmq-medium')) {
-		// animate panel full width
-	} else {
-		// animate panel 200px
-	}
+if (jsmq.isBelow('jsmq-medium')) {
+    // animate panel full width
+} else {
+    // animate panel 200px
+}
 ```
 
 ## API
@@ -229,11 +229,11 @@ will use the device-width to evaluate the return value._
 Examples:
 
 ```javascript
-    jsmq.isAt();                    // 'jsmq-large', etc.
-    jsmq.isAt(true);                // 'jsmq-large' for device-width
-    jsmq.isAt('jsmq-small');        // true/false
-    jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
-    jsmq.isAt(45, true);            // true/false for device width
+jsmq.isAt();                    // 'jsmq-large', etc.
+jsmq.isAt(true);                // 'jsmq-large' for device-width
+jsmq.isAt('jsmq-small');        // true/false
+jsmq.isAt('jsmq-small', true);  // true/false for device-wdith
+jsmq.isAt(45, true);            // true/false for device width
 ```
 
 
@@ -246,21 +246,21 @@ _Is the current media query BELOW our current width? I've found this very useful
 Example:
 
 ```javascript
-	// Animate a panel 100% width if below a certain width or 200px, if larger.
-	var mySizes = jsmq.getSizes(); 		// [61, 60, 45, 30]
-    var MEDIUM_WIDTH = mySizes[1]; 		// '60'
-    
-    if (jsmq.isBelow(MEDIUM_WIDTH))) { 
-    	$panel.animate({width: '100%'});
-    } else {
-    	$panel.animate({width: '200px'});
-    }
-    
-    // OR
-    
-    if ($('html').hasClass('jsmq-lt-medium')) { 
-    	// do stuff
-    }
+// Animate a panel 100% width if below a certain width or 200px, if larger.
+var mySizes = jsmq.getSizes(); 		// [61, 60, 45, 30]
+var MEDIUM_WIDTH = mySizes[1]; 		// '60'
+
+if (jsmq.isBelow(MEDIUM_WIDTH))) { 
+    $panel.animate({width: '100%'});
+} else {
+    $panel.animate({width: '200px'});
+}
+
+// OR
+
+if ($('html').hasClass('below-jsmq-medium')) { 
+    // do stuff
+}
 ```
 
 
@@ -270,18 +270,18 @@ _Returns an array of [cfg.sizes](#config-sizes) number values sorted high to low
 Example:     
 
 ```javascript
-	var mySizes = jsmq.getSizes(); 						// [61, 60, 45, 30]
-    var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];	// 'jsmq-large'
-    
-    if (jsmq.isAt() === LARGE_WIDTH)) { 
-    	// do stuff
-    }
-    
-    // OR
-    
-    if ($('html').hasClass(LARGE_WIDTH)) { 
-    	// do stuff
-    }
+var mySizes = jsmq.getSizes(); 						// [61, 60, 45, 30]
+var LARGE_WIDTH = jsmq.get('sizes')[mySizes[0]];	// 'jsmq-large'
+
+if (jsmq.isAt() === LARGE_WIDTH)) { 
+    // do stuff
+}
+
+// OR
+
+if ($('html').hasClass(LARGE_WIDTH)) { 
+    // do stuff
+}
 ```
 
 
@@ -293,8 +293,8 @@ _Returns the configuration object or optionally, a [specific property](#config-o
 Examples: 
 
 ```javascript
-	jsmq.get('names');		// { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.
-	jsmq.get('sizes');		// { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.
+jsmq.get('names');		// { 'jsmq-large' : 61, 'jsmq-medium': 60 }, etc.
+jsmq.get('sizes');		// { '61': 'jsmq-large', '60': 'jsmq-medium' }, etc.
 ```
 
 
@@ -306,7 +306,7 @@ _Set a [configuration property/value](#config-options). Note that you probably w
 Example:
 
 ```javascript
-	jsmq.set('isTest', true);
+jsmq.set('isTest', true);
 ```
 
 
@@ -319,13 +319,13 @@ example in your CSS rules to target all sizes below a certain size._
 Example:
 
 ```javascript
-	jsmq.allLarger('jsmq-smaller');		// "jsmq-lt-small jsmq-lt-medium jsmq-lt-large"
+jsmq.allLarger('jsmq-smaller');		// "below-jsmq-small below-jsmq-medium below-jsmq-large"
 ```
 
 In your CSS, you could do something like the following to reduce the font-size for `<h1>` elements for all breakpoints below the 'medium' breakpoint size:
 
 ```css
-	.below-jsmq-medium h1 { font-size: 0.8em; }
+.below-jsmq-medium h1 { font-size: 0.8em; }
 ```
 
 
@@ -336,8 +336,8 @@ _Returns the CSS classname of the next largest breakpoint, if there is one._
 Example:
 
 ```javascript
-	// With the viewport at the 'medium' breakpiont size
-	jsmq.nextLarger(jsmq.isAt());		// "jsmq-large"
+// With the viewport at the 'medium' breakpiont size
+jsmq.nextLarger(jsmq.isAt());		// "jsmq-large"
 ```
 
 
@@ -375,27 +375,27 @@ _CSS classname prefix that will be used for sizes below a given size. For exampl
 Example:
 
 ```css
-	/* 
-	 * Target all devices BELOW the medium width (i.e., the 'small' width and lower)
-	 * Similar to @media (max-width: 720px) {…}
-	 * or @media (max-width: 45em) {…}
-	 */
-	.below-jsmq-medium .hero-unit p {
-		font-size: 17px;
-	}
-	.below-jsmq-medium .carousel-control {
-		left: -5px;
-		top: -20px;
-	}
-	
-	/* 
-	 * Target all devices AT the medium width only
-	 * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }
-	 * or @media (min-width: 45em) and (max-width: 60em) { ... }
-	 */
-	.jsmq-medium .hero-unit {
-		padding: 45px 15px;
-	}
+/* 
+ * Target all devices BELOW the medium width (i.e., the 'small' width and lower)
+ * Similar to @media (max-width: 720px) {…}
+ * or @media (max-width: 45em) {…}
+ */
+.below-jsmq-medium .hero-unit p {
+    font-size: 17px;
+}
+.below-jsmq-medium .carousel-control {
+    left: -5px;
+    top: -20px;
+}
+
+/* 
+ * Target all devices AT the medium width only
+ * Similar to @media (min-width: 721px) and (max-width: 960px) { ... }
+ * or @media (min-width: 45em) and (max-width: 60em) { ... }
+ */
+.jsmq-medium .hero-unit {
+    padding: 45px 15px;
+}
 ```
 
 	
@@ -420,12 +420,12 @@ _Responsive breakpoint sizes._ **Sizes default to 'em' values**. _See: [http://b
 **Default**:      
 
 ```javascript
-	{
-    	'61': PREFIX + 'large',                      // 61em > 960px
-        '60': PREFIX + 'medium',                     // 60em ~= 960px
-        '45': PREFIX + 'small',                      // 45em ~= 720px
-        '30': PREFIX + 'smaller'                     // 30em ~= 480px
-    };
+{
+    '61': PREFIX + 'large',                      // 61em > 960px
+    '60': PREFIX + 'medium',                     // 60em ~= 960px
+    '45': PREFIX + 'small',                      // 45em ~= 720px
+    '30': PREFIX + 'smaller'                     // 30em ~= 480px
+};
 ```
 
 
@@ -441,11 +441,11 @@ _HTML id values of the elements that will be added to the page and queried._
 **Default**:     
 
 ```javascript
-	{
-    	'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
-        'device'    : PREFIX + 'media-device-width', // Width of actual device
-        'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
-    };
+{
+    'viewport'  : PREFIX + 'media-width',        // Viewport/browser width
+    'device'    : PREFIX + 'media-device-width', // Width of actual device
+    'css'       : PREFIX + 'styles'              // id for inline styles for unit tests    
+};
 ```
 
 
@@ -490,29 +490,29 @@ _Fires after a CSS class change event occurs when [update()](#method-update) is 
 Example:
 
 ```javascript
-	$('#jsmq-media-width').on('jsmq:update', function (e) {
-		if (e.className.match(MyApp.LARGE_WIDTH)) {
-			// Do stuff for large screens
-		}
-		
-		// OR 
-		
-		if (e.size === 45) {
-			// Do stuff 
-		}
-		
-		// OR
-		
-		if (e.baseClass === MyApp.MEDIUM_WIDTH) {
-			// Do stuff for medium screens
-		}
-		
-		// OR
-		
-		if ($('html').hasClass(MyApp.LARGE_WIDTH)) {
-			// Do stuff
-		}
-	});
+$('#jsmq-media-width').on('jsmq:update', function (e) {
+    if (e.className.match(MyApp.LARGE_WIDTH)) {
+        // Do stuff for large screens
+    }
+    
+    // OR 
+    
+    if (e.size === 45) {
+        // Do stuff 
+    }
+    
+    // OR
+    
+    if (e.baseClass === MyApp.MEDIUM_WIDTH) {
+        // Do stuff for medium screens
+    }
+    
+    // OR
+    
+    if ($('html').hasClass(MyApp.LARGE_WIDTH)) {
+        // Do stuff
+    }
+});
 ```
 
 
