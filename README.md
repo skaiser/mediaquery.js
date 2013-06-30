@@ -2,7 +2,7 @@
 ## Introduction
 ---
 
-[View demo](http://mediaqueryjs.com/)&nbsp;&nbsp;|&nbsp;&nbsp;[API docs](#api)
+[View demo](http://mediaqueryjs.com/)&nbsp;&nbsp;|&nbsp;&nbsp;[API docs](http://mediaqueryjs.com/#api)
 
 
 ### What is this?
