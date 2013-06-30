@@ -221,7 +221,7 @@ can use:</p>
 
 <p><a name="method-init"></a></p>
 
-<h4>
+<h4 class="nohr">
 <a name="jsmqinit" class="anchor" href="#jsmqinit"><span class="octicon octicon-link"></span></a>jsmq.init()</h4>
 
 <p><em>Makes things happen.</em> <strong>This runs automagically at load by default.</strong> <em>See <a href="#jsmq_config">jsmq_config</a>
@@ -232,7 +232,7 @@ and/or <a href="#method-reload">reload()</a> if you want to call this manually l
 <h4>
 <a name="jsmqupdate-callback-" class="anchor" href="#jsmqupdate-callback-"><span class="octicon octicon-link"></span></a>jsmq.update( [callback] )</h4>
 
-<h4>
+<h4 class="nohr">
 <a name="jsmqupdate-namejsmqupdate--elemjsmq-media-width--callback-" class="anchor" href="#jsmqupdate-namejsmqupdate--elemjsmq-media-width--callback-"><span class="octicon octicon-link"></span></a>jsmq.update( [name="jsmq:update"] [, elem="#jsmq-media-width"] [, callback] )</h4>
 
 <p><em>Refreshes the current CSS class. Useful after a window resize. It also <a href="#event-default">fires an event</a> after
@@ -366,12 +366,13 @@ Example:</p>
 
 <p><a name="config-options"></a></p>
 
+<hr>
 <h2>
 <a name="configuration-optionsproperties" class="anchor" href="#configuration-optionsproperties"><span class="octicon octicon-link"></span></a>Configuration Options/Properties</h2>
 
 <p><a name="jsmq_config"></a></p>
 
-<h4>
+<h4 class="nohr">
 <a name="windowjsmq_config-object" class="anchor" href="#windowjsmq_config-object"><span class="octicon octicon-link"></span></a>window.jsmq_config (Object)</h4>
 
 <p><em>If you want to set configuration options without changing them in the code base, use this. Since mediqquery.js is designed to run early in the page load and and calls <a href="#method-init">init()</a> on itself, you need to set this</em> <strong>before</strong> <em>mediaquery.js runs. The recommended way is to just add it to the top of the min file, above the mediaquery.js code. Or you can load it in an extra script tag (like we do in the tests/SpecRunner.html file). See below for options.</em></p>
@@ -490,12 +491,13 @@ Example:</p>
 
 <p><em>For unit testing. Are we running tests or not?</em><br><strong>Default</strong>: false</p>
 
+<hr>
 <h2>
 <a name="events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events</h2>
 
 <p><a name="event-default"></a></p>
 
-<h4>
+<h4 class="nohr">
 <a name="jsmqupdate" class="anchor" href="#jsmqupdate"><span class="octicon octicon-link"></span></a>jsmq:update</h4>
 
 <p><em>Fires after a CSS class change event occurs when <a href="#method-update">update()</a> is called. The following additional properties are available on the Event Object to help with filtering logic after an event:</em><br><strong>Additional properties on the Event Object</strong>:<br><strong>event.className</strong>: String of all current (jsmq) CSS classes being used (e.g., 'jsmq-medium below-jsmq-large')<br><strong>event.size</strong>: Size (number) of the CSS class<br><strong>event.baseClass</strong>: The base class value for the size we are at (i.e., what <a href="#method-isat">isAt()</a> would return)<br>
