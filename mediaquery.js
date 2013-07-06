@@ -29,7 +29,7 @@
          *  @property   VERSION
          *  @type       String
          */
-        var VERSION = '0.4.2',
+        var VERSION = '0.4.3',
             prevClass = '',
             baseClass = '',
             initHasRun = false,
@@ -296,6 +296,19 @@
          */  
         function _getId(id) {
             return document.getElementById(id);
+        }
+        
+        
+        /**
+         *  Trim leading and trailing whitespace from string
+         *
+         *  @method     _trim
+         *  @param      {String}            str     String to remove whitespace from
+         *  @return     {String}                    Modified string
+         *  @private
+         */
+        function _trim(str) {
+            return str.replace(/^\s+|\s+$/g, '');
         }
         
         
@@ -858,7 +871,7 @@
             
             if (prevClass !== currClass) {
                 currClass += findAllLarger(currClass);
-                docEl.className = (" " + docEl.className + " ").replace(prevClass, " " + currClass);
+                docEl.className = _trim(docEl.className).replace(prevClass, currClass);
                 prevClass = currClass;
                 return prevClass;    
             }
