@@ -280,6 +280,24 @@ Example:</p>
 <span class="p">}</span>
 </pre></div>
 
+
+<p><a name="method-exact"></a></p>
+<h4>
+<a name="jsmqexact-units" class="anchor" href="#jsmqexact-units"><span class="octicon octicon-link"></span></a>jsmq.exact( [units] )</h4>
+
+<p><em>
+Gets the current exact width of the browser. This is basically a normalized version of window.innerWidth. It is complimentary to <a href="#method-isat">isAt()</a> or <a href="#method-isbelow">isBelow()</a>, which provide information on what range (i.e., media query) the browser size is in.</em><br>
+<strong>units:</strong> String value of type of units (px, em, %) for the value to be returned as.<br>
+<strong>Returns:</strong> Number if no units argument is passed. Othwerwise, it returns a string if any of 'px', 'em', or '%' units are passed.<br>
+Examples:</p>
+
+<div class="highlight"><pre>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">exact</span><span class="p">();</span>                    <span class="c1">// Returns number, e.g., 727</span>
+<span class="nx">jsmq</span><span class="p">.</span><span class="nx">exact</span><span class="p">('px');</span>                    <span class="c1">// Returns string, e.g., '727px'</span>
+</pre></div>
+
+
+
 <h4>
 <a name="jsmqgetsizes" class="anchor" href="#jsmqgetsizes"><span class="octicon octicon-link"></span></a>jsmq.getSizes()</h4>
 
