@@ -597,6 +597,35 @@ describe("allLarger()", function () {
 });
 
 
+describe("exact()", function () {
+    
+    it("returns a number value by defaul", function () {
+        expect(typeof jsmq.exact()).toEqual('number');
+    });
+    
+    it("returns string if units argument passed", function () {
+        expect(typeof jsmq.exact('px')).toEqual('string');
+    });
+    
+    it("returns px units if px passed as argument", function () {
+        expect(/px$/.test(jsmq.exact('px'))).toBe(true);
+    });
+    
+    it("returns em units if em passed as argument", function () {
+        expect(/em$/.test(jsmq.exact('em'))).toBe(true);
+    });
+    
+    it("returns % units if % passed as argument", function () {
+        expect(/%$/.test(jsmq.exact('%'))).toBe(true);
+    });
+    
+    it("returns Number if unsupported unit passed as argument", function () {
+        expect(typeof jsmq.exact('fakey')).toEqual('number');
+    });
+    
+});
+
+
 //reload
 // returns string (for now)
 // still has same property after reload

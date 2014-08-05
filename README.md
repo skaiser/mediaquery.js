@@ -262,6 +262,19 @@ if ($('html').hasClass('below-jsmq-medium')) {
 ```
 
 
+<a name="method-exact"></a>
+#### jsmq.exact( [units] )
+_Gets the current exact width of the browser. This is basically a normalized version of window.innerWidth. It is complimentary to [isAt()](#method-isat)) or [isBelow()](#method-isbelow), which provide information on what range (i.e., media query) the browser size is in._      
+**units**: String value of type of units (px, em, %) for the value to be returned as.   
+**Returns**: Number if no units argument is passed. Othwerwise, it returns a string if any of 'px', 'em', or '%' units are passed.
+Examples:
+
+```javascript
+jsmq.exact();                   // Returns number, e.g., 727
+jsmq.exact('px');               // Returns string with units appended, e.g., '727px'
+````
+
+
 #### jsmq.getSizes()
 _Returns an array of [cfg.sizes](#config-sizes) number values sorted high to low. This is very helpful in setting some constants within your own app code that you can use later with [isAt()](#method-isat) or [isBelow()](#method-isbelow) in `if` statements without needing to know the names of the sizes ahead of time. You just configure them once for mediaquery.js and that's it!_      
 **Returns**: An array of [cfg.sizes](#config-sizes) number values sorted high to low.     

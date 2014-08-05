@@ -29,7 +29,7 @@
          *  @property   VERSION
          *  @type       String
          */
-        var VERSION = '0.4.3',
+        var VERSION = '0.4.4',
             prevClass = '',
             baseClass = '',
             initHasRun = false,
@@ -417,6 +417,11 @@
         }
         
         
+        function _normalizeWidth(useDeviceWidth) {
+            return useDeviceWidth ? screen.width : window.innerWidth || docEl.clientWidth;
+        }
+        
+        
         /**
          *  Returns the computed style of the special elements that were added to
          *  the page. The value will be changed by CSS media queries and this
@@ -444,7 +449,7 @@
                         fontSize,
                         height = '1em',
                         elemName = useDeviceWidth ? 'device' : 'viewport',
-                        width = useDeviceWidth ? screen.width : window.innerWidth || docEl.clientWidth;
+                        width = _normalizeWidth(useDeviceWidth);
                     
                     // We need to divide the pixel width by the font size if using ems.
                     if (UNITS === 'em') {
@@ -582,6 +587,26 @@
             }
             return value ? parseInt(value, 10) === _getWidth(useDeviceWidth) : false;
 
+        }
+        
+        
+        /**
+         *  Gets the current exact width of the browser. This is basically a normalized version of window.innerWidth.
+         *  It is complimentary to [isAt()](#method-isat)) or [isBelow()](#method-isbelow), which provide information
+         *  on what range (i.e., media query) the browser size is in.
+         *
+         *  @method     exact
+         *  @param      {String}                [units]             String value of type of units (px, em, %) for the value to be returned as
+         *  @return     {Number|String}                             Number if no units argument is passed.
+         *                                                          Othwerwise, it returns a string if any of 'px', 'em', or '%' units are passed.
+         *  @public
+         *  @example
+         *      jsmq.exact();                   // Returns number, e.g., 727
+         *      jsmq.exact('px');               // Returns string with units appended, e.g., '727px'
+         */
+        function exact(units) {
+            var end = (typeof units === 'string' && /px|%|em/.test(units)) ? units : 0;
+            return _normalizeWidth(false) + end;
         }
         
         
@@ -1072,6 +1097,7 @@
             set             : set,
             init            : init,
             isAt            : isAt,
+            exact           : exact,
             isBelow         : isBelow,
             reload          : reload,
             getSizes        : getSortedSizes,
