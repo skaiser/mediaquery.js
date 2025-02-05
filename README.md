@@ -194,6 +194,18 @@ if (jsmq.isBelow('jsmq-medium')) {
 }
 ```
 
+## Running Tests
+
+This uses [Jasmine Standalone](https://jasmine.github.io/pages/getting_started.html) to run the tests.
+
+From the main project directory run:
+
+```
+python3 -m http.server
+```
+
+Then navigate to http://localhost:8000/tests/SpecRunner.html and watch Jasmine run tests in 10 milliseconds! Take that Jest/npm/vitest/node!
+
 ## API
 ---
 ## Methods
